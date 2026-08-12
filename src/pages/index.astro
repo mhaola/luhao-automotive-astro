@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Hero from '../components/Hero.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import ProductGrid from '../components/ProductGrid.astro';
 import CaseHighlight from '../components/CaseHighlight.astro';
@@ -16,42 +15,26 @@ const journeys = [
 ---
 
 <BaseLayout title={site.name} description={site.description} path="/">
-	<Hero
-		title={site.tagline}
-		subheadline={site.description}
-		primaryCta={{ label: 'Conheça nossas soluções', href: '/produtos' }}
-		secondaryCta={{ label: 'Fale com a LuHao', href: '/contato' }}
-		hasVisual
-	>
-		<svg
-			slot="visual"
-			viewBox="0 0 520 360"
-			role="img"
-			aria-label="Representação abstrata da jornada automotiva, do investimento em marketing ao resultado comercial"
-		>
-			<title>Jornada automotiva: investimento, campanha, lead, qualificação, oportunidade e resultado</title>
-			<line x1="40" y1="300" x2="480" y2="60" stroke="var(--color-border)" stroke-width="2" stroke-dasharray="6 8" />
-			{
-				[
-					{ x: 40, y: 300, r: 10 },
-					{ x: 138, y: 240, r: 12 },
-					{ x: 236, y: 180, r: 14 },
-					{ x: 334, y: 120, r: 16 },
-					{ x: 432, y: 60, r: 20 },
-				].map((node, index) => (
-					<circle
-						cx={node.x}
-						cy={node.y}
-						r={node.r}
-						fill={index === 4 ? 'var(--color-accent)' : 'var(--color-surface-raised)'}
-						stroke="var(--color-accent)"
-						stroke-width={index === 4 ? 0 : 1.5}
-					/>
-				))
-			}
-			<rect x="20" y="20" width="480" height="320" fill="none" />
-		</svg>
-	</Hero>
+	<section class="hero">
+		<picture class="hero__bg" aria-hidden="true">
+			<source media="(max-width: 767px)" srcset="/images/hero-mobile.avif" type="image/avif" />
+			<source media="(max-width: 767px)" srcset="/images/hero-main-mobile.webp" type="image/webp" />
+			<source media="(min-width: 768px)" srcset="/images/hero-desktop.avif" type="image/avif" />
+			<source media="(min-width: 768px)" srcset="/images/hero-main-desktop.webp" type="image/webp" />
+			<img src="/images/hero-main-desktop.webp" alt="" width="2000" height="1116" loading="eager" />
+		</picture>
+		<div class="hero__overlay" aria-hidden="true"></div>
+		<div class="container hero__inner">
+			<div class="hero__text">
+				<h1 class="text-display">{site.tagline}</h1>
+				<p class="hero__subheadline text-muted">{site.description}</p>
+				<div class="hero__actions">
+					<a href="/produtos" class="btn btn-primary">Conheça nossas soluções</a>
+					<a href="/contato" class="btn btn-secondary">Fale com a LuHao</a>
+				</div>
+			</div>
+		</div>
+	</section>
 
 	<section class="section-tight journeys">
 		<div class="container">
@@ -94,6 +77,72 @@ const journeys = [
 </BaseLayout>
 
 <style>
+	.hero {
+		position: relative;
+		min-height: 640px;
+		display: flex;
+		align-items: center;
+		overflow: hidden;
+	}
+
+	.hero__bg {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+	}
+
+	.hero__bg img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.hero__overlay {
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		background:
+			linear-gradient(90deg, var(--color-bg) 12%, rgba(2, 11, 36, 0.78) 45%, rgba(2, 11, 36, 0.35) 100%),
+			linear-gradient(0deg, var(--color-bg) 0%, transparent 30%);
+	}
+
+	.hero__inner {
+		position: relative;
+		z-index: 2;
+		padding-block: var(--space-9);
+	}
+
+	.hero__text {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-5);
+		max-width: 640px;
+	}
+
+	.hero__subheadline {
+		font-size: 1.125rem;
+		max-width: 560px;
+		color: rgba(255, 255, 255, 0.82);
+	}
+
+	.hero__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-3);
+		margin-top: var(--space-2);
+	}
+
+	@media (max-width: 767px) {
+		.hero {
+			min-height: 560px;
+		}
+
+		.hero__overlay {
+			background:
+				linear-gradient(180deg, rgba(2, 11, 36, 0.55) 0%, var(--color-bg) 92%);
+		}
+	}
+
 	.journeys__grid {
 		display: grid;
 		grid-template-columns: 1fr;

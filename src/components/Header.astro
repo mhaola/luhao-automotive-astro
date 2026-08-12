@@ -11,8 +11,9 @@ function isActive(href: string): boolean {
 
 <header class="site-header">
 	<div class="container site-header__inner">
-		<a href="/" class="site-header__logo">
-			{site.shortName}<span>Automotive</span>
+		<a href="/" class="site-header__logo" aria-label={site.name}>
+			<img src="/images/logo-luhao-white.png" alt="LuHao" width="120" height="49" class="site-header__logo-img" />
+			<span class="site-header__logo-suffix">Automotive</span>
 		</a>
 
 		<nav class="site-header__nav" aria-label="Navegação principal">
@@ -83,18 +84,25 @@ function isActive(href: string): boolean {
 	}
 
 	.site-header__logo {
-		font-weight: 700;
-		font-size: 1.1rem;
-		letter-spacing: -0.01em;
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
 		text-decoration: none;
-		color: var(--color-text);
 		white-space: nowrap;
 	}
 
-	.site-header__logo span {
-		color: var(--color-accent);
-		font-weight: 500;
-		margin-left: 0.35ch;
+	.site-header__logo-img {
+		height: 32px;
+		width: auto;
+	}
+
+	.site-header__logo-suffix {
+		font-weight: 600;
+		font-size: 1rem;
+		letter-spacing: -0.01em;
+		color: var(--color-accent-secondary);
+		padding-left: 0.6rem;
+		border-left: 1px solid var(--color-border);
 	}
 
 	.site-header__nav {

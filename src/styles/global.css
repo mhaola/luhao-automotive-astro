@@ -1,17 +1,19 @@
 /* Design tokens — LuHao Automotive
-   Paleta provisória: grafite/preto, branco/off-white, cinzas, um accent forte.
+   Paleta oficial da marca LuHao (mesma usada em luhao.com.br):
+   navy profundo + magenta (CTA) + cyan (destaque secundário).
    Trocar aqui centraliza qualquer ajuste futuro de marca. */
 :root {
-	--color-bg: #0b0c0e;
-	--color-surface: #131417;
-	--color-surface-raised: #1a1c20;
-	--color-text: #f4f4f3;
-	--color-text-muted: #a3a6ac;
-	--color-border: #2a2d33;
-	--color-accent: #d64b2a;
-	--color-accent-hover: #e5643f;
-	--color-accent-text: #fff4f0;
-	--color-success: #3fa66a;
+	--color-bg: #020b24;
+	--color-surface: #061e4f;
+	--color-surface-raised: #092f73;
+	--color-text: #ffffff;
+	--color-text-muted: rgba(255, 255, 255, 0.72);
+	--color-border: rgba(255, 255, 255, 0.14);
+	--color-accent: #ff3db8;
+	--color-accent-hover: #ff64c6;
+	--color-accent-text: #ffffff;
+	--color-accent-secondary: #25d6ff;
+	--color-success: #3fd68f;
 
 	--radius-sm: 4px;
 	--radius-md: 10px;
@@ -41,22 +43,6 @@
 	--line-height-normal: 1.6;
 
 	color-scheme: dark;
-}
-
-@media (prefers-color-scheme: light) {
-	:root {
-		--color-bg: #faf9f7;
-		--color-surface: #ffffff;
-		--color-surface-raised: #f2f0ed;
-		--color-text: #14151a;
-		--color-text-muted: #5c5f66;
-		--color-border: #e3e1dc;
-		--color-accent: #c8431f;
-		--color-accent-hover: #a83718;
-		--color-accent-text: #ffffff;
-		--color-success: #2f8a54;
-		color-scheme: light;
-	}
 }
 
 *,
