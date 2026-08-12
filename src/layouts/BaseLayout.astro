@@ -1,0 +1,80 @@
+---
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import MobileNav from '../components/MobileNav.astro';
+import SEO from '../components/SEO.astro';
+import { site } from '../config/site';
+import '../styles/global.css';
+
+interface Props {
+	title: string;
+	description: string;
+	path: string;
+	image?: string;
+	noindex?: boolean;
+	type?: 'website' | 'article';
+	/** Injeta JSON-LD adicional (Service, Article, BreadcrumbList...) além do Organization padrão. */
+	structuredData?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const { title, description, path, image, noindex, type, structuredData } = Astro.props;
+
+const organizationSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Organization',
+	name: site.name,
+	url: site.url,
+	description: site.description,
+};
+
+const jsonLdBlocks = [organizationSchema, ...(structuredData ? [structuredData].flat() : [])];
+
+const gtmId = import.meta.env.PUBLIC_GTM_ID as string | undefined;
+---
+
+<!doctype html>
+<html lang="pt-BR">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="robots" content="index, follow" />
+		<SEO title={title} description={description} path={path} image={image} noindex={noindex} type={type} />
+		{
+			jsonLdBlocks.map((block) => (
+				<script type="application/ld+json" set:html={JSON.stringify(block)} />
+			))
+		}
+		{
+			gtmId && (
+				<script
+					set:html={`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtmId}');`}
+				/>
+			)
+		}
+	</head>
+	<body>
+		{
+			gtmId && (
+				<noscript>
+					<iframe
+						src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+						height="0"
+						width="0"
+						style="display:none;visibility:hidden"
+						title="Google Tag Manager"
+					/>
+				</noscript>
+			)
+		}
+		<a href="#main-content" class="skip-link">Pular para o conteúdo</a>
+		<Header />
+		<MobileNav />
+		<main id="main-content">
+			<slot />
+		</main>
+		<Footer />
+	</body>
+</html>

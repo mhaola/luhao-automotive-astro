@@ -1,0 +1,191 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CTASection from '../../components/CTASection.astro';
+import FAQ from '../../components/FAQ.astro';
+import { products } from '../../config/site';
+
+const product = products.demand;
+
+const verticais = [
+	{
+		title: '0 km',
+		text: 'Modelo, lançamento, oferta, estoque, test-drive, financiamento e vendas diretas quando aplicável.',
+	},
+	{
+		title: 'Seminovos e usados',
+		text: 'Veículos específicos, categorias, faixa de preço, estoque, avaliação de usado, troca e financiamento.',
+	},
+	{
+		title: 'Peças e acessórios',
+		text: 'Peças, acessórios, pneus, produtos originais e campanhas comerciais de pós-venda.',
+	},
+];
+
+const criterios = [
+	'Modelo e versão do veículo',
+	'Estoque disponível na loja ou região',
+	'Localização do consumidor',
+	'Oferta ou campanha promocional vigente',
+	'Perfil e intenção de busca do público',
+];
+
+const canais = [
+	'Google Ads',
+	'Meta Ads',
+	'Landing pages e páginas de oferta',
+	'Formulários de contato',
+	'WhatsApp',
+	'Remarketing',
+	'Rastreamento de conversão',
+];
+
+const faqItems = [
+	{
+		question: 'O Demand atende só veículos 0 km?',
+		answer:
+			'Não. O LuHao Demand cobre três frentes: 0 km, seminovos/usados e peças e acessórios — cada uma com abordagem de campanha específica.',
+	},
+	{
+		question: 'Como as campanhas são segmentadas?',
+		answer:
+			'De acordo com modelo, estoque, localização, oferta comercial e perfil de busca do público, para que a demanda gerada tenha aderência real ao que a loja tem para vender.',
+	},
+	{
+		question: 'É possível trabalhar várias lojas de um grupo ao mesmo tempo?',
+		answer:
+			'Sim. A estrutura de campanhas pode ser organizada por loja, região ou marca, de acordo com a operação do grupo automotivo.',
+	},
+];
+
+const title = product.heroTitle;
+const description = product.heroSubheadline;
+
+const serviceSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Service',
+	name: product.name,
+	serviceType: 'Marketing para venda de veículos e produtos automotivos',
+	description: product.description,
+	provider: { '@type': 'Organization', name: 'LuHao Automotive' },
+};
+---
+
+<BaseLayout title={title} description={description} path="/produtos/demand" structuredData={serviceSchema}>
+	<Hero
+		eyebrow="LuHao Demand"
+		title={title}
+		subheadline={description}
+		primaryCta={{ label: product.cta, href: '/contato' }}
+	/>
+
+	<section class="section-tight">
+		<div class="container">
+			<Breadcrumbs items={[{ label: 'Produtos', href: '/produtos' }, { label: 'Demand', href: '/produtos/demand' }]} />
+			<SectionHeading
+				eyebrow="Três frentes"
+				title="Demanda para quem quer adquirir um veículo ou produto."
+				description="O Demand trabalha principalmente as situações em que o consumidor deseja adquirir um produto — do 0 km ao seminovo, das peças aos acessórios."
+			/>
+			<div class="vertical-grid">
+				{
+					verticais.map((item) => (
+						<div class="card vertical-grid__item">
+							<h3 class="text-h3">{item.title}</h3>
+							<p class="text-muted">{item.text}</p>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="section-tight">
+		<div class="container two-col">
+			<div>
+				<SectionHeading eyebrow="Segmentação" title="Campanhas estruturadas pelo que importa na venda." />
+				<ul class="dash-list">
+					{criterios.map((item) => <li>{item}</li>)}
+				</ul>
+			</div>
+			<div>
+				<SectionHeading eyebrow="Como operamos" title="Canais utilizados nas jornadas de demanda." />
+				<ul class="pill-list">
+					{canais.map((item) => <li class="pill">{item}</li>)}
+				</ul>
+			</div>
+		</div>
+	</section>
+
+	<FAQ items={faqItems} />
+
+	<CTASection title="Precisa transformar estoque em demanda qualificada?" whatsappMessage={product.whatsappMessage} />
+</BaseLayout>
+
+<style>
+	.vertical-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-4);
+	}
+
+	.vertical-grid__item {
+		padding: var(--space-5);
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-2);
+	}
+
+	.two-col {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-7);
+	}
+
+	.dash-list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-3);
+	}
+
+	.dash-list li {
+		padding-left: var(--space-4);
+		position: relative;
+		color: var(--color-text-muted);
+	}
+
+	.dash-list li::before {
+		content: '—';
+		position: absolute;
+		left: 0;
+		color: var(--color-accent);
+	}
+
+	.pill-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2);
+	}
+
+	.pill {
+		padding: 0.5rem 1rem;
+		border: 1px solid var(--color-border);
+		border-radius: 999px;
+		font-size: 0.875rem;
+		color: var(--color-text-muted);
+	}
+
+	@media (min-width: 640px) {
+		.vertical-grid {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	@media (min-width: 900px) {
+		.two-col {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+</style>

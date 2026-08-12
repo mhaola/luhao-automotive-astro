@@ -1,0 +1,216 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CTASection from '../../components/CTASection.astro';
+import FAQ from '../../components/FAQ.astro';
+import { products } from '../../config/site';
+
+const product = products.intelligence;
+
+const funil = ['Investimento', 'Campanha', 'Lead', 'Qualificação', 'Oportunidade', 'Resultado'];
+
+const indicadores = [
+	'CPL (custo por lead)',
+	'Custo por lead qualificado',
+	'Custo por oportunidade',
+	'Origem dos leads',
+	'Conversão por canal',
+	'Conversão por campanha',
+	'Conversão por oferta',
+	'Conversão por loja',
+	'Tempo de atendimento',
+	'Perdas no funil',
+	'Aproveitamento comercial',
+];
+
+const variacoes = [
+	{ title: 'Veículos', flow: 'Campanha → Lead → Qualificação → Atendimento → Proposta → Venda' },
+	{ title: 'Serviços', flow: 'Campanha → Lead → Agendamento → Comparecimento → Ordem de serviço' },
+	{ title: 'Assinatura', flow: 'Campanha → Lead → Qualificação → Proposta → Contrato' },
+];
+
+const faqItems = [
+	{
+		question: 'O Intelligence é só um dashboard?',
+		answer:
+			'Não. O objetivo é conectar investimento, campanha, lead, qualificação e resultado comercial em uma visão única — não apenas apresentar números soltos.',
+	},
+	{
+		question: 'Os indicadores mudam de acordo com o produto?',
+		answer:
+			'Sim. Veículos, serviços e assinatura têm etapas de funil diferentes, e os indicadores acompanhados refletem essa diferença.',
+	},
+	{
+		question: 'Preciso ter todos os outros produtos LuHao contratados para usar o Intelligence?',
+		answer:
+			'O Intelligence é mais eficaz quando conectado à operação de geração de demanda e qualificação da LuHao, mas o ponto de partida é sempre entender os dados disponíveis na sua operação.',
+	},
+];
+
+const title = product.heroTitle;
+const description = product.heroSubheadline;
+
+const serviceSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Service',
+	name: product.name,
+	serviceType: 'Inteligência de marketing e vendas automotivo',
+	description: product.description,
+	provider: { '@type': 'Organization', name: 'LuHao Automotive' },
+};
+---
+
+<BaseLayout title={title} description={description} path="/produtos/intelligence" structuredData={serviceSchema}>
+	<Hero
+		eyebrow="LuHao Intelligence"
+		title={title}
+		subheadline={description}
+		primaryCta={{ label: product.cta, href: '/contato' }}
+	/>
+
+	<section class="section-tight">
+		<div class="container">
+			<Breadcrumbs items={[{ label: 'Produtos', href: '/produtos' }, { label: 'Intelligence', href: '/produtos/intelligence' }]} />
+			<SectionHeading eyebrow="Visão de funil" title="Do investimento ao resultado comercial." align="center" />
+			<div class="funnel-vertical">
+				{
+					funil.map((step, index) => (
+						<div class="funnel-vertical__step">
+							<div class="card funnel-vertical__card">{step}</div>
+							{index < funil.length - 1 && <span class="funnel-vertical__arrow" aria-hidden="true">↓</span>}
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="section-tight">
+		<div class="container">
+			<SectionHeading eyebrow="Por produto" title="O funil muda conforme o que você vende." />
+			<div class="variation-grid">
+				{
+					variacoes.map((item) => (
+						<div class="card variation-grid__item">
+							<h3 class="text-h3">{item.title}</h3>
+							<p class="text-muted">{item.flow}</p>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="section-tight">
+		<div class="container">
+			<SectionHeading
+				eyebrow="Indicadores possíveis"
+				title="Os indicadores acompanhados, de acordo com a operação."
+				description="Ilustrativos — a seleção final depende dos dados disponíveis e dos objetivos de cada operação."
+			/>
+			<div class="indicator-grid">
+				{
+					indicadores.map((item) => (
+						<div class="indicator-card">
+							<p class="indicator-card__value" aria-hidden="true">•</p>
+							<p>{item}</p>
+						</div>
+					))
+				}
+			</div>
+			<p class="text-small text-muted indicator-note">
+				Ilustrativo — os indicadores exibidos representam exemplos de métricas acompanháveis, não resultados de clientes.
+			</p>
+		</div>
+	</section>
+
+	<FAQ items={faqItems} />
+
+	<CTASection title="Quer conectar seus dados de marketing e vendas?" whatsappMessage={product.whatsappMessage} />
+</BaseLayout>
+
+<style>
+	.funnel-vertical {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--space-2);
+		max-width: 360px;
+		margin-inline: auto;
+	}
+
+	.funnel-vertical__step {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--space-2);
+		width: 100%;
+	}
+
+	.funnel-vertical__card {
+		width: 100%;
+		text-align: center;
+		padding: var(--space-4);
+		font-weight: 600;
+	}
+
+	.funnel-vertical__arrow {
+		color: var(--color-text-muted);
+	}
+
+	.variation-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-4);
+	}
+
+	.variation-grid__item {
+		padding: var(--space-5);
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-2);
+	}
+
+	.indicator-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-3);
+	}
+
+	.indicator-card {
+		display: flex;
+		align-items: center;
+		gap: var(--space-3);
+		padding: var(--space-4) var(--space-5);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-md);
+		font-size: 0.9375rem;
+	}
+
+	.indicator-card__value {
+		color: var(--color-accent);
+		font-size: 1.25rem;
+	}
+
+	.indicator-note {
+		margin-top: var(--space-4);
+	}
+
+	@media (min-width: 640px) {
+		.variation-grid {
+			grid-template-columns: repeat(3, 1fr);
+		}
+
+		.indicator-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (min-width: 900px) {
+		.indicator-grid {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+</style>

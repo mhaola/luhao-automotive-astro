@@ -1,0 +1,121 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ProductGrid from '../components/ProductGrid.astro';
+import CaseHighlight from '../components/CaseHighlight.astro';
+import CTASection from '../components/CTASection.astro';
+import { site } from '../config/site';
+
+const journeys = [
+	{ name: 'Assinatura', detail: 'Intenção de uso, não de posse. Ciclo de decisão mais curto, PF e PJ.' },
+	{ name: '0 km', detail: 'Modelo, oferta e estoque guiando a demanda até o test-drive e a venda.' },
+	{ name: 'Seminovos', detail: 'Veículo específico, preço e condição — decisão orientada por disponibilidade.' },
+	{ name: 'Pós-venda', detail: 'Capacidade de oficina e recorrência, não uma venda única.' },
+];
+---
+
+<BaseLayout title={site.name} description={site.description} path="/">
+	<Hero
+		title={site.tagline}
+		subheadline={site.description}
+		primaryCta={{ label: 'Conheça nossas soluções', href: '/produtos' }}
+		secondaryCta={{ label: 'Fale com a LuHao', href: '/contato' }}
+		hasVisual
+	>
+		<svg
+			slot="visual"
+			viewBox="0 0 520 360"
+			role="img"
+			aria-label="Representação abstrata da jornada automotiva, do investimento em marketing ao resultado comercial"
+		>
+			<title>Jornada automotiva: investimento, campanha, lead, qualificação, oportunidade e resultado</title>
+			<line x1="40" y1="300" x2="480" y2="60" stroke="var(--color-border)" stroke-width="2" stroke-dasharray="6 8" />
+			{
+				[
+					{ x: 40, y: 300, r: 10 },
+					{ x: 138, y: 240, r: 12 },
+					{ x: 236, y: 180, r: 14 },
+					{ x: 334, y: 120, r: 16 },
+					{ x: 432, y: 60, r: 20 },
+				].map((node, index) => (
+					<circle
+						cx={node.x}
+						cy={node.y}
+						r={node.r}
+						fill={index === 4 ? 'var(--color-accent)' : 'var(--color-surface-raised)'}
+						stroke="var(--color-accent)"
+						stroke-width={index === 4 ? 0 : 1.5}
+					/>
+				))
+			}
+			<rect x="20" y="20" width="480" height="320" fill="none" />
+		</svg>
+	</Hero>
+
+	<section class="section-tight journeys">
+		<div class="container">
+			<SectionHeading
+				eyebrow="Como pensamos"
+				title="Automotivo não é um único funil."
+				description="A intenção, o argumento comercial, o momento de compra e os critérios de qualificação mudam de acordo com o produto. A LuHao Automotive estrutura cada operação de acordo com a jornada que precisa gerar."
+			/>
+			<div class="journeys__grid">
+				{
+					journeys.map((journey) => (
+						<div class="journeys__item card">
+							<h3 class="text-h3">{journey.name}</h3>
+							<p class="text-muted">{journey.detail}</p>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="section-tight">
+		<div class="container">
+			<SectionHeading
+				eyebrow="Nossos produtos"
+				title="Cinco produtos, cinco jornadas comerciais."
+				description="Cada produto da LuHao Automotive resolve uma etapa específica da operação — da geração de demanda à inteligência sobre o resultado."
+			/>
+			<ProductGrid />
+		</div>
+	</section>
+
+	<CaseHighlight />
+
+	<CTASection
+		title="Pronto para estruturar a geração de demanda da sua operação?"
+		description="Conte pra gente sobre seu negócio — assinatura, vendas ou pós-venda — e vamos entender qual produto faz sentido."
+		whatsappMessage="Olá! Quero conhecer as soluções da LuHao Automotive."
+	/>
+</BaseLayout>
+
+<style>
+	.journeys__grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-4);
+	}
+
+	.journeys__item {
+		padding: var(--space-5);
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-2);
+	}
+
+	@media (min-width: 640px) {
+		.journeys__grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (min-width: 1100px) {
+		.journeys__grid {
+			grid-template-columns: repeat(4, 1fr);
+		}
+	}
+</style>

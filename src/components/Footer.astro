@@ -1,0 +1,133 @@
+---
+import { contact, mailtoLink, productList, site, whatsappLink } from '../config/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+	<div class="container site-footer__grid">
+		<div class="site-footer__brand">
+			<p class="site-footer__logo">{site.shortName}<span>Automotive</span></p>
+			<p class="text-muted text-small">
+				Marketing especializado para concessionárias e empresas do setor automotivo.
+			</p>
+		</div>
+
+		<div class="site-footer__col">
+			<p class="site-footer__heading">Produtos</p>
+			<ul>
+				{
+					productList.map((product) => (
+						<li>
+							<a href={`/produtos/${product.slug}`}>{product.shortLabel}</a>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+
+		<div class="site-footer__col">
+			<p class="site-footer__heading">Empresa</p>
+			<ul>
+				<li><a href="/sobre">Sobre</a></li>
+				<li><a href="/cases">Cases</a></li>
+				<li><a href="/insights">Insights</a></li>
+				<li><a href="/contato">Contato</a></li>
+			</ul>
+		</div>
+
+		<div class="site-footer__col">
+			<p class="site-footer__heading">Contato</p>
+			<ul>
+				<li><a href={whatsappLink()} target="_blank" rel="noopener noreferrer">WhatsApp: {contact.whatsapp.display}</a></li>
+				<li><a href={mailtoLink()}>{contact.email}</a></li>
+			</ul>
+		</div>
+
+		<div class="site-footer__col">
+			<p class="site-footer__heading">Legal</p>
+			<ul>
+				<li><a href="/politica-de-privacidade">Política de Privacidade</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="container site-footer__bottom">
+		<p class="text-small text-muted">&copy; {year} {site.name}. Todos os direitos reservados.</p>
+	</div>
+</footer>
+
+<style>
+	.site-footer {
+		border-top: 1px solid var(--color-border);
+		background: var(--color-surface);
+		margin-top: var(--space-9);
+	}
+
+	.site-footer__grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-6);
+		padding-block: var(--space-8);
+	}
+
+	.site-footer__brand {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-3);
+		max-width: 320px;
+	}
+
+	.site-footer__logo {
+		font-weight: 700;
+		font-size: 1.1rem;
+	}
+
+	.site-footer__logo span {
+		color: var(--color-accent);
+		font-weight: 500;
+		margin-left: 0.35ch;
+	}
+
+	.site-footer__heading {
+		font-size: 0.8125rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--color-text-muted);
+		margin-bottom: var(--space-3);
+	}
+
+	.site-footer__col ul {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-2);
+	}
+
+	.site-footer__col a {
+		text-decoration: none;
+		color: var(--color-text);
+		font-size: 0.9375rem;
+	}
+
+	.site-footer__col a:hover {
+		color: var(--color-accent);
+	}
+
+	.site-footer__bottom {
+		border-top: 1px solid var(--color-border);
+		padding-block: var(--space-4);
+	}
+
+	@media (min-width: 640px) {
+		.site-footer__grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (min-width: 960px) {
+		.site-footer__grid {
+			grid-template-columns: 1.4fr repeat(4, 1fr);
+		}
+	}
+</style>

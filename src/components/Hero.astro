@@ -1,0 +1,93 @@
+---
+interface Props {
+	eyebrow?: string;
+	title: string;
+	subheadline: string;
+	primaryCta?: { label: string; href: string };
+	secondaryCta?: { label: string; href: string };
+	hasVisual?: boolean;
+}
+
+const { eyebrow, title, subheadline, primaryCta, secondaryCta, hasVisual = false } = Astro.props;
+---
+
+<section class="hero section">
+	<div class:list={['container hero__inner', { 'hero__inner--split': hasVisual }]}>
+		<div class="hero__text">
+			{eyebrow && <p class="eyebrow">{eyebrow}</p>}
+			<h1 class="text-display">{title}</h1>
+			<p class="hero__subheadline text-muted">{subheadline}</p>
+			{
+				(primaryCta || secondaryCta) && (
+					<div class="hero__actions">
+						{primaryCta && (
+							<a href={primaryCta.href} class="btn btn-primary">
+								{primaryCta.label}
+							</a>
+						)}
+						{secondaryCta && (
+							<a href={secondaryCta.href} class="btn btn-secondary">
+								{secondaryCta.label}
+							</a>
+						)}
+					</div>
+				)
+			}
+		</div>
+		{
+			hasVisual && (
+				<div class="hero__visual">
+					<slot name="visual" />
+				</div>
+			)
+		}
+	</div>
+</section>
+
+<style>
+	.hero__inner {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-6);
+	}
+
+	.hero__text {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-5);
+		max-width: 680px;
+	}
+
+	.hero__subheadline {
+		font-size: 1.125rem;
+		max-width: 560px;
+	}
+
+	.hero__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-3);
+		margin-top: var(--space-2);
+	}
+
+	.hero__visual {
+		width: 100%;
+	}
+
+	@media (min-width: 960px) {
+		.hero__inner--split {
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+			gap: var(--space-8);
+		}
+
+		.hero__inner--split .hero__text {
+			flex: 1;
+		}
+
+		.hero__inner--split .hero__visual {
+			flex: 1;
+		}
+	}
+</style>

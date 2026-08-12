@@ -1,0 +1,195 @@
+---
+import { contact } from '../config/site';
+
+interface Props {
+	defaultInterest?: string;
+}
+
+const { defaultInterest } = Astro.props;
+
+const interests = [
+	{ value: 'Drive', label: 'Drive — Leads para assinatura' },
+	{ value: 'Demand', label: 'Demand — Demanda para vendas' },
+	{ value: 'Service', label: 'Service — Agendamentos e pós-venda' },
+	{ value: 'Qualification', label: 'Qualification — Qualificação de leads' },
+	{ value: 'Intelligence', label: 'Intelligence — Dados e resultados' },
+	{ value: 'Outro', label: 'Outro assunto' },
+];
+---
+
+<form class="lead-form" id="lead-form" novalidate data-whatsapp={contact.whatsapp.e164}>
+	<div class="lead-form__row">
+		<label for="lf-name">Nome</label>
+		<input id="lf-name" name="name" type="text" autocomplete="name" required />
+		<span class="lead-form__error" data-error-for="name"></span>
+	</div>
+
+	<div class="lead-form__row">
+		<label for="lf-company">Empresa</label>
+		<input id="lf-company" name="company" type="text" autocomplete="organization" required />
+		<span class="lead-form__error" data-error-for="company"></span>
+	</div>
+
+	<div class="lead-form__grid">
+		<div class="lead-form__row">
+			<label for="lf-email">E-mail</label>
+			<input id="lf-email" name="email" type="email" autocomplete="email" required />
+			<span class="lead-form__error" data-error-for="email"></span>
+		</div>
+
+		<div class="lead-form__row">
+			<label for="lf-phone">Telefone / WhatsApp</label>
+			<input id="lf-phone" name="phone" type="tel" autocomplete="tel" required />
+			<span class="lead-form__error" data-error-for="phone"></span>
+		</div>
+	</div>
+
+	<div class="lead-form__row">
+		<label for="lf-interest">Interesse</label>
+		<select id="lf-interest" name="interest" required>
+			<option value="" disabled selected={!defaultInterest}>Selecione uma opção</option>
+			{
+				interests.map((item) => (
+					<option value={item.value} selected={item.value === defaultInterest}>
+						{item.label}
+					</option>
+				))
+			}
+		</select>
+		<span class="lead-form__error" data-error-for="interest"></span>
+	</div>
+
+	<div class="lead-form__row">
+		<label for="lf-message">Mensagem</label>
+		<textarea id="lf-message" name="message" rows="4" required></textarea>
+		<span class="lead-form__error" data-error-for="message"></span>
+	</div>
+
+	<button type="submit" class="btn btn-primary lead-form__submit">Enviar via WhatsApp</button>
+	<p class="text-small text-muted lead-form__hint">
+		Ao enviar, abrimos o WhatsApp com sua mensagem já preenchida para falar diretamente com a LuHao.
+	</p>
+</form>
+
+<style>
+	.lead-form {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-5);
+	}
+
+	.lead-form__grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-5);
+	}
+
+	@media (min-width: 640px) {
+		.lead-form__grid {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+
+	.lead-form__row {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-2);
+	}
+
+	.lead-form label {
+		font-size: 0.875rem;
+		font-weight: 600;
+	}
+
+	.lead-form input,
+	.lead-form select,
+	.lead-form textarea {
+		width: 100%;
+		padding: 0.75rem 0.9rem;
+		border-radius: var(--radius-sm);
+		border: 1px solid var(--color-border);
+		background: var(--color-surface);
+		color: var(--color-text);
+		font-family: inherit;
+		font-size: 0.9375rem;
+	}
+
+	.lead-form input:focus,
+	.lead-form select:focus,
+	.lead-form textarea:focus {
+		border-color: var(--color-accent);
+	}
+
+	.lead-form__error {
+		font-size: 0.8125rem;
+		color: var(--color-accent);
+		min-height: 1em;
+	}
+
+	.lead-form__submit {
+		align-self: flex-start;
+	}
+
+	.lead-form__hint {
+		max-width: 480px;
+	}
+
+	.lead-form [aria-invalid='true'] {
+		border-color: var(--color-accent);
+	}
+</style>
+
+<script>
+	const form = document.getElementById('lead-form') as HTMLFormElement | null;
+
+	if (form) {
+		const whatsappNumber = form.dataset.whatsapp;
+
+		const labels: Record<string, string> = {
+			name: 'Nome',
+			company: 'Empresa',
+			email: 'E-mail',
+			phone: 'Telefone/WhatsApp',
+			interest: 'Interesse',
+			message: 'Mensagem',
+		};
+
+		form.addEventListener('submit', (event) => {
+			event.preventDefault();
+
+			const formData = new FormData(form);
+			let hasError = false;
+
+			for (const field of Object.keys(labels)) {
+				const value = String(formData.get(field) ?? '').trim();
+				const input = form.elements.namedItem(field) as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null;
+				const errorEl = form.querySelector(`[data-error-for="${field}"]`);
+
+				let message = '';
+				if (!value) {
+					message = 'Campo obrigatório.';
+				} else if (field === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+					message = 'Informe um e-mail válido.';
+				}
+
+				if (message) {
+					hasError = true;
+					input?.setAttribute('aria-invalid', 'true');
+				} else {
+					input?.removeAttribute('aria-invalid');
+				}
+
+				if (errorEl) errorEl.textContent = message;
+			}
+
+			if (hasError || !whatsappNumber) return;
+
+			const lines = Object.entries(labels).map(
+				([field, label]) => `${label}: ${String(formData.get(field) ?? '').trim()}`
+			);
+			const text = `Olá! Vim pelo site da LuHao Automotive.\n\n${lines.join('\n')}`;
+
+			window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
+		});
+	}
+</script>

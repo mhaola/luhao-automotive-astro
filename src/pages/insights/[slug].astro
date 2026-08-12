@@ -1,0 +1,145 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CTASection from '../../components/CTASection.astro';
+import { site } from '../../config/site';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('insights', ({ data }) => !data.draft);
+	return posts.map((post) => ({
+		params: { slug: post.id },
+		props: { post },
+	}));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const dateFormatter = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+
+const articleSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Article',
+	headline: post.data.title,
+	description: post.data.description,
+	datePublished: post.data.pubDate.toISOString(),
+	dateModified: (post.data.updatedDate ?? post.data.pubDate).toISOString(),
+	author: { '@type': 'Organization', name: post.data.author },
+	publisher: { '@type': 'Organization', name: site.name },
+	mainEntityOfPage: new URL(`/insights/${post.id}`, site.url).toString(),
+};
+---
+
+<BaseLayout
+	title={post.data.title}
+	description={post.data.description}
+	path={`/insights/${post.id}`}
+	type="article"
+	structuredData={articleSchema}
+>
+	<article class="section-tight">
+		<div class="container insight-article">
+			<Breadcrumbs
+				items={[
+					{ label: 'Insights', href: '/insights' },
+					{ label: post.data.title, href: `/insights/${post.id}` },
+				]}
+			/>
+
+			<header class="insight-article__header">
+				<p class="eyebrow">{post.data.category}</p>
+				<h1 class="text-h1">{post.data.title}</h1>
+				<p class="text-muted insight-article__meta">
+					{post.data.author} · {dateFormatter.format(post.data.pubDate)}
+				</p>
+				{
+					post.data.tags.length > 0 && (
+						<ul class="insight-article__tags">
+							{post.data.tags.map((tag) => (
+								<li class="pill">{tag}</li>
+							))}
+						</ul>
+					)
+				}
+			</header>
+
+			<div class="insight-article__content">
+				<Content />
+			</div>
+		</div>
+	</article>
+
+	<CTASection
+		title="Quer aplicar isso na sua operação?"
+		whatsappMessage={`Olá! Li o artigo "${post.data.title}" e quero saber mais sobre as soluções da LuHao Automotive.`}
+	/>
+</BaseLayout>
+
+<style>
+	.insight-article {
+		max-width: 720px;
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-6);
+	}
+
+	.insight-article__header {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-3);
+	}
+
+	.insight-article__meta {
+		font-size: 0.9375rem;
+	}
+
+	.insight-article__tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2);
+		margin-top: var(--space-2);
+	}
+
+	.pill {
+		padding: 0.35rem 0.85rem;
+		border: 1px solid var(--color-border);
+		border-radius: 999px;
+		font-size: 0.8125rem;
+		color: var(--color-text-muted);
+	}
+
+	.insight-article__content {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-5);
+		font-size: 1.0625rem;
+		line-height: var(--line-height-normal);
+	}
+
+	.insight-article__content :global(h2) {
+		font-size: 1.5rem;
+		margin-top: var(--space-4);
+	}
+
+	.insight-article__content :global(h3) {
+		font-size: 1.2rem;
+		margin-top: var(--space-3);
+	}
+
+	.insight-article__content :global(ul) {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-2);
+		padding-left: var(--space-5);
+		list-style: disc;
+	}
+
+	.insight-article__content :global(a) {
+		color: var(--color-accent);
+	}
+
+	.insight-article__content :global(strong) {
+		color: var(--color-text);
+	}
+</style>

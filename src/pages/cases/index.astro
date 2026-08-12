@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Metrics from '../../components/Metrics.astro';
+import CTASection from '../../components/CTASection.astro';
+import { savolCase } from '../../config/site';
+
+const title = 'Cases';
+const description = 'Resultados comerciais gerados pela LuHao Automotive em operações reais de assinatura, vendas e pós-venda.';
+---
+
+<BaseLayout title={title} description={description} path="/cases">
+	<section class="section-tight">
+		<div class="container">
+			<Breadcrumbs items={[{ label: 'Cases', href: '/cases' }]} />
+			<SectionHeading
+				eyebrow="Prova comercial"
+				title="Resultados de operações reais."
+				description="Cada case reflete uma operação específica — com contexto, estratégia e métricas reais, sem extrapolações."
+			/>
+
+			<a href={`/cases/${savolCase.slug}`} class="case-card card">
+				<div class="case-card__content">
+					<p class="eyebrow">{savolCase.program}</p>
+					<h2 class="text-h3">{savolCase.title}</h2>
+					<p class="text-muted">{savolCase.location} · {savolCase.period}</p>
+					<span class="case-card__link">Ver o case completo →</span>
+				</div>
+				<div class="case-card__metrics">
+					<Metrics metrics={savolCase.metrics} />
+				</div>
+			</a>
+		</div>
+	</section>
+
+	<CTASection
+		title="Quer resultados como esse na sua operação?"
+		whatsappMessage="Olá! Vi o case Savol e quero saber mais sobre as soluções da LuHao Automotive."
+	/>
+</BaseLayout>
+
+<style>
+	.case-card {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-6);
+		padding: var(--space-7);
+		text-decoration: none;
+		color: var(--color-text);
+	}
+
+	.case-card:hover {
+		border-color: var(--color-accent);
+	}
+
+	.case-card__content {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-2);
+		align-items: flex-start;
+	}
+
+	.case-card__link {
+		margin-top: var(--space-2);
+		font-weight: 600;
+	}
+
+	.case-card__metrics {
+		padding-top: var(--space-5);
+		border-top: 1px solid var(--color-border);
+	}
+
+	@media (min-width: 860px) {
+		.case-card {
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		.case-card__content {
+			flex: 1;
+		}
+
+		.case-card__metrics {
+			flex: 1;
+			padding-top: 0;
+			padding-left: var(--space-7);
+			border-top: none;
+			border-left: 1px solid var(--color-border);
+		}
+	}
+</style>

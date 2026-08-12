@@ -1,0 +1,216 @@
+---
+import { mainNav, primaryCta, productList, site } from '../config/site';
+
+const currentPath = Astro.url.pathname;
+
+function isActive(href: string): boolean {
+	if (href === '/') return currentPath === '/';
+	return currentPath === href || currentPath.startsWith(`${href}/`);
+}
+---
+
+<header class="site-header">
+	<div class="container site-header__inner">
+		<a href="/" class="site-header__logo">
+			{site.shortName}<span>Automotive</span>
+		</a>
+
+		<nav class="site-header__nav" aria-label="Navegação principal">
+			<ul>
+				<li class="has-submenu">
+					<a href="/produtos" aria-current={isActive('/produtos') ? 'page' : undefined}>Produtos</a>
+					<div class="submenu">
+						<ul>
+							{
+								productList.map((product) => (
+									<li>
+										<a href={`/produtos/${product.slug}`}>
+											<span class="submenu__name">{product.shortLabel}</span>
+											<span class="submenu__tagline">{product.tagline}</span>
+										</a>
+									</li>
+								))
+							}
+						</ul>
+					</div>
+				</li>
+				{
+					mainNav.slice(1).map((item) => (
+						<li>
+							<a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+								{item.label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+
+		<div class="site-header__actions">
+			<a href={primaryCta.href} class="btn btn-primary site-header__cta">{primaryCta.label}</a>
+			<button
+				type="button"
+				class="site-header__menu-toggle"
+				id="mobile-menu-toggle"
+				aria-expanded="false"
+				aria-controls="mobile-nav"
+			>
+				<span class="visually-hidden">Abrir menu</span>
+				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+					<path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+				</svg>
+			</button>
+		</div>
+	</div>
+</header>
+
+<style>
+	.site-header {
+		position: sticky;
+		top: 0;
+		z-index: 50;
+		background: color-mix(in srgb, var(--color-bg) 92%, transparent);
+		backdrop-filter: blur(8px);
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.site-header__inner {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-5);
+		height: 76px;
+	}
+
+	.site-header__logo {
+		font-weight: 700;
+		font-size: 1.1rem;
+		letter-spacing: -0.01em;
+		text-decoration: none;
+		color: var(--color-text);
+		white-space: nowrap;
+	}
+
+	.site-header__logo span {
+		color: var(--color-accent);
+		font-weight: 500;
+		margin-left: 0.35ch;
+	}
+
+	.site-header__nav {
+		flex: 1;
+		display: none;
+	}
+
+	.site-header__nav ul {
+		display: flex;
+		align-items: center;
+		gap: var(--space-6);
+	}
+
+	.site-header__nav > ul > li > a {
+		text-decoration: none;
+		font-size: 0.9375rem;
+		font-weight: 500;
+		color: var(--color-text-muted);
+		padding: 0.5rem 0;
+	}
+
+	.site-header__nav > ul > li > a:hover,
+	.site-header__nav > ul > li > a[aria-current='page'] {
+		color: var(--color-text);
+	}
+
+	.has-submenu {
+		position: relative;
+	}
+
+	.submenu {
+		position: absolute;
+		top: 100%;
+		left: 50%;
+		transform: translateX(-50%);
+		padding-top: var(--space-3);
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity 0.15s ease;
+	}
+
+	.has-submenu:hover .submenu,
+	.has-submenu:focus-within .submenu {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.submenu ul {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 0;
+		width: 280px;
+		background: var(--color-surface);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-md);
+		box-shadow: var(--shadow-md);
+		padding: var(--space-2);
+	}
+
+	.submenu a {
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+		padding: var(--space-3) var(--space-4);
+		border-radius: var(--radius-sm);
+		text-decoration: none;
+	}
+
+	.submenu a:hover {
+		background: var(--color-surface-raised);
+	}
+
+	.submenu__name {
+		font-weight: 600;
+		color: var(--color-text);
+		font-size: 0.9375rem;
+	}
+
+	.submenu__tagline {
+		font-size: 0.8125rem;
+		color: var(--color-text-muted);
+	}
+
+	.site-header__actions {
+		display: flex;
+		align-items: center;
+		gap: var(--space-4);
+	}
+
+	.site-header__cta {
+		display: none;
+	}
+
+	.site-header__menu-toggle {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 42px;
+		height: 42px;
+		border-radius: var(--radius-sm);
+		border: 1px solid var(--color-border);
+		background: transparent;
+		color: var(--color-text);
+	}
+
+	@media (min-width: 960px) {
+		.site-header__nav {
+			display: block;
+		}
+
+		.site-header__cta {
+			display: inline-flex;
+		}
+
+		.site-header__menu-toggle {
+			display: none;
+		}
+	}
+</style>

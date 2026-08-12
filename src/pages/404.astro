@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = 'Página não encontrada';
+const description = 'A página que você procura não existe ou foi movida.';
+---
+
+<BaseLayout title={title} description={description} path="/404" noindex>
+	<section class="section not-found">
+		<div class="container not-found__inner">
+			<p class="eyebrow">Erro 404</p>
+			<h1 class="text-h1">Essa rota saiu do caminho.</h1>
+			<p class="text-muted">
+				A página que você tentou acessar não existe, foi movida ou o endereço foi digitado incorretamente.
+			</p>
+			<a href="/" class="btn btn-primary">Voltar para a página inicial</a>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.not-found {
+		min-height: 50vh;
+		display: flex;
+		align-items: center;
+	}
+
+	.not-found__inner {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-4);
+		align-items: flex-start;
+		max-width: 560px;
+	}
+</style>

@@ -1,0 +1,259 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CaseHighlight from '../../components/CaseHighlight.astro';
+import CTASection from '../../components/CTASection.astro';
+import FAQ from '../../components/FAQ.astro';
+import { products } from '../../config/site';
+
+const product = products.drive;
+
+const desafios = [
+	'Comunicar assinatura sem parecer aluguel ou financiamento — o argumento de venda muda.',
+	'Falar com PF e PJ ao mesmo tempo, sem misturar a jornada de decisão de cada uma.',
+	'Educar o mercado sobre um modelo de consumo ainda em adoção na maioria das praças.',
+	'Gerar leads que já entendem a proposta, reduzindo desistência no meio da jornada.',
+];
+
+const atuacao = [
+	{
+		title: 'Geração de demanda especializada',
+		text: 'Campanhas e páginas construídas especificamente para comunicar assinatura — não uma adaptação de campanha de venda tradicional.',
+	},
+	{
+		title: 'Captura orientada à intenção',
+		text: 'Formulários e fluxos de contato dimensionados para o que realmente importa na decisão de assinar: uso, prazo e perfil.',
+	},
+	{
+		title: 'Qualificação inicial',
+		text: 'Integração conceitual com o LuHao Qualification para filtrar contatos antes de chegarem ao time comercial.',
+	},
+];
+
+const pf = [
+	'Intenção de uso: urbano, viagem, transição de carro próprio para assinatura.',
+	'Sensibilidade a prazo de contrato, franquia de km e flexibilidade de troca.',
+	'Decisão mais rápida, fortemente influenciada por preço mensal e clareza de condições.',
+];
+
+const pj = [
+	'Frota corporativa, mobilidade para equipes ou substituição de frota própria.',
+	'Decisão envolve mais de um interlocutor e critérios como CNPJ, faturamento e centro de custo.',
+	'Ciclo de vendas mais longo, com necessidade de material e argumentação B2B específica.',
+];
+
+const metodologia = [
+	{ step: '1. Geração de demanda', text: 'Campanhas segmentadas por perfil (PF/PJ) e por praça de atuação da concessionária ou grupo.' },
+	{ step: '2. Captura', text: 'Landing pages e formulários com os campos certos para o momento de decisão de assinatura.' },
+	{ step: '3. Qualificação', text: 'Filtragem inicial de intenção real de contratação antes do handoff comercial.' },
+	{ step: '4. Entrega ao comercial', text: 'Lead qualificado chega ao time de vendas com contexto, não apenas um contato frio.' },
+];
+
+const faqItems = [
+	{
+		question: 'O LuHao Drive atende qualquer tipo de veículo em assinatura?',
+		answer:
+			'O LuHao Drive é estruturado para operações de assinatura de veículos operadas por concessionárias, grupos automotivos e parceiros de programas de assinatura — tanto para o público PF quanto PJ.',
+	},
+	{
+		question: 'Como funciona a diferença entre a jornada PF e PJ?',
+		answer:
+			'Construímos comunicação, páginas e critérios de qualificação distintos para cada público, já que o processo de decisão, os interlocutores e os critérios de avaliação são diferentes entre pessoa física e pessoa jurídica.',
+	},
+	{
+		question: 'O Drive já entrega os leads qualificados?',
+		answer:
+			'O Drive é responsável pela geração e captura de leads. A qualificação mais aprofundada, via automação de atendimento em WhatsApp e Instagram, é entregue pelo LuHao Qualification e pode ser combinada com o Drive.',
+	},
+];
+
+const title = product.heroTitle;
+const description = product.heroSubheadline;
+
+const serviceSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Service',
+	name: product.name,
+	serviceType: 'Marketing para assinatura de veículos',
+	description: product.description,
+	provider: { '@type': 'Organization', name: 'LuHao Automotive' },
+};
+---
+
+<BaseLayout title={title} description={description} path="/produtos/drive" structuredData={serviceSchema}>
+	<Hero
+		eyebrow="LuHao Drive"
+		title={title}
+		subheadline={description}
+		primaryCta={{ label: product.cta, href: '/contato' }}
+		secondaryCta={{ label: 'Ver o case Savol', href: '/cases/savol-sign-drive' }}
+	/>
+
+	<section class="section-tight">
+		<div class="container">
+			<Breadcrumbs items={[{ label: 'Produtos', href: '/produtos' }, { label: 'Drive', href: '/produtos/drive' }]} />
+			<SectionHeading
+				eyebrow="Por que assinatura é diferente"
+				title="Assinatura não é venda tradicional."
+				description="Quem assina um veículo está comprando uso, não posse. O argumento comercial, os gatilhos de decisão e as objeções são diferentes de uma venda de 0 km ou seminovo — e a comunicação precisa refletir isso desde o primeiro anúncio."
+			/>
+		</div>
+	</section>
+
+	<section class="section-tight">
+		<div class="container">
+			<SectionHeading eyebrow="Desafios comuns" title="O que dificulta gerar demanda para assinatura." />
+			<ul class="check-list">
+				{desafios.map((item) => <li class="card">{item}</li>)}
+			</ul>
+		</div>
+	</section>
+
+	<section class="section-tight">
+		<div class="container">
+			<SectionHeading eyebrow="Como atuamos" title="Como a LuHao Drive atua." />
+			<div class="feature-grid">
+				{
+					atuacao.map((item) => (
+						<div class="card feature-grid__item">
+							<h3 class="text-h3">{item.title}</h3>
+							<p class="text-muted">{item.text}</p>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="section-tight">
+		<div class="container">
+			<SectionHeading eyebrow="Duas jornadas, um método" title="PF e PJ exigem caminhos diferentes." />
+			<div class="journey-compare">
+				<div class="card journey-compare__col">
+					<p class="eyebrow">Pessoa Física</p>
+					<ul class="dash-list">
+						{pf.map((item) => <li>{item}</li>)}
+					</ul>
+				</div>
+				<div class="card journey-compare__col">
+					<p class="eyebrow">Pessoa Jurídica</p>
+					<ul class="dash-list">
+						{pj.map((item) => <li>{item}</li>)}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section-tight">
+		<div class="container">
+			<SectionHeading eyebrow="Metodologia" title="Da demanda à entrega ao comercial." />
+			<ol class="steps">
+				{
+					metodologia.map((item) => (
+						<li class="card steps__item">
+							<p class="steps__step">{item.step}</p>
+							<p class="text-muted">{item.text}</p>
+						</li>
+					))
+				}
+			</ol>
+		</div>
+	</section>
+
+	<CaseHighlight />
+
+	<FAQ items={faqItems} />
+
+	<CTASection title="Quer estruturar a geração de leads para o seu programa de assinatura?" whatsappMessage={product.whatsappMessage} secondaryLabel="Falar com a LuHao" />
+</BaseLayout>
+
+<style>
+	.check-list,
+	.dash-list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-3);
+	}
+
+	.check-list li {
+		padding: var(--space-4) var(--space-5);
+		color: var(--color-text);
+	}
+
+	.dash-list li {
+		padding-left: var(--space-4);
+		position: relative;
+		color: var(--color-text-muted);
+	}
+
+	.dash-list li::before {
+		content: '—';
+		position: absolute;
+		left: 0;
+		color: var(--color-accent);
+	}
+
+	.feature-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-4);
+	}
+
+	.feature-grid__item {
+		padding: var(--space-5);
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-2);
+	}
+
+	.journey-compare {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-4);
+	}
+
+	.journey-compare__col {
+		padding: var(--space-5);
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-4);
+	}
+
+	.steps {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-4);
+	}
+
+	.steps__item {
+		padding: var(--space-5);
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-2);
+	}
+
+	.steps__step {
+		font-weight: 700;
+		color: var(--color-accent);
+	}
+
+	@media (min-width: 640px) {
+		.feature-grid,
+		.journey-compare {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (min-width: 900px) {
+		.feature-grid {
+			grid-template-columns: repeat(3, 1fr);
+		}
+
+		.steps {
+			grid-template-columns: repeat(4, 1fr);
+		}
+	}
+</style>

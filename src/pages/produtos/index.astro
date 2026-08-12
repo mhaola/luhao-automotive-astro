@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import ProductGrid from '../../components/ProductGrid.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CTASection from '../../components/CTASection.astro';
+import { site } from '../../config/site';
+
+const title = 'Produtos LuHao Automotive';
+const description =
+	'Conheça Drive, Demand, Service, Qualification e Intelligence — os cinco produtos da LuHao Automotive para geração de demanda, qualificação e inteligência comercial no setor automotivo.';
+---
+
+<BaseLayout title={title} description={description} path="/produtos">
+	<section class="section-tight">
+		<div class="container">
+			<Breadcrumbs items={[{ label: 'Produtos', href: '/produtos' }]} />
+			<SectionHeading
+				eyebrow="Arquitetura de produtos"
+				title="Um produto para cada jornada comercial do seu negócio automotivo."
+				description={`A ${site.name} organiza sua operação em cinco produtos especializados. Cada um resolve uma etapa distinta — da geração de demanda à inteligência sobre o resultado.`}
+			/>
+			<ProductGrid />
+		</div>
+	</section>
+
+	<CTASection
+		title="Não sabe por onde começar?"
+		description="Conte pra gente o principal desafio da sua operação e ajudamos a identificar o produto certo."
+		whatsappMessage="Olá! Quero entender qual produto da LuHao Automotive faz sentido para minha operação."
+	/>
+</BaseLayout>

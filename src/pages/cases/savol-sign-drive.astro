@@ -1,0 +1,163 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Metrics from '../../components/Metrics.astro';
+import CTASection from '../../components/CTASection.astro';
+import { savolCase } from '../../config/site';
+
+const title = `Case ${savolCase.title}`;
+const description = `${savolCase.headline} Resultados da operação de geração de leads para o programa ${savolCase.program} em ${savolCase.location}.`;
+
+const aprendizados = [
+	'Comunicar assinatura como uso, não posse, reduz atrito na captura de leads.',
+	'Separar jornada PF e PJ evita diluir a mensagem e melhora a qualidade do lead recebido.',
+	'Qualificação inicial antes do comercial aumenta o aproveitamento do volume gerado.',
+];
+---
+
+<BaseLayout title={title} description={description} path="/cases/savol-sign-drive">
+	<section class="section-tight">
+		<div class="container case-hero">
+			<Breadcrumbs items={[{ label: 'Cases', href: '/cases' }, { label: savolCase.title, href: '/cases/savol-sign-drive' }]} />
+			<p class="eyebrow">{savolCase.program} · {savolCase.location}</p>
+			<h1 class="text-display">{savolCase.headline}</h1>
+			<p class="text-muted case-hero__summary">{savolCase.summary}</p>
+			<div class="card case-hero__metrics">
+				<Metrics metrics={savolCase.metrics} />
+				<p class="text-small text-muted">{savolCase.period}</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="section-tight">
+		<div class="container case-body">
+			<article>
+				<SectionHeading eyebrow="Contexto" title="A operação" />
+				<p class="text-muted">
+					A {savolCase.client}, concessionária em {savolCase.location}, opera o programa {savolCase.program}, de
+					assinatura de veículos Volkswagen. A LuHao Automotive foi responsável por estruturar a geração de leads
+					para o programa através do método LuHao Drive.
+				</p>
+			</article>
+
+			<article>
+				<SectionHeading eyebrow="Desafio" title="Gerar demanda para um modelo de consumo em adoção" />
+				<p class="text-muted">
+					Assinatura de veículos ainda é um modelo pouco conhecido pela maior parte do público comparado à compra
+					tradicional. O desafio central era gerar leads que já entendessem a proposta de assinar — e não apenas
+					tráfego genérico de interesse em veículos.
+				</p>
+			</article>
+
+			<article>
+				<SectionHeading eyebrow="Assinatura x venda tradicional" title="Por que o funil precisava ser diferente" />
+				<p class="text-muted">
+					Diferente da venda de um 0 km ou seminovo, a decisão de assinar envolve avaliar uso, prazo e flexibilidade
+					— não posse do bem. Isso muda o argumento de comunicação, os criativos, as páginas de captura e os
+					critérios de qualificação usados na campanha.
+				</p>
+			</article>
+
+			<article>
+				<SectionHeading eyebrow="Estratégia" title="Método LuHao Drive aplicado ao Sign&Drive" />
+				<p class="text-muted">
+					A operação foi estruturada em torno da comunicação especializada para assinatura, com páginas e criativos
+					construídos especificamente para o programa Sign&Drive, sem reaproveitar comunicação de venda tradicional.
+				</p>
+			</article>
+
+			<article>
+				<SectionHeading eyebrow="Geração de demanda" title="Como os leads foram atraídos" />
+				<p class="text-muted">
+					Campanhas de geração de demanda direcionadas ao público de {savolCase.location} e região, com mensagens
+					focadas na proposta de valor da assinatura frente à compra tradicional.
+				</p>
+			</article>
+
+			<article>
+				<SectionHeading eyebrow="Estrutura de conversão" title="Captura pensada para o momento de decisão" />
+				<p class="text-muted">
+					Páginas e formulários dimensionados para o que importa na decisão de assinar, reduzindo fricção sem perder
+					os dados necessários para qualificação e atendimento comercial.
+				</p>
+			</article>
+
+			<article>
+				<SectionHeading eyebrow="Qualificação" title="Preparando o lead para o comercial" />
+				<p class="text-muted">
+					Os leads gerados passaram por critérios de qualificação alinhados à intenção real de contratação antes de
+					seguir para o time comercial da {savolCase.client}.
+				</p>
+			</article>
+
+			<article>
+				<SectionHeading eyebrow="Métricas" title="Resultado em 5 meses de operação" />
+				<div class="card">
+					<Metrics metrics={savolCase.metrics} />
+				</div>
+			</article>
+
+			<article>
+				<SectionHeading eyebrow="Aprendizados" title="O que essa operação confirmou" />
+				<ul class="dash-list">
+					{aprendizados.map((item) => <li>{item}</li>)}
+				</ul>
+			</article>
+		</div>
+	</section>
+
+	<CTASection
+		title="Quer um método parecido para o seu programa de assinatura?"
+		whatsappMessage="Olá! Vi o case Savol + VW Sign&Drive e quero saber mais sobre o LuHao Drive."
+		secondaryHref="/produtos/drive"
+		secondaryLabel="Conhecer o LuHao Drive"
+	/>
+</BaseLayout>
+
+<style>
+	.case-hero {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-4);
+		max-width: 760px;
+	}
+
+	.case-hero__summary {
+		font-size: 1.0625rem;
+	}
+
+	.case-hero__metrics {
+		margin-top: var(--space-4);
+		padding: var(--space-6);
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-3);
+	}
+
+	.case-body {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-8);
+		max-width: 760px;
+	}
+
+	.dash-list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-3);
+	}
+
+	.dash-list li {
+		padding-left: var(--space-4);
+		position: relative;
+		color: var(--color-text-muted);
+	}
+
+	.dash-list li::before {
+		content: '—';
+		position: absolute;
+		left: 0;
+		color: var(--color-accent);
+	}
+</style>

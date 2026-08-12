@@ -1,0 +1,212 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CTASection from '../../components/CTASection.astro';
+import FAQ from '../../components/FAQ.astro';
+import { products } from '../../config/site';
+
+const product = products.service;
+
+const servicos = [
+	'Revisão e manutenção preventiva',
+	'Manutenção corretiva',
+	'Troca de óleo',
+	'Pneus, alinhamento e balanceamento',
+	'Serviços rápidos',
+	'Funilaria e pintura',
+	'Reparos e recall',
+	'Higienização e instalação de acessórios',
+];
+
+const funil = ['Campanha', 'Agendamento', 'Comparecimento', 'Ordem de serviço'];
+
+const icp = [
+	'Concessionárias e grupos automotivos',
+	'Oficinas e centros automotivos',
+	'Redes especializadas',
+	'Funilarias',
+	'Demais empresas que comercializam serviços automotivos',
+];
+
+const faqItems = [
+	{
+		question: 'O Service gera só leads ou também agendamentos?',
+		answer:
+			'O objetivo do Service vai além de gerar leads: a campanha é estruturada pensando na evolução até o agendamento, o comparecimento e a abertura da ordem de serviço.',
+	},
+	{
+		question: 'Funciona para oficinas independentes, não só concessionárias?',
+		answer:
+			'Sim. O ICP do Service inclui concessionárias, grupos automotivos, oficinas, centros automotivos, redes especializadas e funilarias.',
+	},
+	{
+		question: 'Como o Service se relaciona com o Qualification?',
+		answer:
+			'Leads gerados pelo Service podem passar pela automação do LuHao Qualification para coletar veículo, tipo de serviço e preferência de data antes de chegar ao agendamento.',
+	},
+];
+
+const title = product.heroTitle;
+const description = product.heroSubheadline;
+
+const serviceSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Service',
+	name: product.name,
+	serviceType: 'Marketing para pós-venda automotivo',
+	description: product.description,
+	provider: { '@type': 'Organization', name: 'LuHao Automotive' },
+};
+---
+
+<BaseLayout title={title} description={description} path="/produtos/service" structuredData={serviceSchema}>
+	<Hero
+		eyebrow="LuHao Service"
+		title={title}
+		subheadline={description}
+		primaryCta={{ label: product.cta, href: '/contato' }}
+	/>
+
+	<section class="section-tight">
+		<div class="container">
+			<Breadcrumbs items={[{ label: 'Produtos', href: '/produtos' }, { label: 'Service', href: '/produtos/service' }]} />
+			<SectionHeading eyebrow="Aplicações" title="Demanda para toda a operação de pós-venda." />
+			<ul class="pill-list">
+				{servicos.map((item) => <li class="pill">{item}</li>)}
+			</ul>
+		</div>
+	</section>
+
+	<section class="section-tight">
+		<div class="container">
+			<SectionHeading
+				eyebrow="Como medimos"
+				title="Vender um veículo é diferente de ocupar capacidade de oficina."
+				description="Pós-venda depende de recorrência e de ocupar agenda, não de fechar uma venda única. Por isso acompanhamos a jornada completa, do investimento em campanha até a ordem de serviço."
+			/>
+			<div class="funnel" role="list">
+				{
+					funil.map((step, index) => (
+						<div class="funnel__step" role="listitem">
+							<div class="card funnel__card">
+								<span class="funnel__index">{index + 1}</span>
+								<span>{step}</span>
+							</div>
+							{index < funil.length - 1 && (
+								<span class="funnel__arrow" aria-hidden="true">→</span>
+							)}
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="section-tight">
+		<div class="container">
+			<SectionHeading eyebrow="Quem atendemos" title="ICP do LuHao Service." />
+			<ul class="dash-list">
+				{icp.map((item) => <li>{item}</li>)}
+			</ul>
+		</div>
+	</section>
+
+	<section class="section-tight">
+		<div class="container card highlight-block">
+			<p class="text-h3">Pós-venda também precisa de geração de demanda.</p>
+			<p class="text-muted">
+				A capacidade ociosa da oficina é receita não realizada. Estruturamos campanhas para ocupar agenda de forma
+				contínua, não apenas em picos sazonais.
+			</p>
+		</div>
+	</section>
+
+	<FAQ items={faqItems} />
+
+	<CTASection title="Quer ocupar mais a capacidade da sua oficina?" whatsappMessage={product.whatsappMessage} />
+</BaseLayout>
+
+<style>
+	.pill-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2);
+	}
+
+	.pill {
+		padding: 0.5rem 1rem;
+		border: 1px solid var(--color-border);
+		border-radius: 999px;
+		font-size: 0.875rem;
+		color: var(--color-text-muted);
+	}
+
+	.funnel {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--space-3);
+	}
+
+	.funnel__step {
+		display: flex;
+		align-items: center;
+		gap: var(--space-3);
+	}
+
+	.funnel__card {
+		display: flex;
+		align-items: center;
+		gap: var(--space-3);
+		padding: var(--space-4) var(--space-5);
+		font-weight: 600;
+	}
+
+	.funnel__index {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 28px;
+		height: 28px;
+		border-radius: 50%;
+		background: var(--color-accent);
+		color: var(--color-accent-text);
+		font-size: 0.8125rem;
+		font-weight: 700;
+	}
+
+	.funnel__arrow {
+		color: var(--color-text-muted);
+		font-size: 1.25rem;
+	}
+
+	.dash-list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-3);
+		max-width: 640px;
+	}
+
+	.dash-list li {
+		padding-left: var(--space-4);
+		position: relative;
+		color: var(--color-text-muted);
+	}
+
+	.dash-list li::before {
+		content: '—';
+		position: absolute;
+		left: 0;
+		color: var(--color-accent);
+	}
+
+	.highlight-block {
+		padding: var(--space-7);
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-3);
+		background: var(--color-surface-raised);
+	}
+</style>

@@ -1,0 +1,90 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import LeadForm from '../components/LeadForm.astro';
+import WhatsAppCTA from '../components/WhatsAppCTA.astro';
+import { contact, mailtoLink } from '../config/site';
+
+const title = 'Fale com a LuHao';
+const description =
+	'Fale com a LuHao Automotive pelo WhatsApp, e-mail ou formulário e conte sobre sua operação — assinatura, vendas ou pós-venda.';
+---
+
+<BaseLayout title={title} description={description} path="/contato">
+	<section class="section-tight">
+		<div class="container contact-hero">
+			<Breadcrumbs items={[{ label: 'Contato', href: '/contato' }]} />
+			<SectionHeading eyebrow="Contato" title="Fale com a LuHao." description={description} />
+		</div>
+	</section>
+
+	<section class="section-tight">
+		<div class="container contact-grid">
+			<div class="card contact-form-wrap">
+				<h2 class="text-h3">Conte sobre sua operação</h2>
+				<p class="text-muted contact-form-wrap__hint">
+					Preencha os campos abaixo. Ao enviar, o WhatsApp abre com sua mensagem já preenchida.
+				</p>
+				<LeadForm />
+			</div>
+
+			<aside class="contact-side">
+				<div class="card contact-side__item">
+					<p class="eyebrow">WhatsApp</p>
+					<p class="text-h3">{contact.whatsapp.display}</p>
+					<WhatsAppCTA label="Chamar no WhatsApp" />
+				</div>
+				<div class="card contact-side__item">
+					<p class="eyebrow">E-mail</p>
+					<p class="text-h3">{contact.email}</p>
+					<a href={mailtoLink()} class="btn btn-secondary">Enviar e-mail</a>
+				</div>
+			</aside>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.contact-hero {
+		max-width: 700px;
+	}
+
+	.contact-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-6);
+		align-items: start;
+	}
+
+	.contact-form-wrap {
+		padding: var(--space-7);
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-2);
+	}
+
+	.contact-form-wrap__hint {
+		margin-bottom: var(--space-4);
+	}
+
+	.contact-side {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-4);
+	}
+
+	.contact-side__item {
+		padding: var(--space-6);
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-3);
+		align-items: flex-start;
+	}
+
+	@media (min-width: 960px) {
+		.contact-grid {
+			grid-template-columns: 1.6fr 1fr;
+		}
+	}
+</style>

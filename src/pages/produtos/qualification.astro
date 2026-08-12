@@ -1,0 +1,245 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CTASection from '../../components/CTASection.astro';
+import FAQ from '../../components/FAQ.astro';
+import { products } from '../../config/site';
+
+const product = products.qualification;
+
+const etapas = [
+	'Atendimento inicial automatizado assim que o lead chega',
+	'Coleta de contexto através de perguntas qualificadoras',
+	'Organização da informação recebida',
+	'Handoff para o time comercial com contexto já estruturado',
+];
+
+const exemplos = [
+	{
+		title: 'Venda de veículos',
+		itens: ['Veículo/modelo de interesse', 'Intenção de compra e prazo', 'Financiamento', 'Veículo na troca', 'Interesse em test-drive'],
+	},
+	{
+		title: 'Serviços',
+		itens: ['Veículo, modelo e ano', 'Tipo de serviço desejado', 'Unidade de atendimento', 'Preferência de data e horário'],
+	},
+	{
+		title: 'Assinatura',
+		itens: ['PF ou PJ', 'Região', 'Perfil de utilização e prazo', 'Intenção real de contratação'],
+	},
+];
+
+const faqItems = [
+	{
+		question: 'A qualificação substitui o atendimento comercial?',
+		answer:
+			'Não. O objetivo é reduzir o volume de contatos sem contexto chegando ao vendedor, entregando oportunidades mais preparadas — a decisão comercial continua sendo do time de vendas.',
+	},
+	{
+		question: 'Em quais canais a qualificação acontece?',
+		answer: 'A automação de qualificação da LuHao atua via WhatsApp e Instagram Direct.',
+	},
+	{
+		question: 'O Qualification funciona com leads de qualquer origem?',
+		answer:
+			'Sim. Atua de forma transversal sobre leads gerados pelo Drive, Demand, Service ou outras fontes da operação.',
+	},
+];
+
+const title = product.heroTitle;
+const description = product.heroSubheadline;
+
+const serviceSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Service',
+	name: product.name,
+	serviceType: 'Qualificação automatizada de leads automotivos',
+	description: product.description,
+	provider: { '@type': 'Organization', name: 'LuHao Automotive' },
+};
+---
+
+<BaseLayout title={title} description={description} path="/produtos/qualification" structuredData={serviceSchema}>
+	<Hero
+		eyebrow="LuHao Qualification"
+		title={title}
+		subheadline={description}
+		primaryCta={{ label: product.cta, href: '/contato' }}
+	/>
+
+	<section class="section-tight">
+		<div class="container">
+			<Breadcrumbs items={[{ label: 'Produtos', href: '/produtos' }, { label: 'Qualification', href: '/produtos/qualification' }]} />
+			<SectionHeading eyebrow="Como funciona" title="Do primeiro contato à oportunidade preparada." />
+			<ol class="steps">
+				{
+					etapas.map((item, index) => (
+						<li class="card steps__item">
+							<span class="steps__index">{index + 1}</span>
+							<p>{item}</p>
+						</li>
+					))
+				}
+			</ol>
+		</div>
+	</section>
+
+	<section class="section-tight">
+		<div class="container">
+			<SectionHeading eyebrow="Fluxo" title="De lead a oportunidade." align="center" />
+			<div class="flow" role="list">
+				<div class="flow__group" role="listitem">
+					<span class="pill">Drive</span>
+					<span class="pill">Demand</span>
+					<span class="pill">Service</span>
+				</div>
+				<span class="flow__arrow" aria-hidden="true">↓</span>
+				<div class="flow__node card" role="listitem">Qualification</div>
+				<span class="flow__arrow" aria-hidden="true">↓</span>
+				<div class="flow__node flow__node--accent card" role="listitem">Comercial</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section-tight">
+		<div class="container">
+			<SectionHeading
+				eyebrow="O que é coletado"
+				title="Contexto relevante, de acordo com a operação."
+				description="Os exemplos abaixo variam conforme o produto de origem do lead — não representam uma conversa real, apenas o tipo de informação coletada."
+			/>
+			<div class="context-grid">
+				{
+					exemplos.map((grupo) => (
+						<div class="card context-grid__item">
+							<h3 class="text-h3">{grupo.title}</h3>
+							<ul class="dash-list">
+								{grupo.itens.map((item) => <li>{item}</li>)}
+							</ul>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<FAQ items={faqItems} />
+
+	<CTASection title="Quer reduzir contatos sem contexto chegando ao seu time?" whatsappMessage={product.whatsappMessage} />
+</BaseLayout>
+
+<style>
+	.steps {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-4);
+	}
+
+	.steps__item {
+		padding: var(--space-5);
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-3);
+	}
+
+	.steps__index {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 32px;
+		height: 32px;
+		border-radius: 50%;
+		background: var(--color-accent);
+		color: var(--color-accent-text);
+		font-weight: 700;
+		font-size: 0.875rem;
+	}
+
+	.flow {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--space-3);
+	}
+
+	.flow__group {
+		display: flex;
+		gap: var(--space-2);
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.pill {
+		padding: 0.5rem 1.1rem;
+		border: 1px solid var(--color-border);
+		border-radius: 999px;
+		font-size: 0.875rem;
+		font-weight: 600;
+	}
+
+	.flow__arrow {
+		color: var(--color-text-muted);
+		font-size: 1.5rem;
+	}
+
+	.flow__node {
+		padding: var(--space-4) var(--space-6);
+		font-weight: 700;
+	}
+
+	.flow__node--accent {
+		border-color: var(--color-accent);
+		color: var(--color-accent);
+	}
+
+	.context-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-4);
+	}
+
+	.context-grid__item {
+		padding: var(--space-5);
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-3);
+	}
+
+	.dash-list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-2);
+	}
+
+	.dash-list li {
+		padding-left: var(--space-4);
+		position: relative;
+		color: var(--color-text-muted);
+		font-size: 0.9375rem;
+	}
+
+	.dash-list li::before {
+		content: '—';
+		position: absolute;
+		left: 0;
+		color: var(--color-accent);
+	}
+
+	@media (min-width: 640px) {
+		.steps {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		.context-grid {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	@media (min-width: 900px) {
+		.steps {
+			grid-template-columns: repeat(4, 1fr);
+		}
+	}
+</style>
