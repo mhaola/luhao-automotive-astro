@@ -3,7 +3,7 @@ import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import MobileNav from '../components/MobileNav.astro';
 import SEO from '../components/SEO.astro';
-import { site } from '../config/site';
+import { analytics, site } from '../config/site';
 import '../styles/global.css';
 
 interface Props {
@@ -52,10 +52,15 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID as string | undefined;
 		{
 			gtmId && (
 				<script
+					is:inline
 					set:html={`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtmId}');`}
 				/>
 			)
 		}
+		<script
+			is:inline
+			set:html={`function initApollo(){var n=Math.random().toString(36).substring(7),o=document.createElement("script");o.src="https://assets.apollo.io/micro/website-tracker/tracker.iife.js?nocache="+n,o.async=!0,o.defer=!0,o.onload=function(){window.trackingFunctions.onLoad({appId:"${analytics.apolloAppId}"})},document.head.appendChild(o)}initApollo();`}
+		/>
 	</head>
 	<body>
 		{

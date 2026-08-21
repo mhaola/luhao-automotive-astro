@@ -33,6 +33,11 @@ export function mailtoLink(subject?: string): string {
 	return `${base}?subject=${encodeURIComponent(subject)}`;
 }
 
+export const analytics = {
+	/** Apollo Website Visitor Tracking — identifica empresas que visitam o site. */
+	apolloAppId: '6a85e49ee3a4fd000cea9293',
+} as const;
+
 export const social = {
 	instagram: '',
 	linkedin: '',
