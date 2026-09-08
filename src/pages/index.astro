@@ -4,18 +4,22 @@ import SectionHeading from '../components/SectionHeading.astro';
 import ProductGrid from '../components/ProductGrid.astro';
 import CaseHighlight from '../components/CaseHighlight.astro';
 import CTASection from '../components/CTASection.astro';
+import InsightCard from '../components/InsightCard.astro';
 import { site } from '../config/site';
+import { getPublishedInsights } from '../lib/insights';
 
 const journeys = [
-	{ name: 'Assinatura', detail: 'Intenção de uso, não de posse. Ciclo de decisão mais curto, PF e PJ.' },
-	{ name: '0 km', detail: 'Modelo, oferta e estoque guiando a demanda até o test-drive e a venda.' },
-	{ name: 'Seminovos', detail: 'Veículo específico, preço e condição — decisão orientada por disponibilidade.' },
-	{ name: 'Pós-venda', detail: 'Capacidade de oficina e recorrência, não uma venda única.' },
+	{ name: 'Assinatura', detail: 'Intenção de uso, não de posse. Jornada própria para PF e PJ.', signal: 'Uso' },
+	{ name: '0 km', detail: 'Modelo, oferta e estoque guiando a demanda até test-drive e venda.', signal: 'Venda' },
+	{ name: 'Seminovos', detail: 'Veículo, preço e disponibilidade determinam a intenção comercial.', signal: 'Estoque' },
+	{ name: 'Pós-venda', detail: 'Capacidade de oficina, recorrência e relacionamento ao longo do tempo.', signal: 'Retenção' },
 ];
+
+const latestInsights = (await getPublishedInsights()).slice(0, 3);
 ---
 
 <BaseLayout title={site.name} description={site.description} path="/">
-	<section class="hero">
+	<section class="hero surface-grid">
 		<picture class="hero__bg" aria-hidden="true">
 			<source media="(max-width: 767px)" srcset="/images/hero-mobile.avif" type="image/avif" />
 			<source media="(max-width: 767px)" srcset="/images/hero-main-mobile.webp" type="image/webp" />
@@ -25,53 +29,86 @@ const journeys = [
 		</picture>
 		<div class="hero__overlay" aria-hidden="true"></div>
 		<div class="container hero__inner">
-			<div class="hero__text">
-				<h1 class="text-display">{site.tagline}</h1>
-				<p class="hero__subheadline text-muted">{site.description}</p>
+			<div class="hero__copy">
+				<p class="eyebrow">Inteligência comercial para o setor automotivo</p>
+				<h1 class="text-display">Mais oportunidades para o seu negócio.</h1>
+				<p class="hero__subheadline">Geração de demanda, qualificação e inteligência para concessionárias e empresas do setor automotivo — da assinatura ao 0 km, seminovos e pós-venda.</p>
 				<div class="hero__actions">
 					<a href="/produtos" class="btn btn-primary">Conheça nossas soluções</a>
-					<a href="/contato" class="btn btn-secondary">Fale com a LuHao</a>
+					<a href="/cases" class="btn btn-secondary">Ver cases</a>
+				</div>
+				<div class="hero__metrics" aria-label="Indicadores de performance">
+					<div><strong>560</strong><span>leads em um case real</span></div>
+					<div><strong>R$ 17,14</strong><span>CPL validado</span></div>
+					<div><strong>18,1%</strong><span>taxa de conversão</span></div>
+				</div>
+			</div>
+
+			<div class="hero__intelligence" aria-label="Exemplo de inteligência comercial">
+				<div class="intel-card intel-card--lead">
+					<div class="intel-card__head"><span>Lead qualificado</span><b>A</b></div>
+					<strong>Tracker · PJ</strong>
+					<small>Prazo: até 30 dias</small>
+				</div>
+				<div class="intel-card intel-card--flow">
+					<span>Demand</span><i></i><span>Qualification</span><i></i><span>Handoff</span>
+				</div>
+				<div class="intel-card intel-card--chart">
+					<small>Qualidade da demanda</small>
+					<div class="mini-chart"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+					<strong>+42%</strong>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<section class="section-tight journeys">
+	<section class="section journeys-section">
 		<div class="container">
-			<SectionHeading
-				eyebrow="Como pensamos"
-				title="Automotivo não é um único funil."
-				description="A intenção, o argumento comercial, o momento de compra e os critérios de qualificação mudam de acordo com o produto. A LuHao Automotive estrutura cada operação de acordo com a jornada que precisa gerar."
-			/>
+			<div class="section-intro section-intro--split">
+				<SectionHeading eyebrow="Jornadas comerciais" title="Automotivo não é um único funil." />
+				<p class="section-intro__copy text-muted">A intenção, o argumento comercial, o momento de compra e os critérios de qualificação mudam de acordo com o produto. A operação precisa respeitar essa diferença desde a primeira impressão.</p>
+			</div>
 			<div class="journeys__grid">
-				{
-					journeys.map((journey) => (
-						<div class="journeys__item card">
-							<h3 class="text-h3">{journey.name}</h3>
-							<p class="text-muted">{journey.detail}</p>
-						</div>
-					))
-				}
+				{journeys.map((journey, index) => (
+					<article class="journeys__item card">
+						<div class="journeys__top"><span>0{index + 1}</span><em>{journey.signal}</em></div>
+						<h3 class="text-h3">{journey.name}</h3>
+						<p class="text-muted">{journey.detail}</p>
+					</article>
+				))}
 			</div>
 		</div>
 	</section>
 
-	<section class="section-tight">
+	<section class="section products-section surface-grid">
 		<div class="container">
-			<SectionHeading
-				eyebrow="Nossos produtos"
-				title="Cinco produtos, cinco jornadas comerciais."
-				description="Cada produto da LuHao Automotive resolve uma etapa específica da operação — da geração de demanda à inteligência sobre o resultado."
-			/>
+			<div class="section-intro section-intro--split">
+				<SectionHeading eyebrow="Nossos produtos" title="Tecnologia e estratégia para resultados reais." />
+				<p class="section-intro__copy text-muted">Cinco soluções integradas que conectam geração de demanda, atendimento, qualificação e inteligência comercial.</p>
+			</div>
 			<ProductGrid />
 		</div>
 	</section>
 
 	<CaseHighlight />
 
+	{latestInsights.length > 0 && (
+		<section class="section insights-home">
+			<div class="container">
+				<div class="section-intro section-intro--split section-intro--align-end">
+					<SectionHeading eyebrow="Insights" title="Conteúdo para impulsionar o seu crescimento." />
+					<a href="/insights" class="text-link">Ver todos os artigos ↗</a>
+				</div>
+				<div class="insight-grid">
+					{latestInsights.map((post) => <InsightCard post={post} />)}
+				</div>
+			</div>
+		</section>
+	)}
+
 	<CTASection
-		title="Pronto para estruturar a geração de demanda da sua operação?"
-		description="Conte pra gente sobre seu negócio — assinatura, vendas ou pós-venda — e vamos entender qual produto faz sentido."
+		title="Pronto para acelerar os resultados da sua operação?"
+		description="Conte pra gente sobre seu negócio — assinatura, vendas ou pós-venda — e vamos entender qual estrutura faz sentido."
 		whatsappMessage="Olá! Quero conhecer as soluções da LuHao Automotive."
 	/>
 </BaseLayout>
@@ -79,92 +116,103 @@ const journeys = [
 <style>
 	.hero {
 		position: relative;
-		min-height: 640px;
+		min-height: min(820px, calc(100vh - 76px));
 		display: flex;
 		align-items: center;
 		overflow: hidden;
 	}
 
-	.hero__bg {
-		position: absolute;
-		inset: 0;
-		z-index: 0;
-	}
-
-	.hero__bg img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-	}
-
+	.hero__bg { position: absolute; inset: 0; z-index: 0; }
+	.hero__bg img { width: 100%; height: 100%; object-fit: cover; }
 	.hero__overlay {
 		position: absolute;
 		inset: 0;
 		z-index: 1;
 		background:
-			linear-gradient(90deg, var(--color-bg) 12%, rgba(2, 11, 36, 0.78) 45%, rgba(2, 11, 36, 0.35) 100%),
-			linear-gradient(0deg, var(--color-bg) 0%, transparent 30%);
+			linear-gradient(90deg, rgba(2,9,29,.98) 0%, rgba(2,9,29,.89) 35%, rgba(2,9,29,.34) 72%, rgba(2,9,29,.42) 100%),
+			linear-gradient(0deg, var(--color-bg) 0%, transparent 28%);
 	}
 
 	.hero__inner {
 		position: relative;
 		z-index: 2;
-		padding-block: var(--space-9);
-	}
-
-	.hero__text {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-5);
-		max-width: 640px;
-	}
-
-	.hero__subheadline {
-		font-size: 1.125rem;
-		max-width: 560px;
-		color: rgba(255, 255, 255, 0.82);
-	}
-
-	.hero__actions {
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--space-3);
-		margin-top: var(--space-2);
-	}
-
-	@media (max-width: 767px) {
-		.hero {
-			min-height: 560px;
-		}
-
-		.hero__overlay {
-			background:
-				linear-gradient(180deg, rgba(2, 11, 36, 0.55) 0%, var(--color-bg) 92%);
-		}
-	}
-
-	.journeys__grid {
 		display: grid;
-		grid-template-columns: 1fr;
-		gap: var(--space-4);
+		grid-template-columns: minmax(0, 1.08fr) minmax(320px, .72fr);
+		gap: clamp(4rem, 8vw, 8rem);
+		align-items: center;
+		padding-block: clamp(7rem, 11vw, 10rem);
 	}
 
-	.journeys__item {
-		padding: var(--space-5);
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-2);
+	.hero__copy { display: flex; flex-direction: column; gap: 1.65rem; max-width: 720px; }
+	.hero__subheadline { max-width: 650px; color: rgba(240,245,255,.82); font-size: clamp(1.05rem, 1.25vw, 1.22rem); }
+	.hero__actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: .35rem; }
+
+	.hero__metrics {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1rem;
+		margin-top: 2.6rem;
+		padding-top: 1.6rem;
+		border-top: 1px solid rgba(255,255,255,.12);
+		max-width: 650px;
+	}
+	.hero__metrics div { display:flex; flex-direction:column; gap:.15rem; }
+	.hero__metrics strong { font-size: 1.28rem; color: var(--color-text); }
+	.hero__metrics span { font-size: .76rem; color: var(--color-text-soft); }
+
+	.hero__intelligence { position: relative; min-height: 420px; }
+	.intel-card {
+		position: absolute;
+		background: rgba(5,19,47,.76);
+		backdrop-filter: blur(18px);
+		border: 1px solid rgba(126,164,229,.25);
+		border-radius: 16px;
+		box-shadow: var(--shadow-md);
+	}
+	.intel-card--lead { right: 3%; top: 5%; width: 270px; padding: 1.25rem; display:flex; flex-direction:column; gap:.25rem; }
+	.intel-card__head { display:flex; align-items:center; justify-content:space-between; margin-bottom:.65rem; font-size:.8rem; color:var(--color-text-muted); }
+	.intel-card__head b { display:grid; place-items:center; width:30px; height:30px; border-radius:50%; background:var(--color-success); color:#02150d; }
+	.intel-card small { color:var(--color-text-soft); }
+	.intel-card--flow { right: 0; bottom: 4%; padding: 1rem 1.2rem; display:flex; align-items:center; gap:.6rem; font-size:.78rem; }
+	.intel-card--flow i { width:18px; height:1px; background:linear-gradient(90deg,var(--color-accent-secondary),var(--color-accent)); }
+	.intel-card--chart { left: 0; top: 40%; width: 210px; padding: 1.1rem; }
+	.mini-chart { height:76px; display:flex; align-items:end; gap:7px; margin:.7rem 0; }
+	.mini-chart i { flex:1; border-radius:4px 4px 0 0; background:linear-gradient(to top,var(--color-accent),var(--color-accent-secondary)); opacity:.85; }
+	.mini-chart i:nth-child(1){height:18%}.mini-chart i:nth-child(2){height:34%}.mini-chart i:nth-child(3){height:42%}.mini-chart i:nth-child(4){height:61%}.mini-chart i:nth-child(5){height:73%}.mini-chart i:nth-child(6){height:100%}
+	.intel-card--chart strong { color:var(--color-accent-secondary); }
+
+	.section-intro--split { display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,.72fr); gap:clamp(2rem,7vw,7rem); align-items:start; margin-bottom:clamp(3.5rem,6vw,5.5rem); }
+	.section-intro__copy { max-width: 520px; padding-top: 1.8rem; }
+	.section-intro--align-end { align-items:end; }
+	.text-link { color:var(--color-accent); text-decoration:none; font-weight:700; justify-self:end; margin-bottom:.5rem; }
+
+	.journeys__grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; }
+	.journeys__item { min-height:250px; padding:1.7rem; display:flex; flex-direction:column; gap:1rem; transition:transform .22s ease,border-color .22s ease; }
+	.journeys__item:hover { transform:translateY(-4px); border-color:rgba(37,214,255,.34); }
+	.journeys__top { display:flex; justify-content:space-between; color:var(--color-text-soft); font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; }
+	.journeys__top em { font-style:normal; color:var(--color-accent-secondary); }
+	.journeys__item h3 { margin-top:auto; }
+	.journeys__item p { font-size:.93rem; }
+
+	.products-section { background:linear-gradient(180deg,rgba(5,19,47,.2),rgba(5,19,47,.04)); }
+
+	@media (max-width: 980px) {
+		.hero__inner { grid-template-columns:1fr; gap:3rem; }
+		.hero__intelligence { display:none; }
+		.section-intro--split { grid-template-columns:1fr; gap:1rem; }
+		.section-intro__copy { padding-top:0; }
+		.text-link { justify-self:start; }
+		.journeys__grid { grid-template-columns:repeat(2,1fr); }
 	}
 
-	@media (min-width: 640px) {
-		.journeys__grid {
-			grid-template-columns: repeat(2, 1fr);
-		}
-	}
-
-	@media (min-width: 1100px) {
-		.journeys__grid {
-			grid-template-columns: repeat(4, 1fr);
-		}
+	@media (max-width: 640px) {
+		.hero { min-height:auto; }
+		.hero__inner { padding-block:6.5rem 5.5rem; }
+		.hero__overlay { background:linear-gradient(180deg,rgba(2,9,29,.48),rgba(2,9,29,.94) 62%,var(--color-bg) 100%); }
+		.hero__copy { gap:1.25rem; }
+		.hero__metrics { grid-template-columns:1fr; gap:1rem; margin-top:1.5rem; }
+		.hero__metrics div { padding-bottom:.8rem; border-bottom:1px solid rgba(255,255,255,.08); }
+		.journeys__grid { grid-template-columns:1fr; }
+		.journeys__item { min-height:210px; }
 	}
 </style>
