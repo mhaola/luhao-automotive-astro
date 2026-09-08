@@ -9,8 +9,9 @@ Produção: [https://luhao-automotive.com.br](https://luhao-automotive.com.br)
 - [Astro](https://astro.build) 7 — geração 100% estática
 - TypeScript em modo `strict`
 - CSS próprio (sem framework de UI), com tokens em `src/styles/global.css`
-- Astro Content Collections para o blog (Insights)
+- Astro Content Collections para o blog (Insights), com categorias, tags, paginação, busca e RSS
 - `@astrojs/sitemap` para SEO técnico
+- `@astrojs/rss` para o feed de Insights
 - Sem React/Vue/Svelte — o mínimo de JavaScript no cliente (menu mobile, FAQ nativo via `<details>`, validação do formulário de contato)
 
 ## Instalação
@@ -64,7 +65,12 @@ public/               Assets estáticos (favicon, robots.txt, imagem OG)
 /
 ├── produtos/{index,drive,demand,service,qualification,intelligence}.astro
 ├── cases/{index,savol-sign-drive}.astro
-├── insights/{index,[slug]}.astro
+├── insights/
+│   ├── [...page].astro        /insights, /insights/2, /insights/3... (9 posts por página)
+│   ├── [slug].astro           /insights/meu-slug
+│   ├── categoria/[category].astro   /insights/categoria/pos-venda
+│   └── tag/[tag].astro              /insights/tag/whatsapp
+├── rss.xml.ts                 /rss.xml — feed de todos os Insights publicados
 ├── sobre.astro
 ├── contato.astro
 ├── politica-de-privacidade.astro
@@ -83,6 +89,17 @@ O case Savol (métricas, período, headline) também está centralizado ali, no 
 2. Preencha o frontmatter conforme o schema de [`src/content.config.ts`](src/content.config.ts): `title`, `description`, `pubDate`, `category`, `tags`, `author`, `draft` (e opcionalmente `updatedDate`, `featured`).
 3. Escreva o conteúdo em Markdown abaixo do frontmatter.
 4. Artigos com `draft: true` não aparecem na listagem nem são gerados como página.
+
+`category` e cada item de `tags` viram páginas automaticamente — não é preciso cadastrar categorias/tags em nenhum outro lugar. O slug de URL é gerado a partir do texto (acentos e espaços removidos, ex.: "Pós-venda" → `pos-venda`) pela função `slugify` em [`src/lib/slug.ts`](src/lib/slug.ts); a lógica de agrupamento e de posts relacionados fica em [`src/lib/insights.ts`](src/lib/insights.ts).
+
+## Recursos do blog (Insights)
+
+- **Paginação** — `/insights` lista 9 posts por página (`src/pages/insights/[...page].astro`, usa `paginate()` do Astro); páginas seguintes ficam em `/insights/2`, `/insights/3`, etc. Enquanto houver 9 posts ou menos, só a página 1 é gerada.
+- **Categorias** — cada valor de `category` gera uma página em `/insights/categoria/[slug]` com a lista de posts daquela categoria. As pílulas de filtro no topo de `/insights` linkam para essas páginas.
+- **Tags** — cada tag gera uma página em `/insights/tag/[slug]`, linkada a partir das tags exibidas no rodapé de cada artigo.
+- **Busca** — campo de busca em `/insights` (`src/components/InsightSearch.astro`) filtra por título, descrição, categoria e tags inteiramente no navegador (sem backend), usando os dados de todos os posts publicados embutidos na página.
+- **Posts relacionados** — cada artigo mostra até 3 sugestões em "Continue lendo", priorizando a mesma categoria e depois tags em comum (`getRelatedInsights` em `src/lib/insights.ts`).
+- **RSS** — feed completo em `/rss.xml`, linkado no `<head>` de todas as páginas.
 
 ## Variáveis de ambiente
 

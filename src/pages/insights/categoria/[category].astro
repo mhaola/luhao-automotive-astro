@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SectionHeading from '../../../components/SectionHeading.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import InsightCard from '../../../components/InsightCard.astro';
+import InsightFilters from '../../../components/InsightFilters.astro';
+import { getPublishedInsights, groupByCategory, type TaxonomyGroup } from '../../../lib/insights';
+
+export async function getStaticPaths() {
+	const posts = await getPublishedInsights();
+	const categories = groupByCategory(posts);
+	return categories.map((category) => ({
+		params: { category: category.slug },
+		props: { category, allCategories: categories },
+	}));
+}
+
+const { category, allCategories } = Astro.props as {
+	category: TaxonomyGroup;
+	allCategories: TaxonomyGroup[];
+};
+
+const postCountLabel = `${category.posts.length} ${category.posts.length === 1 ? 'artigo' : 'artigos'}`;
+const description = `${postCountLabel} sobre ${category.name} — geração de demanda, qualificação e inteligência para operações automotivas.`;
+---
+
+<BaseLayout title={`${category.name} — Insights`} description={description} path={`/insights/categoria/${category.slug}`}>
+	<section class="section-tight">
+		<div class="container">
+			<Breadcrumbs
+				items={[
+					{ label: 'Insights', href: '/insights' },
+					{ label: category.name, href: `/insights/categoria/${category.slug}` },
+				]}
+			/>
+			<SectionHeading eyebrow="Categoria" title={category.name} description={postCountLabel} />
+
+			<InsightFilters categories={allCategories} activeSlug={category.slug} />
+
+			<div class="insight-grid">
+				{category.posts.map((post) => <InsightCard post={post} />)}
+			</div>
+		</div>
+	</section>
+</BaseLayout>

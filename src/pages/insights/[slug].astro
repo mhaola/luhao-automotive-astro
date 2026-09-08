@@ -1,12 +1,15 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import CTASection from '../../components/CTASection.astro';
+import InsightCard from '../../components/InsightCard.astro';
 import { site } from '../../config/site';
+import { getPublishedInsights, getRelatedInsights } from '../../lib/insights';
+import { slugify } from '../../lib/slug';
 
 export async function getStaticPaths() {
-	const posts = await getCollection('insights', ({ data }) => !data.draft);
+	const posts = await getPublishedInsights();
 	return posts.map((post) => ({
 		params: { slug: post.id },
 		props: { post },
@@ -16,7 +19,12 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 
+const allPosts = await getPublishedInsights();
+const related = getRelatedInsights(post, allPosts, 3);
+
 const dateFormatter = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+
+const categoryHref = `/insights/categoria/${slugify(post.data.category)}`;
 
 const articleSchema = {
 	'@context': 'https://schema.org',
@@ -48,7 +56,7 @@ const articleSchema = {
 			/>
 
 			<header class="insight-article__header">
-				<p class="eyebrow">{post.data.category}</p>
+				<a class="eyebrow" href={categoryHref}>{post.data.category}</a>
 				<h1 class="text-h1">{post.data.title}</h1>
 				<p class="text-muted insight-article__meta">
 					{post.data.author} · {dateFormatter.format(post.data.pubDate)}
@@ -57,7 +65,11 @@ const articleSchema = {
 					post.data.tags.length > 0 && (
 						<ul class="insight-article__tags">
 							{post.data.tags.map((tag) => (
-								<li class="pill">{tag}</li>
+								<li>
+									<a class="pill" href={`/insights/tag/${slugify(tag)}`}>
+										#{tag}
+									</a>
+								</li>
 							))}
 						</ul>
 					)
@@ -69,6 +81,21 @@ const articleSchema = {
 			</div>
 		</div>
 	</article>
+
+	{
+		related.length > 0 && (
+			<section class="section-tight insight-related">
+				<div class="container">
+					<h2 class="text-h2 insight-related__title">Continue lendo</h2>
+					<div class="insight-grid">
+						{related.map((relatedPost) => (
+							<InsightCard post={relatedPost} />
+						))}
+					</div>
+				</div>
+			</section>
+		)
+	}
 
 	<CTASection
 		title="Quer aplicar isso na sua operação?"
@@ -90,6 +117,15 @@ const articleSchema = {
 		gap: var(--space-3);
 	}
 
+	.insight-article__header .eyebrow {
+		text-decoration: none;
+		width: fit-content;
+	}
+
+	.insight-article__header .eyebrow:hover {
+		color: var(--color-accent-hover);
+	}
+
 	.insight-article__meta {
 		font-size: 0.9375rem;
 	}
@@ -99,14 +135,6 @@ const articleSchema = {
 		flex-wrap: wrap;
 		gap: var(--space-2);
 		margin-top: var(--space-2);
-	}
-
-	.pill {
-		padding: 0.35rem 0.85rem;
-		border: 1px solid var(--color-border);
-		border-radius: 999px;
-		font-size: 0.8125rem;
-		color: var(--color-text-muted);
 	}
 
 	.insight-article__content {
@@ -141,5 +169,9 @@ const articleSchema = {
 
 	.insight-article__content :global(strong) {
 		color: var(--color-text);
+	}
+
+	.insight-related__title {
+		margin-bottom: var(--space-6);
 	}
 </style>

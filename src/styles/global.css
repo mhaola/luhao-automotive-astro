@@ -189,6 +189,77 @@ button {
 	border-radius: var(--radius-lg);
 }
 
+/* Grade de cards de Insights — usada na listagem, categorias, tags,
+   resultados de busca e na seção de posts relacionados. */
+.insight-grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: var(--space-5);
+}
+
+@media (min-width: 700px) {
+	.insight-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (min-width: 1000px) {
+	.insight-grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+/* Card de Insight — global (não escopado ao componente) porque o mesmo
+   markup é gerado tanto no servidor (InsightCard.astro) quanto no
+   cliente (InsightSearch.astro monta os resultados via innerHTML, e o
+   escopo de estilos do Astro não alcança HTML injetado em runtime). */
+.insight-card {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+	padding: var(--space-6);
+	text-decoration: none;
+	color: var(--color-text);
+}
+
+.insight-card:hover {
+	border-color: var(--color-accent);
+}
+
+.insight-card__date {
+	margin-top: auto;
+	padding-top: var(--space-2);
+}
+
+/* Pílula — categoria/tag clicável ou estado ativo de filtro. */
+.pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	padding: 0.35rem 0.85rem;
+	border: 1px solid var(--color-border);
+	border-radius: 999px;
+	font-size: 0.8125rem;
+	color: var(--color-text-muted);
+	text-decoration: none;
+	transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+a.pill:hover {
+	border-color: var(--color-accent);
+	color: var(--color-text);
+}
+
+.pill--active {
+	border-color: var(--color-accent);
+	color: var(--color-text);
+}
+
+.pill__count {
+	color: var(--color-text-muted);
+	font-size: 0.75rem;
+}
+
 .visually-hidden {
 	position: absolute;
 	width: 1px;

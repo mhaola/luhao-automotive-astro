@@ -1,0 +1,80 @@
+---
+import type { GetStaticPathsOptions, Page } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import InsightCard from '../../components/InsightCard.astro';
+import InsightFilters from '../../components/InsightFilters.astro';
+import InsightSearch from '../../components/InsightSearch.astro';
+import { getPublishedInsights, groupByCategory, type InsightPost } from '../../lib/insights';
+
+export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
+	const posts = await getPublishedInsights();
+	// 9 posts por página (grade 3x3 no desktop, ver .insight-grid em global.css).
+	return paginate(posts, { pageSize: 9 });
+}
+
+const { page } = Astro.props as { page: Page<InsightPost> };
+
+const title = 'Insights';
+const description = 'Conteúdo prático sobre geração de demanda, qualificação e inteligência para operações automotivas.';
+
+// A busca e os filtros de categoria precisam do conjunto completo de posts,
+// não apenas dos que aparecem na página atual da paginação.
+const allPosts = await getPublishedInsights();
+const categories = groupByCategory(allPosts);
+
+const isFirstPage = page.currentPage === 1;
+const pageTitle = isFirstPage ? title : `${title} — página ${page.currentPage}`;
+const canonicalPath = isFirstPage ? '/insights' : `/insights/${page.currentPage}`;
+---
+
+<BaseLayout title={pageTitle} description={description} path={canonicalPath}>
+	<section class="section-tight">
+		<div class="container">
+			<Breadcrumbs items={[{ label: 'Insights', href: '/insights' }]} />
+			<SectionHeading eyebrow="Conteúdo" title="Insights sobre marketing automotivo." description={description} />
+
+			<InsightFilters categories={categories} />
+			<InsightSearch posts={allPosts} />
+
+			<div class="insight-grid" data-insight-grid>
+				{page.data.map((post) => <InsightCard post={post} />)}
+			</div>
+
+			{
+				page.lastPage > 1 && (
+					<nav class="insight-pagination" aria-label="Paginação de Insights" data-insight-pagination>
+						{page.url.prev ? (
+							<a class="btn btn-secondary" href={page.url.prev}>
+								← Mais recentes
+							</a>
+						) : (
+							<span />
+						)}
+						<p class="text-small text-muted">
+							Página {page.currentPage} de {page.lastPage}
+						</p>
+						{page.url.next ? (
+							<a class="btn btn-secondary" href={page.url.next}>
+								Mais antigos →
+							</a>
+						) : (
+							<span />
+						)}
+					</nav>
+				)
+			}
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.insight-pagination {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-4);
+		margin-top: var(--space-7);
+	}
+</style>

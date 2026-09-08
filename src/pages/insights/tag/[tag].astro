@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SectionHeading from '../../../components/SectionHeading.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import InsightCard from '../../../components/InsightCard.astro';
+import { getPublishedInsights, groupByTag, type TaxonomyGroup } from '../../../lib/insights';
+
+export async function getStaticPaths() {
+	const posts = await getPublishedInsights();
+	const tags = groupByTag(posts);
+	return tags.map((tag) => ({
+		params: { tag: tag.slug },
+		props: { tag },
+	}));
+}
+
+const { tag } = Astro.props as { tag: TaxonomyGroup };
+
+const postCountLabel = `${tag.posts.length} ${tag.posts.length === 1 ? 'artigo' : 'artigos'}`;
+const description = `${postCountLabel} marcados com "${tag.name}" — geração de demanda, qualificação e inteligência para operações automotivas.`;
+---
+
+<BaseLayout title={`#${tag.name} — Insights`} description={description} path={`/insights/tag/${tag.slug}`}>
+	<section class="section-tight">
+		<div class="container">
+			<Breadcrumbs
+				items={[
+					{ label: 'Insights', href: '/insights' },
+					{ label: `#${tag.name}`, href: `/insights/tag/${tag.slug}` },
+				]}
+			/>
+			<SectionHeading eyebrow="Tag" title={`#${tag.name}`} description={postCountLabel} />
+
+			<p class="insight-back-link">
+				<a class="btn btn-secondary" href="/insights">← Ver todos os Insights</a>
+			</p>
+
+			<div class="insight-grid">
+				{tag.posts.map((post) => <InsightCard post={post} />)}
+			</div>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.insight-back-link {
+		margin-bottom: var(--space-6);
+	}
+</style>

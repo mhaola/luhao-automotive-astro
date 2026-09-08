@@ -1,0 +1,152 @@
+---
+import type { InsightPost } from '../lib/insights';
+
+interface Props {
+	/** Conjunto completo de posts pesquisáveis (não só os da página atual). */
+	posts: InsightPost[];
+}
+
+const { posts } = Astro.props;
+
+const dateFormatter = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+
+const searchIndex = posts.map((post) => ({
+	title: post.data.title,
+	description: post.data.description,
+	category: post.data.category,
+	tags: post.data.tags,
+	date: dateFormatter.format(post.data.pubDate),
+	href: `/insights/${post.id}`,
+}));
+---
+
+<div class="insight-search">
+	<label class="visually-hidden" for="insight-search-input">Buscar em Insights</label>
+	<input
+		type="search"
+		id="insight-search-input"
+		class="insight-search__input"
+		placeholder="Buscar por título, categoria ou tag…"
+		autocomplete="off"
+	/>
+</div>
+
+<p class="text-small text-muted insight-search__status" data-insight-search-status hidden></p>
+
+<div class="insight-grid" data-insight-search-results hidden></div>
+
+<script type="application/json" id="insight-search-data" set:html={JSON.stringify(searchIndex)} />
+
+<script>
+	interface SearchablePost {
+		title: string;
+		description: string;
+		category: string;
+		tags: string[];
+		date: string;
+		href: string;
+	}
+
+	function normalize(value: string): string {
+		return value
+			.normalize('NFD')
+			.replace(/[̀-ͯ]/g, '')
+			.toLowerCase();
+	}
+
+	function escapeHtml(value: string): string {
+		return value
+			.replace(/&/g, '&amp;')
+			.replace(/</g, '&lt;')
+			.replace(/>/g, '&gt;')
+			.replace(/"/g, '&quot;');
+	}
+
+	function renderCard(post: SearchablePost): string {
+		return `
+			<a href="${escapeHtml(post.href)}" class="insight-card card">
+				<p class="eyebrow">${escapeHtml(post.category)}</p>
+				<h2 class="text-h3">${escapeHtml(post.title)}</h2>
+				<p class="text-muted">${escapeHtml(post.description)}</p>
+				<p class="text-small text-muted insight-card__date">${escapeHtml(post.date)}</p>
+			</a>
+		`;
+	}
+
+	function init() {
+		const input = document.getElementById('insight-search-input') as HTMLInputElement | null;
+		const dataEl = document.getElementById('insight-search-data');
+		const resultsEl = document.querySelector<HTMLElement>('[data-insight-search-results]');
+		const statusEl = document.querySelector<HTMLElement>('[data-insight-search-status]');
+		const gridEl = document.querySelector<HTMLElement>('[data-insight-grid]');
+		const filtersEl = document.querySelector<HTMLElement>('[data-insight-filters]');
+		const paginationEl = document.querySelector<HTMLElement>('[data-insight-pagination]');
+
+		if (!input || !dataEl || !resultsEl || !statusEl) return;
+
+		let posts: SearchablePost[] = [];
+		try {
+			posts = JSON.parse(dataEl.textContent || '[]');
+		} catch {
+			return;
+		}
+
+		function setSearching(isSearching: boolean) {
+			if (gridEl) gridEl.hidden = isSearching;
+			if (filtersEl) filtersEl.hidden = isSearching;
+			if (paginationEl) paginationEl.hidden = isSearching;
+			resultsEl!.hidden = !isSearching;
+			statusEl!.hidden = !isSearching;
+		}
+
+		function runSearch(rawQuery: string) {
+			const query = rawQuery.trim();
+			if (!query) {
+				setSearching(false);
+				return;
+			}
+
+			setSearching(true);
+			const needle = normalize(query);
+			const matches = posts.filter((post) => {
+				const haystack = normalize([post.title, post.description, post.category, post.tags.join(' ')].join(' '));
+				return haystack.includes(needle);
+			});
+
+			statusEl!.textContent = matches.length
+				? `${matches.length} ${matches.length === 1 ? 'resultado' : 'resultados'} para "${query}"`
+				: `Nenhum resultado para "${query}".`;
+
+			resultsEl!.innerHTML = matches.map(renderCard).join('');
+		}
+
+		input.addEventListener('input', () => runSearch(input.value));
+	}
+
+	init();
+</script>
+
+<style>
+	.insight-search {
+		margin-bottom: var(--space-4);
+	}
+
+	.insight-search__input {
+		width: 100%;
+		max-width: 420px;
+		padding: 0.75rem 1rem;
+		border-radius: var(--radius-sm);
+		border: 1px solid var(--color-border);
+		background: var(--color-surface);
+		color: var(--color-text);
+		font-size: 0.9375rem;
+	}
+
+	.insight-search__input::placeholder {
+		color: var(--color-text-muted);
+	}
+
+	.insight-search__status {
+		margin-bottom: var(--space-4);
+	}
+</style>

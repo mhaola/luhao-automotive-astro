@@ -1,0 +1,23 @@
+---
+import type { InsightPost } from '../lib/insights';
+
+interface Props {
+	post: InsightPost;
+}
+
+const { post } = Astro.props;
+
+const dateFormatter = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+---
+
+<a href={`/insights/${post.id}`} class="insight-card card">
+	<p class="eyebrow">{post.data.category}</p>
+	<h2 class="text-h3">{post.data.title}</h2>
+	<p class="text-muted">{post.data.description}</p>
+	<p class="text-small text-muted insight-card__date">
+		{dateFormatter.format(post.data.pubDate)}
+	</p>
+</a>
+
+<!-- Estilos de .insight-card ficam em src/styles/global.css (não escopados),
+     pois InsightSearch.astro precisa gerar o mesmo markup em runtime. -->
