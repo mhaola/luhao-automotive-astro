@@ -2,17 +2,16 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import ProductGrid from '../components/ProductGrid.astro';
-import CaseHighlight from '../components/CaseHighlight.astro';
 import CTASection from '../components/CTASection.astro';
 import InsightCard from '../components/InsightCard.astro';
-import { site } from '../config/site';
+import { savolCase, site } from '../config/site';
 import { getPublishedInsights } from '../lib/insights';
 
 const journeys = [
-	{ name: 'Assinatura', detail: 'Intenção de uso, não de posse. Jornada própria para PF e PJ.', signal: 'Uso' },
-	{ name: '0 km', detail: 'Modelo, oferta e estoque guiando a demanda até test-drive e venda.', signal: 'Venda' },
-	{ name: 'Seminovos', detail: 'Veículo, preço e disponibilidade determinam a intenção comercial.', signal: 'Estoque' },
-	{ name: 'Pós-venda', detail: 'Capacidade de oficina, recorrência e relacionamento ao longo do tempo.', signal: 'Retenção' },
+	{ name: 'Assinatura', detail: 'Intenção de uso, não de posse. Jornada própria para PF e PJ.', signal: 'Uso', code: 'SUB' },
+	{ name: '0 km', detail: 'Modelo, oferta e estoque guiando a demanda até test-drive e venda.', signal: 'Venda', code: 'NEW' },
+	{ name: 'Seminovos', detail: 'Veículo, preço e disponibilidade determinam a intenção comercial.', signal: 'Estoque', code: 'USED' },
+	{ name: 'Pós-venda', detail: 'Capacidade de oficina, recorrência e relacionamento ao longo do tempo.', signal: 'Retenção', code: 'AFTER' },
 ];
 
 const latestInsights = (await getPublishedInsights()).slice(0, 3);
@@ -28,6 +27,7 @@ const latestInsights = (await getPublishedInsights()).slice(0, 3);
 			<img src="/images/hero-main-desktop.webp" alt="" width="2000" height="1116" loading="eager" />
 		</picture>
 		<div class="hero__overlay" aria-hidden="true"></div>
+		<div class="hero__signal-line" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 		<div class="container hero__inner">
 			<div class="hero__copy">
 				<p class="eyebrow">Inteligência comercial para o setor automotivo</p>
@@ -45,10 +45,12 @@ const latestInsights = (await getPublishedInsights()).slice(0, 3);
 			</div>
 
 			<div class="hero__intelligence" aria-label="Exemplo de inteligência comercial">
+				<div class="intel-orbit" aria-hidden="true"><span></span><span></span><span></span></div>
 				<div class="intel-card intel-card--lead">
 					<div class="intel-card__head"><span>Lead qualificado</span><b>A</b></div>
 					<strong>Tracker · PJ</strong>
 					<small>Prazo: até 30 dias</small>
+					<div class="lead-signal"><i></i><i></i><i></i><i></i></div>
 				</div>
 				<div class="intel-card intel-card--flow">
 					<span>Demand</span><i></i><span>Qualification</span><i></i><span>Handoff</span>
@@ -57,6 +59,9 @@ const latestInsights = (await getPublishedInsights()).slice(0, 3);
 					<small>Qualidade da demanda</small>
 					<div class="mini-chart"><i></i><i></i><i></i><i></i><i></i><i></i></div>
 					<strong>+42%</strong>
+				</div>
+				<div class="intel-card intel-card--source">
+					<span>Origem</span><strong>Google Ads</strong><small>campanha · assinatura PJ</small>
 				</div>
 			</div>
 		</div>
@@ -68,32 +73,123 @@ const latestInsights = (await getPublishedInsights()).slice(0, 3);
 				<SectionHeading eyebrow="Jornadas comerciais" title="Automotivo não é um único funil." />
 				<p class="section-intro__copy text-muted">A intenção, o argumento comercial, o momento de compra e os critérios de qualificação mudam de acordo com o produto. A operação precisa respeitar essa diferença desde a primeira impressão.</p>
 			</div>
-			<div class="journeys__grid">
-				{journeys.map((journey, index) => (
-					<article class="journeys__item card">
-						<div class="journeys__top"><span>0{index + 1}</span><em>{journey.signal}</em></div>
-						<h3 class="text-h3">{journey.name}</h3>
-						<p class="text-muted">{journey.detail}</p>
-					</article>
-				))}
+			<div class="journey-shell">
+				<div class="journey-rail" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+				<div class="journeys__grid">
+					{journeys.map((journey, index) => (
+						<article class="journeys__item card">
+							<div class="journeys__top"><span>0{index + 1}</span><em>{journey.signal}</em></div>
+							<div class="journey-icon" aria-hidden="true">
+								<span>{journey.code}</span>
+								<svg viewBox="0 0 64 28" fill="none"><path d="M3 21C12 6 22 7 31 15C41 24 50 22 61 4" stroke="currentColor" stroke-width="1.5"/><circle cx="3" cy="21" r="2" fill="currentColor"/><circle cx="31" cy="15" r="2" fill="currentColor"/><circle cx="61" cy="4" r="2" fill="currentColor"/></svg>
+							</div>
+							<h3 class="text-h3">{journey.name}</h3>
+							<p class="text-muted">{journey.detail}</p>
+						</article>
+					))}
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section operation-section surface-grid">
+		<div class="container operation-layout">
+			<div class="operation-copy">
+				<p class="eyebrow">Operação conectada</p>
+				<h2 class="text-h2">Da mídia ao vendedor, cada sinal vira contexto.</h2>
+				<p class="text-muted">A LuHao conecta aquisição, captura, qualificação e inteligência para reduzir perda de informação entre marketing e comercial.</p>
+				<div class="operation-stats">
+					<div><span>01</span><strong>Aquisição</strong><small>Mídia + landing pages</small></div>
+					<div><span>02</span><strong>Qualificação</strong><small>Score + intenção</small></div>
+					<div><span>03</span><strong>Handoff</strong><small>Contexto para vendas</small></div>
+				</div>
+			</div>
+
+			<div class="operation-map card" aria-label="Fluxo operacional da LuHao Automotive">
+				<div class="map-grid" aria-hidden="true"></div>
+				<div class="map-track" aria-hidden="true"><span></span></div>
+
+				<div class="map-node map-node--demand">
+					<small>01 · Demand</small>
+					<strong>Atrair</strong>
+					<span>Google · Meta · LP</span>
+				</div>
+				<div class="map-node map-node--capture">
+					<small>02 · Capture</small>
+					<strong>Identificar</strong>
+					<span>Origem + intenção</span>
+				</div>
+				<div class="map-node map-node--score">
+					<small>03 · Qualification</small>
+					<strong>Priorizar</strong>
+					<div class="score-row"><b>A</b><b>B</b><b>C</b></div>
+				</div>
+				<div class="map-node map-node--handoff">
+					<small>04 · Handoff</small>
+					<strong>Entregar</strong>
+					<span>CRM · vendedor</span>
+				</div>
+
+				<div class="map-kpi map-kpi--top">
+					<span>Lead score</span><strong>A</strong><small>Alta intenção</small>
+				</div>
+				<div class="map-kpi map-kpi--bottom">
+					<span>Tempo até handoff</span><strong>&lt; 2 min</strong><small>fluxo automatizado</small>
+				</div>
+				<div class="map-pulse map-pulse--1" aria-hidden="true"></div>
+				<div class="map-pulse map-pulse--2" aria-hidden="true"></div>
+				<div class="map-pulse map-pulse--3" aria-hidden="true"></div>
 			</div>
 		</div>
 	</section>
 
 	<section class="section products-section surface-grid">
+		<div class="product-network" aria-hidden="true">
+			<svg viewBox="0 0 1200 520" preserveAspectRatio="none">
+				<path d="M40 430C210 280 330 330 455 205C570 90 720 155 825 245C930 335 1025 270 1160 82" />
+				<path d="M60 95C240 210 330 135 500 265C630 365 775 340 935 170C1025 75 1100 120 1170 155" />
+			</svg>
+			<i class="network-dot network-dot--1"></i><i class="network-dot network-dot--2"></i><i class="network-dot network-dot--3"></i><i class="network-dot network-dot--4"></i>
+		</div>
 		<div class="container">
 			<div class="section-intro section-intro--split">
 				<SectionHeading eyebrow="Nossos produtos" title="Tecnologia e estratégia para resultados reais." />
-				<p class="section-intro__copy text-muted">Cinco soluções integradas que conectam geração de demanda, atendimento, qualificação e inteligência comercial.</p>
+				<div class="section-intro__copy product-intro-copy">
+					<p class="text-muted">Cinco soluções integradas que conectam geração de demanda, atendimento, qualificação e inteligência comercial.</p>
+					<div class="product-mini-kpis"><span><b>5</b> produtos conectados</span><span><b>1</b> visão comercial</span></div>
+				</div>
 			</div>
 			<ProductGrid />
 		</div>
 	</section>
 
-	<CaseHighlight />
+	<section class="section case-performance">
+		<div class="container">
+			<div class="case-dashboard card surface-grid">
+				<div class="case-copy">
+					<p class="eyebrow">Case em destaque</p>
+					<h2 class="text-h2">{savolCase.headline}</h2>
+					<p class="text-muted">{savolCase.title} — {savolCase.location}. {savolCase.summary}</p>
+					<a href={`/cases/${savolCase.slug}`} class="btn btn-secondary">Conheça o case</a>
+				</div>
+
+				<div class="performance-visual" aria-label="Visualização dos resultados do case Savol">
+					<div class="performance-head"><span>Performance da operação</span><small>{savolCase.period}</small></div>
+					<div class="performance-chart">
+						<div class="chart-line" aria-hidden="true"><svg viewBox="0 0 520 170" preserveAspectRatio="none"><defs><linearGradient id="line-gradient" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#25d6ff"/><stop offset="1" stop-color="#ff3db8"/></linearGradient><linearGradient id="area-gradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#25d6ff" stop-opacity=".28"/><stop offset="1" stop-color="#25d6ff" stop-opacity="0"/></linearGradient></defs><path class="area" d="M0 150C70 128 100 134 150 105C205 74 240 94 290 63C348 26 390 64 430 36C466 11 493 26 520 9V170H0Z"/><path class="line" d="M0 150C70 128 100 134 150 105C205 74 240 94 290 63C348 26 390 64 430 36C466 11 493 26 520 9"/><g class="points"><circle cx="150" cy="105" r="4"/><circle cx="290" cy="63" r="4"/><circle cx="430" cy="36" r="4"/><circle cx="520" cy="9" r="4"/></g></svg></div>
+						<div class="chart-axis"><span>M1</span><span>M2</span><span>M3</span><span>M4</span><span>M5</span></div>
+					</div>
+					<div class="performance-metrics">
+						{savolCase.metrics.map((metric) => <div><small>{metric.label}</small><strong>{metric.value}</strong></div>)}
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 
 	{latestInsights.length > 0 && (
 		<section class="section insights-home">
+			<div class="insights-decoration" aria-hidden="true"><span>INSIGHTS / AUTOMOTIVE INTELLIGENCE</span><i></i></div>
 			<div class="container">
 				<div class="section-intro section-intro--split section-intro--align-end">
 					<SectionHeading eyebrow="Insights" title="Conteúdo para impulsionar o seu crescimento." />
@@ -122,87 +218,168 @@ const latestInsights = (await getPublishedInsights()).slice(0, 3);
 		overflow: hidden;
 	}
 
-	.hero__bg { position: absolute; inset: 0; z-index: 0; }
-	.hero__bg img { width: 100%; height: 100%; object-fit: cover; }
+	.hero__bg { position:absolute; inset:0; z-index:0; }
+	.hero__bg img { width:100%; height:100%; object-fit:cover; }
 	.hero__overlay {
-		position: absolute;
-		inset: 0;
-		z-index: 1;
+		position:absolute; inset:0; z-index:1;
 		background:
-			linear-gradient(90deg, rgba(2,9,29,.98) 0%, rgba(2,9,29,.89) 35%, rgba(2,9,29,.34) 72%, rgba(2,9,29,.42) 100%),
-			linear-gradient(0deg, var(--color-bg) 0%, transparent 28%);
+			linear-gradient(90deg,rgba(2,9,29,.98) 0%,rgba(2,9,29,.89) 35%,rgba(2,9,29,.34) 72%,rgba(2,9,29,.42) 100%),
+			linear-gradient(0deg,var(--color-bg) 0%,transparent 28%);
 	}
+	.hero__signal-line { position:absolute; right:4vw; top:18%; bottom:16%; z-index:2; width:1px; background:linear-gradient(to bottom,transparent,rgba(37,214,255,.3),rgba(255,61,184,.28),transparent); }
+	.hero__signal-line i { position:absolute; left:-3px; width:7px; height:7px; border-radius:50%; background:var(--color-accent-secondary); box-shadow:0 0 18px rgba(37,214,255,.8); }
+	.hero__signal-line i:nth-child(1){top:8%}.hero__signal-line i:nth-child(2){top:34%;background:var(--color-accent)}.hero__signal-line i:nth-child(3){top:64%}.hero__signal-line i:nth-child(4){top:88%;background:var(--color-accent)}
 
 	.hero__inner {
-		position: relative;
-		z-index: 2;
-		display: grid;
-		grid-template-columns: minmax(0, 1.08fr) minmax(320px, .72fr);
-		gap: clamp(4rem, 8vw, 8rem);
-		align-items: center;
-		padding-block: clamp(7rem, 11vw, 10rem);
+		position:relative; z-index:2; display:grid; grid-template-columns:minmax(0,1.08fr) minmax(320px,.72fr);
+		gap:clamp(4rem,8vw,8rem); align-items:center; padding-block:clamp(7rem,11vw,10rem);
 	}
-
-	.hero__copy { display: flex; flex-direction: column; gap: 1.65rem; max-width: 720px; }
-	.hero__subheadline { max-width: 650px; color: rgba(240,245,255,.82); font-size: clamp(1.05rem, 1.25vw, 1.22rem); }
-	.hero__actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: .35rem; }
-
-	.hero__metrics {
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: 1rem;
-		margin-top: 2.6rem;
-		padding-top: 1.6rem;
-		border-top: 1px solid rgba(255,255,255,.12);
-		max-width: 650px;
-	}
+	.hero__copy { display:flex; flex-direction:column; gap:1.65rem; max-width:720px; }
+	.hero__subheadline { max-width:650px; color:rgba(240,245,255,.82); font-size:clamp(1.05rem,1.25vw,1.22rem); }
+	.hero__actions { display:flex; flex-wrap:wrap; gap:.8rem; margin-top:.35rem; }
+	.hero__metrics { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-top:2.6rem; padding-top:1.6rem; border-top:1px solid rgba(255,255,255,.12); max-width:650px; }
 	.hero__metrics div { display:flex; flex-direction:column; gap:.15rem; }
-	.hero__metrics strong { font-size: 1.28rem; color: var(--color-text); }
-	.hero__metrics span { font-size: .76rem; color: var(--color-text-soft); }
+	.hero__metrics strong { font-size:1.28rem; color:var(--color-text); }
+	.hero__metrics span { font-size:.76rem; color:var(--color-text-soft); }
 
-	.hero__intelligence { position: relative; min-height: 420px; }
-	.intel-card {
-		position: absolute;
-		background: rgba(5,19,47,.76);
-		backdrop-filter: blur(18px);
-		border: 1px solid rgba(126,164,229,.25);
-		border-radius: 16px;
-		box-shadow: var(--shadow-md);
-	}
-	.intel-card--lead { right: 3%; top: 5%; width: 270px; padding: 1.25rem; display:flex; flex-direction:column; gap:.25rem; }
+	.hero__intelligence { position:relative; min-height:420px; }
+	.intel-orbit { position:absolute; inset:3% 0 1% 5%; border:1px solid rgba(37,214,255,.12); border-radius:50%; transform:rotate(-9deg); }
+	.intel-orbit::before { content:''; position:absolute; inset:12%; border:1px dashed rgba(255,61,184,.12); border-radius:50%; }
+	.intel-orbit span { position:absolute; width:7px; height:7px; border-radius:50%; background:var(--color-accent-secondary); box-shadow:0 0 15px currentColor; }
+	.intel-orbit span:nth-child(1){left:13%;top:16%}.intel-orbit span:nth-child(2){right:7%;top:47%;background:var(--color-accent)}.intel-orbit span:nth-child(3){left:38%;bottom:2%}
+	.intel-card { position:absolute; background:rgba(5,19,47,.78); backdrop-filter:blur(18px); border:1px solid rgba(126,164,229,.25); border-radius:16px; box-shadow:var(--shadow-md); }
+	.intel-card--lead { right:3%; top:5%; width:270px; padding:1.25rem; display:flex; flex-direction:column; gap:.25rem; }
 	.intel-card__head { display:flex; align-items:center; justify-content:space-between; margin-bottom:.65rem; font-size:.8rem; color:var(--color-text-muted); }
 	.intel-card__head b { display:grid; place-items:center; width:30px; height:30px; border-radius:50%; background:var(--color-success); color:#02150d; }
 	.intel-card small { color:var(--color-text-soft); }
-	.intel-card--flow { right: 0; bottom: 4%; padding: 1rem 1.2rem; display:flex; align-items:center; gap:.6rem; font-size:.78rem; }
+	.lead-signal { display:flex; gap:4px; margin-top:.9rem; }
+	.lead-signal i { height:3px; flex:1; border-radius:99px; background:rgba(255,255,255,.1); }
+	.lead-signal i:nth-child(-n+3){background:linear-gradient(90deg,var(--color-accent-secondary),var(--color-success));}
+	.intel-card--flow { right:0; bottom:4%; padding:1rem 1.2rem; display:flex; align-items:center; gap:.6rem; font-size:.78rem; }
 	.intel-card--flow i { width:18px; height:1px; background:linear-gradient(90deg,var(--color-accent-secondary),var(--color-accent)); }
-	.intel-card--chart { left: 0; top: 40%; width: 210px; padding: 1.1rem; }
+	.intel-card--chart { left:0; top:40%; width:210px; padding:1.1rem; }
 	.mini-chart { height:76px; display:flex; align-items:end; gap:7px; margin:.7rem 0; }
 	.mini-chart i { flex:1; border-radius:4px 4px 0 0; background:linear-gradient(to top,var(--color-accent),var(--color-accent-secondary)); opacity:.85; }
 	.mini-chart i:nth-child(1){height:18%}.mini-chart i:nth-child(2){height:34%}.mini-chart i:nth-child(3){height:42%}.mini-chart i:nth-child(4){height:61%}.mini-chart i:nth-child(5){height:73%}.mini-chart i:nth-child(6){height:100%}
 	.intel-card--chart strong { color:var(--color-accent-secondary); }
+	.intel-card--source { right:18%; top:51%; width:190px; padding:.9rem 1rem; display:flex; flex-direction:column; gap:.12rem; }
+	.intel-card--source span { font-size:.7rem; color:var(--color-text-soft); text-transform:uppercase; letter-spacing:.08em; }
+	.intel-card--source strong { font-size:.95rem; }
 
 	.section-intro--split { display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,.72fr); gap:clamp(2rem,7vw,7rem); align-items:start; margin-bottom:clamp(3.5rem,6vw,5.5rem); }
-	.section-intro__copy { max-width: 520px; padding-top: 1.8rem; }
+	.section-intro__copy { max-width:520px; padding-top:1.8rem; }
 	.section-intro--align-end { align-items:end; }
 	.text-link { color:var(--color-accent); text-decoration:none; font-weight:700; justify-self:end; margin-bottom:.5rem; }
 
-	.journeys__grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; }
-	.journeys__item { min-height:250px; padding:1.7rem; display:flex; flex-direction:column; gap:1rem; transition:transform .22s ease,border-color .22s ease; }
-	.journeys__item:hover { transform:translateY(-4px); border-color:rgba(37,214,255,.34); }
+	.journeys-section { position:relative; overflow:hidden; }
+	.journeys-section::after { content:'04'; position:absolute; right:3vw; bottom:1rem; font-size:clamp(7rem,16vw,15rem); font-weight:800; line-height:1; color:rgba(126,164,229,.025); letter-spacing:-.08em; pointer-events:none; }
+	.journey-shell { position:relative; }
+	.journey-rail { position:absolute; left:4%; right:4%; top:50px; height:1px; background:linear-gradient(90deg,transparent,rgba(37,214,255,.32),rgba(255,61,184,.32),transparent); z-index:0; }
+	.journey-rail span { position:absolute; top:-4px; width:9px; height:9px; border-radius:50%; border:2px solid var(--color-bg); background:var(--color-accent-secondary); box-shadow:0 0 14px rgba(37,214,255,.55); }
+	.journey-rail span:nth-child(1){left:11%}.journey-rail span:nth-child(2){left:37%;background:var(--color-accent)}.journey-rail span:nth-child(3){left:63%}.journey-rail span:nth-child(4){left:89%;background:var(--color-accent)}
+	.journeys__grid { position:relative; z-index:1; display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; padding-top:2.2rem; }
+	.journeys__item { min-height:285px; padding:1.7rem; display:flex; flex-direction:column; gap:1rem; transition:transform .22s ease,border-color .22s ease; }
+	.journeys__item:hover { transform:translateY(-5px); border-color:rgba(37,214,255,.34); }
 	.journeys__top { display:flex; justify-content:space-between; color:var(--color-text-soft); font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; }
 	.journeys__top em { font-style:normal; color:var(--color-accent-secondary); }
+	.journey-icon { display:flex; align-items:center; justify-content:space-between; gap:1rem; min-height:70px; margin-top:.3rem; padding:1rem; border-radius:12px; background:linear-gradient(135deg,rgba(37,214,255,.05),rgba(255,61,184,.035)); border:1px solid rgba(126,164,229,.1); }
+	.journey-icon span { font-size:.68rem; letter-spacing:.12em; color:var(--color-text-soft); }
+	.journey-icon svg { width:74px; color:var(--color-accent-secondary); opacity:.85; }
 	.journeys__item h3 { margin-top:auto; }
 	.journeys__item p { font-size:.93rem; }
 
-	.products-section { background:linear-gradient(180deg,rgba(5,19,47,.2),rgba(5,19,47,.04)); }
+	.operation-section { position:relative; overflow:hidden; background:linear-gradient(180deg,rgba(4,18,44,.5),rgba(2,9,29,.28)); }
+	.operation-layout { display:grid; grid-template-columns:minmax(0,.72fr) minmax(560px,1.28fr); gap:clamp(3rem,7vw,7rem); align-items:center; }
+	.operation-copy { display:flex; flex-direction:column; gap:1.5rem; max-width:470px; }
+	.operation-copy > p.text-muted { font-size:1.05rem; }
+	.operation-stats { display:grid; gap:.7rem; margin-top:1rem; }
+	.operation-stats div { display:grid; grid-template-columns:44px 1fr; column-gap:.8rem; padding:.85rem 0; border-top:1px solid rgba(126,164,229,.12); }
+	.operation-stats span { grid-row:1 / 3; color:var(--color-accent); font-size:.72rem; letter-spacing:.1em; padding-top:.1rem; }
+	.operation-stats strong { font-size:.95rem; }
+	.operation-stats small { color:var(--color-text-soft); }
+	.operation-map { position:relative; min-height:470px; overflow:hidden; padding:2rem; }
+	.map-grid { position:absolute; inset:0; background-image:linear-gradient(rgba(126,164,229,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(126,164,229,.045) 1px,transparent 1px); background-size:34px 34px; mask-image:linear-gradient(to bottom,black,transparent 92%); }
+	.map-track { position:absolute; left:11%; right:11%; top:50%; height:2px; background:linear-gradient(90deg,rgba(37,214,255,.15),var(--color-accent-secondary),var(--color-accent),rgba(255,61,184,.18)); box-shadow:0 0 24px rgba(37,214,255,.12); }
+	.map-track span { position:absolute; left:0; top:-2px; height:6px; width:18%; border-radius:99px; background:linear-gradient(90deg,transparent,#fff,transparent); opacity:.7; animation:signal 4s linear infinite; }
+	@keyframes signal { from{transform:translateX(-100%)} to{transform:translateX(520%)} }
+	.map-node { position:absolute; top:50%; transform:translate(-50%,-50%); width:138px; min-height:118px; padding:1rem; border-radius:15px; background:rgba(4,18,45,.92); border:1px solid rgba(126,164,229,.22); box-shadow:0 16px 34px rgba(0,0,0,.2); display:flex; flex-direction:column; justify-content:center; gap:.25rem; }
+	.map-node::before { content:''; position:absolute; left:50%; top:-12px; transform:translateX(-50%); width:9px; height:9px; border-radius:50%; background:var(--color-accent-secondary); box-shadow:0 0 16px rgba(37,214,255,.7); }
+	.map-node small { color:var(--color-accent-secondary); font-size:.62rem; text-transform:uppercase; letter-spacing:.08em; }
+	.map-node strong { font-size:1rem; }
+	.map-node span { color:var(--color-text-soft); font-size:.72rem; }
+	.map-node--demand{left:12%}.map-node--capture{left:37%}.map-node--score{left:63%}.map-node--handoff{left:88%}
+	.map-node--score::before,.map-node--handoff::before{background:var(--color-accent);box-shadow:0 0 16px rgba(255,61,184,.6)}
+	.score-row { display:flex; gap:.35rem; margin-top:.35rem; }
+	.score-row b { display:grid; place-items:center; width:24px; height:24px; border-radius:7px; background:rgba(37,214,255,.08); border:1px solid rgba(37,214,255,.2); font-size:.68rem; color:var(--color-text-muted); }
+	.score-row b:first-child { background:rgba(70,223,160,.16); border-color:rgba(70,223,160,.42); color:var(--color-success); }
+	.map-kpi { position:absolute; display:flex; flex-direction:column; gap:.1rem; padding:.85rem 1rem; border-radius:12px; background:rgba(6,26,66,.86); border:1px solid rgba(126,164,229,.16); }
+	.map-kpi span { color:var(--color-text-soft); font-size:.65rem; text-transform:uppercase; letter-spacing:.07em; }
+	.map-kpi strong { color:var(--color-text); }
+	.map-kpi small { color:var(--color-text-soft); }
+	.map-kpi--top { top:10%; right:7%; }
+	.map-kpi--top strong { color:var(--color-success); }
+	.map-kpi--bottom { bottom:8%; left:8%; }
+	.map-kpi--bottom strong { color:var(--color-accent-secondary); }
+	.map-pulse { position:absolute; width:90px; height:90px; border-radius:50%; border:1px solid rgba(37,214,255,.1); }
+	.map-pulse::before { content:''; position:absolute; inset:19px; border-radius:50%; border:1px solid rgba(255,61,184,.09); }
+	.map-pulse--1{left:-25px;top:8%}.map-pulse--2{right:-30px;bottom:6%;transform:scale(1.4)}.map-pulse--3{left:48%;top:-35px;transform:scale(.7)}
+
+	.products-section { position:relative; overflow:hidden; background:linear-gradient(180deg,rgba(5,19,47,.24),rgba(5,19,47,.04)); }
+	.product-network { position:absolute; inset:5% 0 auto; height:72%; pointer-events:none; opacity:.32; }
+	.product-network svg { width:100%; height:100%; }
+	.product-network path { fill:none; stroke:rgba(37,214,255,.18); stroke-width:1; stroke-dasharray:6 10; }
+	.network-dot { position:absolute; width:9px; height:9px; border-radius:50%; background:var(--color-accent-secondary); box-shadow:0 0 20px rgba(37,214,255,.8); }
+	.network-dot--1{left:18%;top:66%}.network-dot--2{left:42%;top:38%;background:var(--color-accent)}.network-dot--3{left:72%;top:54%}.network-dot--4{right:9%;top:21%;background:var(--color-accent)}
+	.products-section .container { position:relative; z-index:1; }
+	.product-intro-copy { display:flex; flex-direction:column; gap:1.2rem; }
+	.product-mini-kpis { display:flex; flex-wrap:wrap; gap:.65rem; }
+	.product-mini-kpis span { display:inline-flex; align-items:center; gap:.45rem; padding:.45rem .7rem; border-radius:999px; border:1px solid rgba(126,164,229,.14); background:rgba(255,255,255,.02); color:var(--color-text-soft); font-size:.72rem; }
+	.product-mini-kpis b { color:var(--color-accent-secondary); font-size:.9rem; }
+
+	.case-performance { position:relative; }
+	.case-dashboard { display:grid; grid-template-columns:minmax(0,.8fr) minmax(520px,1.2fr); gap:clamp(3rem,6vw,6rem); padding:clamp(2rem,5vw,4.5rem); overflow:hidden; }
+	.case-copy { display:flex; flex-direction:column; align-items:flex-start; gap:1.35rem; }
+	.case-copy p.text-muted { max-width:530px; }
+	.performance-visual { padding:1.25rem 1.35rem; border-radius:18px; background:rgba(2,10,28,.5); border:1px solid rgba(126,164,229,.14); }
+	.performance-head { display:flex; justify-content:space-between; gap:1rem; padding-bottom:1rem; color:var(--color-text-muted); font-size:.76rem; }
+	.performance-head small { color:var(--color-text-soft); }
+	.performance-chart { position:relative; min-height:190px; padding-top:.8rem; background-image:linear-gradient(rgba(126,164,229,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(126,164,229,.04) 1px,transparent 1px); background-size:100% 42px,80px 100%; }
+	.chart-line { height:155px; }
+	.chart-line svg { width:100%; height:100%; overflow:visible; }
+	.chart-line .area { fill:url(#area-gradient); }
+	.chart-line .line { fill:none; stroke:url(#line-gradient); stroke-width:3; vector-effect:non-scaling-stroke; }
+	.chart-line .points circle { fill:var(--color-bg); stroke:var(--color-accent-secondary); stroke-width:2; vector-effect:non-scaling-stroke; }
+	.chart-axis { display:flex; justify-content:space-between; margin-top:.35rem; color:var(--color-text-soft); font-size:.62rem; }
+	.performance-metrics { display:grid; grid-template-columns:repeat(3,1fr); gap:.7rem; margin-top:1rem; }
+	.performance-metrics div { padding:1rem; border-radius:12px; background:rgba(7,30,79,.6); border:1px solid rgba(126,164,229,.12); display:flex; flex-direction:column; gap:.25rem; }
+	.performance-metrics small { color:var(--color-text-soft); font-size:.66rem; }
+	.performance-metrics strong { color:var(--color-accent); font-size:1.35rem; }
+
+	.insights-home { position:relative; overflow:hidden; }
+	.insights-decoration { position:absolute; left:1.5vw; top:50%; transform:translateY(-50%) rotate(-90deg); transform-origin:left center; display:flex; align-items:center; gap:1rem; color:rgba(126,164,229,.15); font-size:.6rem; letter-spacing:.22em; white-space:nowrap; }
+	.insights-decoration i { width:90px; height:1px; background:rgba(126,164,229,.15); }
+
+	@media (max-width: 1100px) {
+		.operation-layout { grid-template-columns:1fr; }
+		.operation-copy { max-width:680px; }
+		.case-dashboard { grid-template-columns:1fr; }
+	}
 
 	@media (max-width: 980px) {
 		.hero__inner { grid-template-columns:1fr; gap:3rem; }
-		.hero__intelligence { display:none; }
+		.hero__intelligence,.hero__signal-line { display:none; }
 		.section-intro--split { grid-template-columns:1fr; gap:1rem; }
 		.section-intro__copy { padding-top:0; }
 		.text-link { justify-self:start; }
 		.journeys__grid { grid-template-columns:repeat(2,1fr); }
+		.journey-rail { display:none; }
+		.operation-map { min-height:620px; }
+		.map-track { left:50%; top:10%; bottom:10%; right:auto; width:2px; height:auto; background:linear-gradient(180deg,rgba(37,214,255,.15),var(--color-accent-secondary),var(--color-accent),rgba(255,61,184,.18)); }
+		.map-track span { width:6px; height:18%; top:0; left:-2px; animation:none; }
+		.map-node { left:50% !important; transform:translate(-50%,-50%); }
+		.map-node--demand{top:16%}.map-node--capture{top:38%}.map-node--score{top:61%}.map-node--handoff{top:84%}
+		.map-kpi { display:none; }
+		.performance-metrics { grid-template-columns:repeat(3,1fr); }
 	}
 
 	@media (max-width: 640px) {
@@ -212,7 +389,17 @@ const latestInsights = (await getPublishedInsights()).slice(0, 3);
 		.hero__copy { gap:1.25rem; }
 		.hero__metrics { grid-template-columns:1fr; gap:1rem; margin-top:1.5rem; }
 		.hero__metrics div { padding-bottom:.8rem; border-bottom:1px solid rgba(255,255,255,.08); }
-		.journeys__grid { grid-template-columns:1fr; }
-		.journeys__item { min-height:210px; }
+		.journeys__grid { grid-template-columns:1fr; padding-top:0; }
+		.journeys__item { min-height:235px; }
+		.operation-map { min-height:600px; padding:1rem; }
+		.map-node { width:150px; }
+		.product-network,.insights-decoration { display:none; }
+		.performance-visual { padding:1rem; }
+		.performance-metrics { grid-template-columns:1fr; }
+		.case-dashboard { padding:1.5rem; }
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.map-track span { animation:none; }
 	}
 </style>
