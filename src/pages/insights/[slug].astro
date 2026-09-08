@@ -10,20 +10,15 @@ import { slugify } from '../../lib/slug';
 
 export async function getStaticPaths() {
 	const posts = await getPublishedInsights();
-	return posts.map((post) => ({
-		params: { slug: post.id },
-		props: { post },
-	}));
+	return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
 }
 
 const { post } = Astro.props;
-const { Content } = await render(post);
-
+const { Content, headings } = await render(post);
+const toc = headings.filter((heading) => heading.depth === 2 || heading.depth === 3);
 const allPosts = await getPublishedInsights();
 const related = getRelatedInsights(post, allPosts, 3);
-
 const dateFormatter = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
-
 const categoryHref = `/insights/categoria/${slugify(post.data.category)}`;
 
 const articleSchema = {
@@ -40,158 +35,130 @@ const articleSchema = {
 };
 ---
 
-<BaseLayout
-	title={post.data.title}
-	description={post.data.description}
-	path={`/insights/${post.id}`}
-	image={post.data.featuredImage}
-	type="article"
-	structuredData={articleSchema}
->
-	<article class="section-tight">
-		<div class="container insight-article">
-			<Breadcrumbs
-				items={[
-					{ label: 'Insights', href: '/insights' },
-					{ label: post.data.title, href: `/insights/${post.id}` },
-				]}
-			/>
+<BaseLayout title={post.data.title} description={post.data.description} path={`/insights/${post.id}`} image={post.data.featuredImage} type="article" structuredData={articleSchema}>
+	<div class="reading-progress" aria-hidden="true"><span></span></div>
 
-			<header class="insight-article__header">
-				{post.data.featuredImage && (
-					<img
-						src={post.data.featuredImage}
-						alt={post.data.featuredImageAlt ?? post.data.title}
-						class="insight-article__image"
-						width="1200"
-						height="675"
-					/>
-				)}
-				<a class="eyebrow" href={categoryHref}>{post.data.category}</a>
-				<h1 class="text-h1">{post.data.title}</h1>
-				<p class="text-muted insight-article__meta">
-					{post.data.author} · {dateFormatter.format(post.data.pubDate)}
-				</p>
-				{
-					post.data.tags.length > 0 && (
-						<ul class="insight-article__tags">
-							{post.data.tags.map((tag) => (
-								<li>
-									<a class="pill" href={`/insights/tag/${slugify(tag)}`}>
-										#{tag}
-									</a>
-								</li>
-							))}
-						</ul>
-					)
-				}
+	<article class="article-shell">
+		<div class="container">
+			<div class="article-breadcrumbs"><Breadcrumbs items={[{ label: 'Insights', href: '/insights' }, { label: post.data.title, href: `/insights/${post.id}` }]} /></div>
+
+			<header class="article-hero">
+				<div class="article-hero__copy">
+					<div class="article-hero__eyebrow"><a class="eyebrow" href={categoryHref}>{post.data.category}</a></div>
+					<h1 class="text-h1">{post.data.title}</h1>
+					<p class="article-hero__description">{post.data.description}</p>
+					<div class="article-meta">
+						<div class="article-meta__author"><span class="article-meta__avatar">LH</span><div><strong>{post.data.author}</strong><small>LuHao Automotive</small></div></div>
+						<span class="article-meta__divider"></span>
+						<div><small>Publicado em</small><strong>{dateFormatter.format(post.data.pubDate)}</strong></div>
+						{post.data.updatedDate && <><span class="article-meta__divider"></span><div><small>Atualizado em</small><strong>{dateFormatter.format(post.data.updatedDate)}</strong></div></>}
+					</div>
+				</div>
 			</header>
 
-			<div class="insight-article__content">
-				<Content />
+			{post.data.featuredImage && (
+				<figure class="article-cover">
+					<img src={post.data.featuredImage} alt={post.data.featuredImageAlt ?? post.data.title} width="1400" height="788" loading="eager" />
+				</figure>
+			)}
+
+			<div class="article-layout">
+				<main class="article-content">
+					<div class="article-lede">{post.data.description}</div>
+					<Content />
+					{post.data.tags.length > 0 && <footer class="article-tags"><span class="text-small text-soft">Tópicos</span><ul>{post.data.tags.map((tag) => <li><a class="pill" href={`/insights/tag/${slugify(tag)}`}>#{tag}</a></li>)}</ul></footer>}
+				</main>
+
+				{toc.length > 0 && (
+					<aside class="article-aside">
+						<div class="toc card">
+							<p class="toc__label">Neste artigo</p>
+							<nav aria-label="Índice do artigo"><ol>{toc.map((item, index) => <li class:list={{ 'toc__sub': item.depth === 3 }}><a href={`#${item.slug}`}><span>{String(index + 1).padStart(2, '0')}</span>{item.text}</a></li>)}</ol></nav>
+						</div>
+						<div class="aside-cta card"><span class="eyebrow">Aplicação prática</span><strong>Quer estruturar uma operação de demanda mais previsível?</strong><a href="/contato" class="btn btn-primary">Fale com a LuHao</a></div>
+					</aside>
+				)}
 			</div>
 		</div>
 	</article>
 
-	{
-		related.length > 0 && (
-			<section class="section-tight insight-related">
-				<div class="container">
-					<h2 class="text-h2 insight-related__title">Continue lendo</h2>
-					<div class="insight-grid">
-						{related.map((relatedPost) => (
-							<InsightCard post={relatedPost} />
-						))}
-					</div>
-				</div>
-			</section>
-		)
-	}
+	{related.length > 0 && <section class="section insight-related"><div class="container"><div class="related-heading"><div><p class="eyebrow">Continue lendo</p><h2 class="text-h2">Mais inteligência para sua operação.</h2></div><a href="/insights" class="related-heading__link">Ver todos os Insights ↗</a></div><div class="insight-grid">{related.map((relatedPost) => <InsightCard post={relatedPost} />)}</div></div></section>}
 
-	<CTASection
-		title="Quer aplicar isso na sua operação?"
-		whatsappMessage={`Olá! Li o artigo "${post.data.title}" e quero saber mais sobre as soluções da LuHao Automotive.`}
-	/>
+	<CTASection title="Quer aplicar isso na sua operação?" description="Estruture geração de demanda, qualificação e inteligência comercial de acordo com a jornada do seu negócio." whatsappMessage={`Olá! Li o artigo "${post.data.title}" e quero saber mais sobre as soluções da LuHao Automotive.`} />
+
+	<script is:inline>
+		const bar = document.querySelector('.reading-progress span');
+		const update = () => {
+			const h = document.documentElement.scrollHeight - window.innerHeight;
+			if (bar) bar.style.transform = `scaleX(${h > 0 ? Math.min(window.scrollY / h, 1) : 0})`;
+		};
+		update();
+		addEventListener('scroll', update, { passive: true });
+	</script>
 </BaseLayout>
 
 <style>
-	.insight-article {
-		max-width: 720px;
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-6);
-	}
+	.reading-progress { position:fixed; top:76px; left:0; right:0; height:2px; z-index:60; background:rgba(255,255,255,.04); }
+	.reading-progress span { display:block; width:100%; height:100%; transform:scaleX(0); transform-origin:left; background:linear-gradient(90deg,var(--color-accent),var(--color-accent-secondary)); }
+	.article-shell { padding:clamp(3.5rem,7vw,6.5rem) 0 var(--space-9); }
+	.article-breadcrumbs { margin-bottom:clamp(2.5rem,5vw,4.5rem); }
+	.article-hero { max-width:980px; margin-bottom:clamp(3rem,6vw,5rem); }
+	.article-hero__copy { display:flex; flex-direction:column; gap:1.45rem; }
+	.article-hero__eyebrow { margin-bottom:.4rem; }
+	.article-hero__eyebrow a { text-decoration:none; }
+	.article-hero__description { max-width:800px; color:var(--color-text-muted); font-size:clamp(1.1rem,1.6vw,1.35rem); line-height:1.55; }
+	.article-meta { display:flex; align-items:center; gap:1.15rem; flex-wrap:wrap; margin-top:1rem; color:var(--color-text-muted); }
+	.article-meta > div { display:flex; flex-direction:column; gap:.08rem; }
+	.article-meta strong { color:var(--color-text); font-size:.83rem; }
+	.article-meta small { font-size:.72rem; color:var(--color-text-soft); }
+	.article-meta__author { flex-direction:row!important; align-items:center; gap:.7rem; }
+	.article-meta__avatar { display:grid; place-items:center; width:38px; height:38px; border-radius:50%; background:linear-gradient(135deg,var(--color-accent),#6f3cff); color:white; font-size:.7rem; font-weight:800; }
+	.article-meta__divider { width:1px; height:32px; background:var(--color-border); }
+	.article-cover { margin:0 0 clamp(4rem,8vw,7rem); overflow:hidden; border-radius:var(--radius-xl); border:1px solid var(--color-border); background:var(--color-surface-soft); box-shadow:var(--shadow-md); }
+	.article-cover img { width:100%; aspect-ratio:16/8.6; object-fit:cover; }
+	.article-layout { display:grid; grid-template-columns:minmax(0, 780px) minmax(240px, 300px); gap:clamp(4rem,8vw,8rem); align-items:start; justify-content:center; }
+	.article-content { min-width:0; font-size:1.08rem; line-height:1.82; color:rgba(238,243,255,.82); }
+	.article-lede { font-size:1.25rem; line-height:1.7; color:var(--color-text); padding:0 0 2rem; margin-bottom:2rem; border-bottom:1px solid var(--color-border); }
+	.article-content :global(h2) { font-size:clamp(1.7rem,2.5vw,2.35rem); margin:4rem 0 1.25rem; color:var(--color-text); scroll-margin-top:120px; }
+	.article-content :global(h3) { font-size:clamp(1.3rem,1.8vw,1.65rem); margin:2.8rem 0 1rem; color:var(--color-text); scroll-margin-top:120px; }
+	.article-content :global(p) { margin:0 0 1.35rem; }
+	.article-content :global(ul), .article-content :global(ol) { display:flex; flex-direction:column; gap:.8rem; margin:1.4rem 0 1.7rem; padding-left:1.25rem; }
+	.article-content :global(ul) { list-style:disc; }
+	.article-content :global(ol) { list-style:decimal; }
+	.article-content :global(li)::marker { color:var(--color-accent); }
+	.article-content :global(a) { color:var(--color-accent-secondary); text-decoration-thickness:1px; text-underline-offset:3px; }
+	.article-content :global(strong) { color:var(--color-text); }
+	.article-content :global(blockquote) { margin:2.5rem 0; padding:1.8rem 2rem; border:1px solid var(--color-border); border-left:3px solid var(--color-accent); border-radius:0 var(--radius-lg) var(--radius-lg) 0; background:linear-gradient(135deg,rgba(255,61,184,.06),rgba(37,214,255,.035)); color:var(--color-text); font-size:1.18rem; }
+	.article-content :global(hr) { border:0; border-top:1px solid var(--color-border); margin:3rem 0; }
+	.article-tags { display:flex; flex-direction:column; gap:1rem; margin-top:4rem; padding-top:2rem; border-top:1px solid var(--color-border); }
+	.article-tags ul { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; margin:0; list-style:none; }
+	.article-aside { position:sticky; top:118px; display:flex; flex-direction:column; gap:1rem; }
+	.toc { padding:1.4rem; }
+	.toc__label { margin-bottom:1rem; font-size:.75rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--color-text-soft); }
+	.toc ol { display:flex; flex-direction:column; gap:.1rem; }
+	.toc a { display:grid; grid-template-columns:28px 1fr; gap:.55rem; padding:.62rem .15rem; text-decoration:none; color:var(--color-text-muted); font-size:.78rem; line-height:1.35; border-bottom:1px solid rgba(126,164,229,.07); }
+	.toc a span { color:var(--color-accent); font-size:.67rem; font-weight:800; padding-top:.1rem; }
+	.toc a:hover { color:var(--color-text); }
+	.toc__sub a { padding-left:.7rem; opacity:.82; }
+	.aside-cta { display:flex; flex-direction:column; gap:1rem; padding:1.4rem; }
+	.aside-cta .eyebrow { font-size:.62rem; }
+	.aside-cta .eyebrow::before { display:none; }
+	.aside-cta strong { font-size:1rem; line-height:1.35; }
+	.related-heading { display:flex; justify-content:space-between; align-items:end; gap:2rem; margin-bottom:3.5rem; }
+	.related-heading > div { display:flex; flex-direction:column; gap:1rem; }
+	.related-heading__link { color:var(--color-accent); text-decoration:none; font-weight:700; font-size:.9rem; }
 
-	.insight-article__header {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-3);
+	@media (max-width: 980px) {
+		.article-layout { grid-template-columns:minmax(0,760px); }
+		.article-aside { display:none; }
 	}
-
-	.insight-article__image {
-		width: 100%;
-		aspect-ratio: 16 / 9;
-		object-fit: cover;
-		border-radius: var(--radius-lg);
-		border: 1px solid var(--color-border);
-		margin-bottom: var(--space-2);
-	}
-
-	.insight-article__header .eyebrow {
-		text-decoration: none;
-		width: fit-content;
-	}
-
-	.insight-article__header .eyebrow:hover {
-		color: var(--color-accent-hover);
-	}
-
-	.insight-article__meta {
-		font-size: 0.9375rem;
-	}
-
-	.insight-article__tags {
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--space-2);
-		margin-top: var(--space-2);
-	}
-
-	.insight-article__content {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-5);
-		font-size: 1.0625rem;
-		line-height: var(--line-height-normal);
-	}
-
-	.insight-article__content :global(h2) {
-		font-size: 1.5rem;
-		margin-top: var(--space-4);
-	}
-
-	.insight-article__content :global(h3) {
-		font-size: 1.2rem;
-		margin-top: var(--space-3);
-	}
-
-	.insight-article__content :global(ul) {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-2);
-		padding-left: var(--space-5);
-		list-style: disc;
-	}
-
-	.insight-article__content :global(a) {
-		color: var(--color-accent);
-	}
-
-	.insight-article__content :global(strong) {
-		color: var(--color-text);
-	}
-
-	.insight-related__title {
-		margin-bottom: var(--space-6);
+	@media (max-width: 640px) {
+		.article-shell { padding-top:2.5rem; }
+		.article-cover { margin-inline:calc(var(--container-padding) * -1); border-radius:0; border-left:0; border-right:0; }
+		.article-meta__divider { display:none; }
+		.article-meta { gap:1rem 1.4rem; }
+		.article-content { font-size:1rem; line-height:1.75; }
+		.article-lede { font-size:1.12rem; }
+		.related-heading { align-items:start; flex-direction:column; }
 	}
 </style>
