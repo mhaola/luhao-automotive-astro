@@ -18,18 +18,9 @@ const desafios = [
 ];
 
 const atuacao = [
-	{
-		title: 'Geração de demanda especializada',
-		text: 'Campanhas e páginas construídas especificamente para comunicar assinatura — não uma adaptação de campanha de venda tradicional.',
-	},
-	{
-		title: 'Captura orientada à intenção',
-		text: 'Formulários e fluxos de contato dimensionados para o que realmente importa na decisão de assinar: uso, prazo e perfil.',
-	},
-	{
-		title: 'Qualificação inicial',
-		text: 'Integração conceitual com o LuHao Qualification para filtrar contatos antes de chegarem ao time comercial.',
-	},
+	{ title: 'Geração de demanda especializada', text: 'Campanhas e páginas construídas especificamente para comunicar assinatura — não uma adaptação de campanha de venda tradicional.' },
+	{ title: 'Captura orientada à intenção', text: 'Formulários e fluxos de contato dimensionados para o que realmente importa na decisão de assinar: uso, prazo e perfil.' },
+	{ title: 'Qualificação inicial', text: 'Integração conceitual com o LuHao Qualification para filtrar contatos antes de chegarem ao time comercial.' },
 ];
 
 const pf = [
@@ -45,215 +36,98 @@ const pj = [
 ];
 
 const metodologia = [
-	{ step: '1. Geração de demanda', text: 'Campanhas segmentadas por perfil (PF/PJ) e por praça de atuação da concessionária ou grupo.' },
-	{ step: '2. Captura', text: 'Landing pages e formulários com os campos certos para o momento de decisão de assinatura.' },
-	{ step: '3. Qualificação', text: 'Filtragem inicial de intenção real de contratação antes do handoff comercial.' },
-	{ step: '4. Entrega ao comercial', text: 'Lead qualificado chega ao time de vendas com contexto, não apenas um contato frio.' },
+	{ step: '01', title: 'Atração', text: 'Campanhas segmentadas por perfil, produto e praça.' },
+	{ step: '02', title: 'Captura', text: 'Landing pages e formulários preparados para intenção real.' },
+	{ step: '03', title: 'Qualificação', text: 'Critérios comerciais e automação para organizar prioridade.' },
+	{ step: '04', title: 'Handoff', text: 'Oportunidade chega ao comercial com contexto e urgência.' },
 ];
 
 const faqItems = [
-	{
-		question: 'O LuHao Drive atende qualquer tipo de veículo em assinatura?',
-		answer:
-			'O LuHao Drive é estruturado para operações de assinatura de veículos operadas por concessionárias, grupos automotivos e parceiros de programas de assinatura — tanto para o público PF quanto PJ.',
-	},
-	{
-		question: 'Como funciona a diferença entre a jornada PF e PJ?',
-		answer:
-			'Construímos comunicação, páginas e critérios de qualificação distintos para cada público, já que o processo de decisão, os interlocutores e os critérios de avaliação são diferentes entre pessoa física e pessoa jurídica.',
-	},
-	{
-		question: 'O Drive já entrega os leads qualificados?',
-		answer:
-			'O Drive é responsável pela geração e captura de leads. A qualificação mais aprofundada, via automação de atendimento em WhatsApp e Instagram, é entregue pelo LuHao Qualification e pode ser combinada com o Drive.',
-	},
+	{ question: 'O LuHao Drive atende qualquer tipo de veículo em assinatura?', answer: 'O LuHao Drive é estruturado para operações de assinatura de veículos operadas por concessionárias, grupos automotivos e parceiros de programas de assinatura — tanto para o público PF quanto PJ.' },
+	{ question: 'Como funciona a diferença entre a jornada PF e PJ?', answer: 'Construímos comunicação, páginas e critérios de qualificação distintos para cada público, já que o processo de decisão, os interlocutores e os critérios de avaliação são diferentes entre pessoa física e pessoa jurídica.' },
+	{ question: 'O Drive já entrega os leads qualificados?', answer: 'O Drive é responsável pela geração e captura de leads. A qualificação mais aprofundada, via automação de atendimento em WhatsApp e Instagram, é entregue pelo LuHao Qualification e pode ser combinada com o Drive.' },
 ];
 
-const title = product.heroTitle;
-const description = product.heroSubheadline;
-
 const serviceSchema = {
-	'@context': 'https://schema.org',
-	'@type': 'Service',
-	name: product.name,
-	serviceType: 'Marketing para assinatura de veículos',
-	description: product.description,
+	'@context': 'https://schema.org', '@type': 'Service', name: product.name,
+	serviceType: 'Marketing para assinatura de veículos', description: product.description,
 	provider: { '@type': 'Organization', name: 'LuHao Automotive' },
 };
 ---
 
-<BaseLayout title={title} description={description} path="/produtos/drive" structuredData={serviceSchema}>
-	<Hero
-		eyebrow="LuHao Drive"
-		title={title}
-		subheadline={description}
-		primaryCta={{ label: product.cta, href: '/contato' }}
-		secondaryCta={{ label: 'Ver o case Savol', href: '/cases/savol-sign-drive' }}
-	/>
-
-	<section class="section-tight">
-		<div class="container">
-			<Breadcrumbs items={[{ label: 'Produtos', href: '/produtos' }, { label: 'Drive', href: '/produtos/drive' }]} />
-			<SectionHeading
-				eyebrow="Por que assinatura é diferente"
-				title="Assinatura não é venda tradicional."
-				description="Quem assina um veículo está comprando uso, não posse. O argumento comercial, os gatilhos de decisão e as objeções são diferentes de uma venda de 0 km ou seminovo — e a comunicação precisa refletir isso desde o primeiro anúncio."
-			/>
-		</div>
-	</section>
-
-	<section class="section-tight">
-		<div class="container">
-			<SectionHeading eyebrow="Desafios comuns" title="O que dificulta gerar demanda para assinatura." />
-			<ul class="check-list">
-				{desafios.map((item) => <li class="card">{item}</li>)}
-			</ul>
-		</div>
-	</section>
-
-	<section class="section-tight">
-		<div class="container">
-			<SectionHeading eyebrow="Como atuamos" title="Como a LuHao Drive atua." />
-			<div class="feature-grid">
-				{
-					atuacao.map((item) => (
-						<div class="card feature-grid__item">
-							<h3 class="text-h3">{item.title}</h3>
-							<p class="text-muted">{item.text}</p>
-						</div>
-					))
-				}
+<BaseLayout title={product.heroTitle} description={product.heroSubheadline} path="/produtos/drive" structuredData={serviceSchema}>
+	<Hero eyebrow="LuHao Drive" title="Leads qualificados. Mais vendas. Menos esforço." subheadline="Uma solução especializada para gerar, qualificar e entregar oportunidades reais de assinatura de veículos para o time comercial." primaryCta={{ label: product.cta, href: '/contato' }} secondaryCta={{ label: 'Ver case real', href: '/cases/savol-sign-drive' }} hasVisual={true}>
+		<div slot="visual" class="drive-dashboard">
+			<div class="drive-dashboard__header"><span>LuHao Drive</span><b>Operação ativa</b></div>
+			<div class="drive-dashboard__metrics">
+				<div><small>Leads</small><strong>328</strong><em>+42%</em></div>
+				<div><small>Conversão</small><strong>18,1%</strong><em>+6,4 p.p.</em></div>
+			</div>
+			<div class="drive-dashboard__chart"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+			<div class="drive-dashboard__bottom">
+				<div class="source-ring"><span>42%</span></div>
+				<div class="lead-list"><p><i class="grade grade--a">A</i><span>Lead PJ · até 30 dias</span></p><p><i class="grade grade--a">A</i><span>Lead PF · modelo definido</span></p><p><i class="grade grade--b">B</i><span>Explorando opções</span></p></div>
 			</div>
 		</div>
-	</section>
+	</Hero>
 
-	<section class="section-tight">
-		<div class="container">
-			<SectionHeading eyebrow="Duas jornadas, um método" title="PF e PJ exigem caminhos diferentes." />
-			<div class="journey-compare">
-				<div class="card journey-compare__col">
-					<p class="eyebrow">Pessoa Física</p>
-					<ul class="dash-list">
-						{pf.map((item) => <li>{item}</li>)}
-					</ul>
-				</div>
-				<div class="card journey-compare__col">
-					<p class="eyebrow">Pessoa Jurídica</p>
-					<ul class="dash-list">
-						{pj.map((item) => <li>{item}</li>)}
-					</ul>
-				</div>
-			</div>
-		</div>
-	</section>
+	<section class="section-tight intro-section"><div class="container"><Breadcrumbs items={[{ label: 'Produtos', href: '/produtos' }, { label: 'Drive', href: '/produtos/drive' }]} /><div class="intro-grid"><SectionHeading eyebrow="Por que assinatura é diferente" title="Assinatura não é venda tradicional." /><p class="text-muted intro-copy">Quem assina um veículo está comprando uso, não posse. O argumento comercial, os gatilhos de decisão e as objeções são diferentes de uma venda de 0 km ou seminovo — e a comunicação precisa refletir isso desde o primeiro anúncio.</p></div></div></section>
 
-	<section class="section-tight">
-		<div class="container">
-			<SectionHeading eyebrow="Metodologia" title="Da demanda à entrega ao comercial." />
-			<ol class="steps">
-				{
-					metodologia.map((item) => (
-						<li class="card steps__item">
-							<p class="steps__step">{item.step}</p>
-							<p class="text-muted">{item.text}</p>
-						</li>
-					))
-				}
-			</ol>
-		</div>
-	</section>
+	<section class="section product-process surface-grid"><div class="container"><SectionHeading eyebrow="Como funciona" title="Da atração ao handoff comercial." /><ol class="steps">{metodologia.map((item) => <li class="steps__item card"><span>{item.step}</span><h3>{item.title}</h3><p class="text-muted">{item.text}</p></li>)}</ol></div></section>
+
+	<section class="section-tight"><div class="container"><SectionHeading eyebrow="Desafios comuns" title="O que dificulta gerar demanda para assinatura." /><ul class="challenge-grid">{desafios.map((item, index) => <li class="card"><span>0{index + 1}</span><p>{item}</p></li>)}</ul></div></section>
+
+	<section class="section-tight"><div class="container"><SectionHeading eyebrow="Como atuamos" title="Uma operação desenhada para intenção comercial." /><div class="feature-grid">{atuacao.map((item, index) => <article class="card feature-grid__item"><span class="feature-grid__number">0{index + 1}</span><h3 class="text-h3">{item.title}</h3><p class="text-muted">{item.text}</p></article>)}</div></div></section>
+
+	<section class="section journey-section"><div class="container"><SectionHeading eyebrow="Duas jornadas, um método" title="PF e PJ exigem caminhos diferentes." /><div class="journey-compare"><div class="card journey-compare__col"><p class="eyebrow">Pessoa Física</p><ul class="dash-list">{pf.map((item) => <li>{item}</li>)}</ul></div><div class="card journey-compare__col"><p class="eyebrow">Pessoa Jurídica</p><ul class="dash-list">{pj.map((item) => <li>{item}</li>)}</ul></div></div></div></section>
 
 	<CaseHighlight />
-
 	<FAQ items={faqItems} />
-
-	<CTASection title="Quer estruturar a geração de leads para o seu programa de assinatura?" whatsappMessage={product.whatsappMessage} secondaryLabel="Falar com a LuHao" />
+	<CTASection title="Quer estruturar a geração de leads para o seu programa de assinatura?" description="Combine demanda, qualificação e inteligência em uma operação desenhada para o produto de assinatura." whatsappMessage={product.whatsappMessage} secondaryLabel="Falar com a LuHao" />
 </BaseLayout>
 
 <style>
-	.check-list,
-	.dash-list {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-3);
-	}
-
-	.check-list li {
-		padding: var(--space-4) var(--space-5);
-		color: var(--color-text);
-	}
-
-	.dash-list li {
-		padding-left: var(--space-4);
-		position: relative;
-		color: var(--color-text-muted);
-	}
-
-	.dash-list li::before {
-		content: '—';
-		position: absolute;
-		left: 0;
-		color: var(--color-accent);
-	}
-
-	.feature-grid {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: var(--space-4);
-	}
-
-	.feature-grid__item {
-		padding: var(--space-5);
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-2);
-	}
-
-	.journey-compare {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: var(--space-4);
-	}
-
-	.journey-compare__col {
-		padding: var(--space-5);
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-4);
-	}
-
-	.steps {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: var(--space-4);
-	}
-
-	.steps__item {
-		padding: var(--space-5);
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-2);
-	}
-
-	.steps__step {
-		font-weight: 700;
-		color: var(--color-accent);
-	}
-
-	@media (min-width: 640px) {
-		.feature-grid,
-		.journey-compare {
-			grid-template-columns: repeat(2, 1fr);
-		}
-	}
-
-	@media (min-width: 900px) {
-		.feature-grid {
-			grid-template-columns: repeat(3, 1fr);
-		}
-
-		.steps {
-			grid-template-columns: repeat(4, 1fr);
-		}
-	}
+	.drive-dashboard { position:relative; padding:1.35rem; border-radius:24px; border:1px solid rgba(126,164,229,.22); background:linear-gradient(145deg,rgba(8,32,74,.88),rgba(3,14,37,.94)); box-shadow:var(--shadow-md),0 0 80px rgba(37,214,255,.08); overflow:hidden; }
+	.drive-dashboard::after { content:''; position:absolute; width:280px; height:280px; right:-100px; top:-120px; border-radius:50%; background:radial-gradient(circle,rgba(255,61,184,.13),transparent 68%); }
+	.drive-dashboard__header { display:flex; justify-content:space-between; align-items:center; gap:1rem; padding-bottom:1rem; border-bottom:1px solid var(--color-border); font-size:.78rem; font-weight:750; }
+	.drive-dashboard__header b { color:var(--color-success); font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; }
+	.drive-dashboard__metrics { display:grid; grid-template-columns:1fr 1fr; gap:.8rem; margin:1rem 0; }
+	.drive-dashboard__metrics div { padding:1rem; border:1px solid var(--color-border); border-radius:14px; background:rgba(255,255,255,.018); display:grid; grid-template-columns:1fr auto; gap:.2rem .8rem; }
+	.drive-dashboard__metrics small { grid-column:1/-1; color:var(--color-text-soft); font-size:.68rem; }
+	.drive-dashboard__metrics strong { font-size:1.55rem; }
+	.drive-dashboard__metrics em { align-self:end; font-size:.68rem; font-style:normal; color:var(--color-success); }
+	.drive-dashboard__chart { height:120px; display:flex; align-items:end; gap:7px; padding:1rem; border:1px solid var(--color-border); border-radius:14px; background:rgba(255,255,255,.015); }
+	.drive-dashboard__chart span { flex:1; border-radius:5px 5px 0 0; background:linear-gradient(to top,rgba(255,61,184,.8),rgba(37,214,255,.9)); }
+	.drive-dashboard__chart span:nth-child(1){height:25%}.drive-dashboard__chart span:nth-child(2){height:32%}.drive-dashboard__chart span:nth-child(3){height:47%}.drive-dashboard__chart span:nth-child(4){height:42%}.drive-dashboard__chart span:nth-child(5){height:63%}.drive-dashboard__chart span:nth-child(6){height:71%}.drive-dashboard__chart span:nth-child(7){height:82%}.drive-dashboard__chart span:nth-child(8){height:100%}
+	.drive-dashboard__bottom { display:grid; grid-template-columns:100px 1fr; gap:1rem; margin-top:1rem; }
+	.source-ring { width:90px; height:90px; border-radius:50%; display:grid; place-items:center; background:conic-gradient(var(--color-accent) 0 42%,var(--color-accent-secondary) 42% 73%,rgba(255,255,255,.08) 73%); position:relative; }
+	.source-ring::after { content:''; position:absolute; inset:10px; border-radius:50%; background:#061a42; }
+	.source-ring span { position:relative; z-index:1; font-weight:800; }
+	.lead-list { display:flex; flex-direction:column; justify-content:center; gap:.5rem; }
+	.lead-list p { display:flex; align-items:center; gap:.55rem; font-size:.7rem; color:var(--color-text-muted); }
+	.grade { width:22px; height:22px; display:grid; place-items:center; border-radius:50%; font-style:normal; font-weight:800; }
+	.grade--a { background:var(--color-success); color:#02150d; }.grade--b { background:#f2b84b; color:#241600; }
+	.intro-grid { display:grid; grid-template-columns:1fr .78fr; gap:clamp(3rem,8vw,8rem); align-items:start; margin-top:4rem; }
+	.intro-copy { font-size:1.05rem; padding-top:1.4rem; }
+	.product-process { background:linear-gradient(180deg,rgba(6,26,66,.22),rgba(6,26,66,.04)); }
+	.steps { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-top:3.5rem; }
+	.steps__item { min-height:230px; padding:1.6rem; display:flex; flex-direction:column; gap:.85rem; }
+	.steps__item > span { color:var(--color-accent); font-weight:800; letter-spacing:.08em; }
+	.steps__item h3 { font-size:1.2rem; margin-top:auto; }
+	.steps__item p { font-size:.9rem; }
+	.challenge-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1rem; margin-top:3.5rem; }
+	.challenge-grid li { padding:1.6rem; display:grid; grid-template-columns:46px 1fr; gap:1rem; align-items:start; }
+	.challenge-grid span { color:var(--color-accent-secondary); font-size:.72rem; font-weight:800; letter-spacing:.08em; }
+	.feature-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-top:3.5rem; }
+	.feature-grid__item { padding:2rem; display:flex; flex-direction:column; gap:1rem; min-height:300px; }
+	.feature-grid__number { color:var(--color-text-soft); font-size:.72rem; font-weight:800; }
+	.feature-grid__item h3 { margin-top:auto; }
+	.journey-section { background:linear-gradient(180deg,rgba(5,19,47,.18),transparent); }
+	.journey-compare { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:3.5rem; }
+	.journey-compare__col { padding:2rem; display:flex; flex-direction:column; gap:1.5rem; }
+	.dash-list { display:flex; flex-direction:column; gap:1rem; }
+	.dash-list li { padding-left:1.2rem; position:relative; color:var(--color-text-muted); }
+	.dash-list li::before { content:'—'; position:absolute; left:0; color:var(--color-accent); }
+	@media(max-width:900px){.intro-grid,.journey-compare{grid-template-columns:1fr}.steps{grid-template-columns:repeat(2,1fr)}.feature-grid{grid-template-columns:1fr}.challenge-grid{grid-template-columns:1fr}}
+	@media(max-width:600px){.steps{grid-template-columns:1fr}.drive-dashboard__bottom{grid-template-columns:1fr}.source-ring{display:none}.challenge-grid li{grid-template-columns:32px 1fr}}
 </style>
