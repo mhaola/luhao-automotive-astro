@@ -3,47 +3,149 @@ import type { Product } from '../config/site';
 
 interface Props {
 	product: Product;
+	featured?: boolean;
 }
 
-const { product } = Astro.props;
+const { product, featured = false } = Astro.props;
+const index = ['drive', 'demand', 'service', 'qualification', 'intelligence'].indexOf(product.slug) + 1;
 ---
 
-<a href={`/produtos/${product.slug}`} class="product-card card">
-	<span class="product-card__label">{product.shortLabel}</span>
-	<h3 class="text-h3">{product.tagline}</h3>
-	<p class="text-muted">{product.cardDescription}</p>
-	<span class="product-card__link">Conhecer o {product.shortLabel} →</span>
+<a href={`/produtos/${product.slug}`} class:list={['product-card card', { 'product-card--featured': featured }]}>
+	<div class="product-card__topline">
+		<span class="product-card__index">0{index}</span>
+		<span class="product-card__label">{product.shortLabel}</span>
+	</div>
+	<div class="product-card__body">
+		<h3 class={featured ? 'text-h2' : 'text-h3'}>{product.tagline}</h3>
+		<p class="text-muted">{product.cardDescription}</p>
+	</div>
+	<div class="product-card__signal" aria-hidden="true">
+		<span></span><span></span><span></span><span></span><span></span>
+	</div>
+	<span class="product-card__link">Conhecer {product.shortLabel} <span aria-hidden="true">↗</span></span>
 </a>
 
 <style>
 	.product-card {
+		position: relative;
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-3);
-		padding: var(--space-6);
+		gap: var(--space-5);
+		padding: clamp(1.5rem, 2.4vw, 2rem);
 		text-decoration: none;
 		color: var(--color-text);
 		height: 100%;
-		transition: border-color 0.15s ease, transform 0.15s ease;
+		overflow: hidden;
+		transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
+	}
+
+	.product-card::after {
+		content: '';
+		position: absolute;
+		width: 14rem;
+		height: 14rem;
+		right: -7rem;
+		top: -7rem;
+		border-radius: 50%;
+		background: radial-gradient(circle, rgba(37, 214, 255, 0.12), transparent 68%);
+		pointer-events: none;
+	}
+
+	.product-card--featured::after {
+		width: 24rem;
+		height: 24rem;
+		right: -8rem;
+		top: -8rem;
+		background: radial-gradient(circle, rgba(255, 61, 184, 0.14), rgba(37, 214, 255, 0.06) 36%, transparent 70%);
 	}
 
 	.product-card:hover {
-		border-color: var(--color-accent);
+		transform: translateY(-5px);
+		border-color: rgba(37, 214, 255, 0.42);
+		box-shadow: var(--shadow-md), var(--shadow-glow);
+	}
+
+	.product-card__topline {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+	}
+
+	.product-card__index {
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		color: var(--color-text-soft);
 	}
 
 	.product-card__label {
 		display: inline-block;
-		font-size: 0.75rem;
-		font-weight: 700;
-		letter-spacing: 0.08em;
+		font-size: 0.72rem;
+		font-weight: 780;
+		letter-spacing: 0.11em;
 		text-transform: uppercase;
 		color: var(--color-accent);
 	}
 
-	.product-card__link {
+	.product-card__body {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-4);
+		max-width: 32rem;
+	}
+
+	.product-card__body p {
+		font-size: 0.95rem;
+	}
+
+	.product-card__signal {
+		display: flex;
+		align-items: end;
+		gap: 0.38rem;
+		height: 46px;
 		margin-top: auto;
-		padding-top: var(--space-3);
-		font-weight: 600;
-		font-size: 0.9375rem;
+		opacity: 0.72;
+	}
+
+	.product-card__signal span {
+		display: block;
+		width: 5px;
+		border-radius: 999px;
+		background: linear-gradient(to top, var(--color-accent), var(--color-accent-secondary));
+	}
+
+	.product-card__signal span:nth-child(1) { height: 18%; }
+	.product-card__signal span:nth-child(2) { height: 38%; }
+	.product-card__signal span:nth-child(3) { height: 54%; }
+	.product-card__signal span:nth-child(4) { height: 72%; }
+	.product-card__signal span:nth-child(5) { height: 100%; }
+
+	.product-card__link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.45rem;
+		font-weight: 700;
+		font-size: 0.9rem;
+		color: var(--color-text);
+	}
+
+	.product-card:hover .product-card__link {
+		color: var(--color-accent-secondary);
+	}
+
+	@media (min-width: 1080px) {
+		.product-card--featured {
+			padding: 2.35rem;
+		}
+
+		.product-card--featured .product-card__body p {
+			font-size: 1rem;
+			max-width: 27rem;
+		}
+
+		.product-card--featured .product-card__signal {
+			height: 84px;
+		}
 	}
 </style>
