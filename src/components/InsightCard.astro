@@ -11,12 +11,24 @@ const dateFormatter = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 
 ---
 
 <a href={`/insights/${post.id}`} class="insight-card card">
-	<p class="eyebrow">{post.data.category}</p>
-	<h2 class="text-h3">{post.data.title}</h2>
-	<p class="text-muted">{post.data.description}</p>
-	<p class="text-small text-muted insight-card__date">
-		{dateFormatter.format(post.data.pubDate)}
-	</p>
+	{post.data.featuredImage && (
+		<img
+			src={post.data.featuredImage}
+			alt={post.data.featuredImageAlt ?? post.data.title}
+			class="insight-card__image"
+			loading="lazy"
+			width="640"
+			height="360"
+		/>
+	)}
+	<div class="insight-card__body">
+		<p class="eyebrow">{post.data.category}</p>
+		<h2 class="text-h3">{post.data.title}</h2>
+		<p class="text-muted">{post.data.description}</p>
+		<p class="text-small text-muted insight-card__date">
+			{dateFormatter.format(post.data.pubDate)}
+		</p>
+	</div>
 </a>
 
 <!-- Estilos de .insight-card ficam em src/styles/global.css (não escopados),

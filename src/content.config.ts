@@ -13,6 +13,8 @@ const insights = defineCollection({
 		author: z.string().default('LuHao Automotive'),
 		draft: z.boolean().default(false),
 		featured: z.boolean().optional(),
+		featuredImage: z.string().optional(),
+		featuredImageAlt: z.string().optional(),
 	}),
 });
 

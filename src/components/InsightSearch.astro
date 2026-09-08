@@ -17,6 +17,8 @@ const searchIndex = posts.map((post) => ({
 	tags: post.data.tags,
 	date: dateFormatter.format(post.data.pubDate),
 	href: `/insights/${post.id}`,
+	image: post.data.featuredImage ?? null,
+	imageAlt: post.data.featuredImageAlt ?? post.data.title,
 }));
 ---
 
@@ -45,6 +47,8 @@ const searchIndex = posts.map((post) => ({
 		tags: string[];
 		date: string;
 		href: string;
+		image: string | null;
+		imageAlt: string;
 	}
 
 	function normalize(value: string): string {
@@ -63,12 +67,18 @@ const searchIndex = posts.map((post) => ({
 	}
 
 	function renderCard(post: SearchablePost): string {
+		const image = post.image
+			? `<img src="${escapeHtml(post.image)}" alt="${escapeHtml(post.imageAlt)}" class="insight-card__image" loading="lazy" width="640" height="360" />`
+			: '';
 		return `
 			<a href="${escapeHtml(post.href)}" class="insight-card card">
-				<p class="eyebrow">${escapeHtml(post.category)}</p>
-				<h2 class="text-h3">${escapeHtml(post.title)}</h2>
-				<p class="text-muted">${escapeHtml(post.description)}</p>
-				<p class="text-small text-muted insight-card__date">${escapeHtml(post.date)}</p>
+				${image}
+				<div class="insight-card__body">
+					<p class="eyebrow">${escapeHtml(post.category)}</p>
+					<h2 class="text-h3">${escapeHtml(post.title)}</h2>
+					<p class="text-muted">${escapeHtml(post.description)}</p>
+					<p class="text-small text-muted insight-card__date">${escapeHtml(post.date)}</p>
+				</div>
 			</a>
 		`;
 	}

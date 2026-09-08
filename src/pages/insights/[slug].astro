@@ -36,6 +36,7 @@ const articleSchema = {
 	author: { '@type': 'Organization', name: post.data.author },
 	publisher: { '@type': 'Organization', name: site.name },
 	mainEntityOfPage: new URL(`/insights/${post.id}`, site.url).toString(),
+	...(post.data.featuredImage && { image: new URL(post.data.featuredImage, site.url).toString() }),
 };
 ---
 
@@ -43,6 +44,7 @@ const articleSchema = {
 	title={post.data.title}
 	description={post.data.description}
 	path={`/insights/${post.id}`}
+	image={post.data.featuredImage}
 	type="article"
 	structuredData={articleSchema}
 >
@@ -56,6 +58,15 @@ const articleSchema = {
 			/>
 
 			<header class="insight-article__header">
+				{post.data.featuredImage && (
+					<img
+						src={post.data.featuredImage}
+						alt={post.data.featuredImageAlt ?? post.data.title}
+						class="insight-article__image"
+						width="1200"
+						height="675"
+					/>
+				)}
 				<a class="eyebrow" href={categoryHref}>{post.data.category}</a>
 				<h1 class="text-h1">{post.data.title}</h1>
 				<p class="text-muted insight-article__meta">
@@ -115,6 +126,15 @@ const articleSchema = {
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-3);
+	}
+
+	.insight-article__image {
+		width: 100%;
+		aspect-ratio: 16 / 9;
+		object-fit: cover;
+		border-radius: var(--radius-lg);
+		border: 1px solid var(--color-border);
+		margin-bottom: var(--space-2);
 	}
 
 	.insight-article__header .eyebrow {
