@@ -1,170 +1,894 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import SectionHeading from '../components/SectionHeading.astro';
-import ProductGrid from '../components/ProductGrid.astro';
-import CaseHighlight from '../components/CaseHighlight.astro';
-import CTASection from '../components/CTASection.astro';
-import { site } from '../config/site';
+import { productList, savolCase, site, whatsappLink } from '../config/site';
+
+const pageTitle = 'LuHao Automotive | Aquisição automotiva da mídia ao resultado';
+const pageDescription =
+	'A LuHao Automotive conecta geração de demanda, qualificação, handoff e inteligência para concessionárias, locadoras e operações automotivas que precisam transformar mídia em oportunidades comerciais mensuráveis.';
 
 const journeys = [
-	{ name: 'Assinatura', detail: 'Intenção de uso, não de posse. Ciclo de decisão mais curto, PF e PJ.' },
-	{ name: '0 km', detail: 'Modelo, oferta e estoque guiando a demanda até o test-drive e a venda.' },
-	{ name: 'Seminovos', detail: 'Veículo específico, preço e condição — decisão orientada por disponibilidade.' },
-	{ name: 'Pós-venda', detail: 'Capacidade de oficina e recorrência, não uma venda única.' },
+	{ number: '01', name: 'Assinatura', detail: 'Intenção de uso, PF e PJ, ciclo próprio e leitura de CAC.' },
+	{ number: '02', name: '0 km', detail: 'Modelo, oferta e estoque guiando a demanda até test-drive e fechamento.' },
+	{ number: '03', name: 'Seminovos', detail: 'Veículo específico, preço, condição e disponibilidade orientando a decisão.' },
+	{ number: '04', name: 'Pós-venda', detail: 'Capacidade de oficina e recorrência, com foco em agenda e ocupação.' },
 ];
+
+const acquisitionFlow = ['ADS', 'Landing Page', 'WhatsApp', 'Qualificação', 'Score', 'Handoff', 'Intelligence'];
+const whatsappHref = whatsappLink('Olá! Quero entender como a LuHao Automotive pode estruturar a aquisição da minha operação automotiva.');
 ---
 
-<BaseLayout title={site.name} description={site.description} path="/">
-	<section class="hero">
-		<picture class="hero__bg" aria-hidden="true">
-			<source media="(max-width: 767px)" srcset="/images/hero-mobile.avif" type="image/avif" />
-			<source media="(max-width: 767px)" srcset="/images/hero-main-mobile.webp" type="image/webp" />
-			<source media="(min-width: 768px)" srcset="/images/hero-desktop.avif" type="image/avif" />
-			<source media="(min-width: 768px)" srcset="/images/hero-main-desktop.webp" type="image/webp" />
-			<img src="/images/hero-main-desktop.webp" alt="" width="2000" height="1116" loading="eager" />
-		</picture>
-		<div class="hero__overlay" aria-hidden="true"></div>
-		<div class="container hero__inner">
-			<div class="hero__text">
-				<h1 class="text-display">{site.tagline}</h1>
-				<p class="hero__subheadline text-muted">{site.description}</p>
-				<div class="hero__actions">
-					<a href="/produtos" class="btn btn-primary">Conheça nossas soluções</a>
+<BaseLayout
+	title={pageTitle}
+	description={pageDescription}
+	path="/"
+	image="https://grupo-ramasa-auto.luhao-automotive.com.br/assets/drive-hero.webp"
+>
+	<section class="home-hero">
+		<img
+			class="home-hero__image"
+			src="https://grupo-ramasa-auto.luhao-automotive.com.br/assets/drive-hero.webp"
+			alt="Veículo em ambiente automotivo tecnológico"
+			width="1672"
+			height="941"
+			loading="eager"
+			fetchpriority="high"
+		/>
+		<div class="home-hero__overlay" aria-hidden="true"></div>
+		<div class="home-hero__grid" aria-hidden="true"></div>
+
+		<div class="container home-hero__inner">
+			<div class="home-hero__copy">
+				<p class="eyebrow">Aquisição automotiva · da mídia ao resultado</p>
+				<h1>Aquisição previsível para operações automotivas.</h1>
+				<p class="home-hero__lead">
+					A LuHao Automotive conecta geração de demanda, qualificação, handoff e inteligência para transformar investimento em oportunidades comerciais mensuráveis.
+				</p>
+				<div class="home-hero__actions">
+					<a href="/produtos/drive" class="btn btn-primary">Conheça o LuHao Drive</a>
 					<a href="/contato" class="btn btn-secondary">Fale com a LuHao</a>
+				</div>
+				<div class="home-hero__audiences" aria-label="Públicos atendidos">
+					<span>Concessionárias</span><i></i><span>Locadoras</span><i></i><span>Assinatura</span><i></i><span>Frotas</span>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<section class="section-tight journeys">
-		<div class="container">
-			<SectionHeading
-				eyebrow="Como pensamos"
-				title="Automotivo não é um único funil."
-				description="A intenção, o argumento comercial, o momento de compra e os critérios de qualificação mudam de acordo com o produto. A LuHao Automotive estrutura cada operação de acordo com a jornada que precisa gerar."
-			/>
-			<div class="journeys__grid">
+	<section class="acquisition-strip" aria-label="Fluxo de aquisição LuHao Automotive">
+		<div class="container acquisition-strip__inner">
+			<span class="acquisition-strip__label">Motor de aquisição</span>
+			<div class="acquisition-strip__flow">
 				{
-					journeys.map((journey) => (
-						<div class="journeys__item card">
-							<h3 class="text-h3">{journey.name}</h3>
-							<p class="text-muted">{journey.detail}</p>
-						</div>
+					acquisitionFlow.map((item, index) => (
+						<>
+							<span>{item}</span>
+							{index < acquisitionFlow.length - 1 && <b aria-hidden="true">→</b>}
+						</>
 					))
 				}
 			</div>
 		</div>
 	</section>
 
-	<section class="section-tight">
+	<section class="section home-journeys">
 		<div class="container">
-			<SectionHeading
-				eyebrow="Nossos produtos"
-				title="Cinco produtos, cinco jornadas comerciais."
-				description="Cada produto da LuHao Automotive resolve uma etapa específica da operação — da geração de demanda à inteligência sobre o resultado."
-			/>
-			<ProductGrid />
+			<div class="home-section-heading">
+				<p class="eyebrow">Como pensamos</p>
+				<h2>Automotivo não é um único funil.</h2>
+				<p>
+					A intenção, o argumento comercial, o momento de compra e os critérios de qualificação mudam de acordo com a jornada. A estrutura de aquisição precisa acompanhar essa diferença.
+				</p>
+			</div>
+			<div class="home-journeys__grid">
+				{
+					journeys.map((journey) => (
+						<article class="home-journey-card">
+							<span>{journey.number}</span>
+							<h3>{journey.name}</h3>
+							<p>{journey.detail}</p>
+						</article>
+					))
+				}
+			</div>
 		</div>
 	</section>
 
-	<CaseHighlight />
+	<section class="drive-engine">
+		<img
+			class="drive-engine__image"
+			src="https://grupo-ramasa-auto.luhao-automotive.com.br/assets/drive-fleet.webp"
+			alt="Frota de veículos em operação corporativa"
+			width="1672"
+			height="941"
+			loading="lazy"
+		/>
+		<div class="drive-engine__overlay" aria-hidden="true"></div>
+		<div class="container drive-engine__inner">
+			<div class="drive-engine__copy">
+				<p class="eyebrow">LuHao Drive</p>
+				<h2>Não entregamos só leads.<br /><span>Construímos o motor de aquisição.</span></h2>
+				<p>
+					Mídia, landing pages, WhatsApp, qualificação e dados trabalhando no mesmo funil para que marketing e comercial acompanhem a jornada até o fechamento.
+				</p>
+				<a class="home-text-link" href="/produtos/drive">Conhecer o LuHao Drive <span>→</span></a>
+			</div>
 
-	<CTASection
-		title="Pronto para estruturar a geração de demanda da sua operação?"
-		description="Conte pra gente sobre seu negócio — assinatura, vendas ou pós-venda — e vamos entender qual produto faz sentido."
-		whatsappMessage="Olá! Quero conhecer as soluções da LuHao Automotive."
-	/>
+			<div class="drive-engine__panel" aria-label="Etapas do motor de aquisição">
+				<p class="drive-engine__panel-label">Do investimento ao contrato</p>
+				<div class="drive-engine__steps">
+					<div><span>01</span><strong>Gerar</strong><small>Google · Meta · Landing Pages</small></div>
+					<div><span>02</span><strong>Qualificar</strong><small>WhatsApp · dados · intenção</small></div>
+					<div><span>03</span><strong>Priorizar</strong><small>Score A/B/C · contexto comercial</small></div>
+					<div><span>04</span><strong>Mensurar</strong><small>CPL · conversão · CAC · receita</small></div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section home-products">
+		<div class="container">
+			<div class="home-section-heading home-section-heading--split">
+				<div>
+					<p class="eyebrow">Ecossistema LuHao Automotive</p>
+					<h2>Cinco produtos.<br />Uma mesma visão de resultado.</h2>
+				</div>
+				<p>
+					Cada produto resolve uma etapa específica da operação, compartilhando a mesma disciplina de tracking, qualificação e performance comercial.
+				</p>
+			</div>
+
+			<div class="home-products__grid">
+				{
+					productList.map((product, index) => (
+						<a
+							href={`/produtos/${product.slug}`}
+							class:list={['home-product-card', index === 0 && 'home-product-card--featured']}
+						>
+							<span class="home-product-card__label">{product.shortLabel}</span>
+							<h3>{product.tagline}</h3>
+							<p>{product.cardDescription}</p>
+							<span class="home-product-card__link">Conhecer {product.shortLabel} →</span>
+						</a>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="section home-case">
+		<div class="container home-case__card">
+			<div class="home-case__copy">
+				<p class="eyebrow">Case em destaque · LuHao Drive</p>
+				<h2>{savolCase.headline}</h2>
+				<p>{savolCase.title} — {savolCase.location}. {savolCase.summary}</p>
+				<a href={`/cases/${savolCase.slug}`} class="btn btn-secondary">Conheça o case</a>
+			</div>
+			<dl class="home-case__metrics">
+				{
+					savolCase.metrics.map((metric) => (
+						<div>
+							<dt>{metric.label}</dt>
+							<dd>{metric.value}</dd>
+						</div>
+					))
+				}
+				<div>
+					<dt>Período</dt>
+					<dd class="home-case__period">{savolCase.period}</dd>
+				</div>
+			</dl>
+		</div>
+	</section>
+
+	<section class="section home-closing">
+		<div class="home-closing__glow home-closing__glow--one" aria-hidden="true"></div>
+		<div class="home-closing__glow home-closing__glow--two" aria-hidden="true"></div>
+		<div class="container home-closing__inner">
+			<p class="eyebrow">Da demanda ao resultado comercial</p>
+			<h2>Quer estruturar a aquisição da sua <span>operação automotiva?</span></h2>
+			<p>Converse com a LuHao sobre assinatura, vendas, pós-venda, qualificação ou inteligência comercial.</p>
+			<div class="home-closing__actions">
+				<a href={whatsappHref} target="_blank" rel="noopener noreferrer" class="btn btn-primary">Falar no WhatsApp</a>
+				<a href="/contato" class="btn btn-secondary">Falar com a LuHao</a>
+			</div>
+		</div>
+	</section>
 </BaseLayout>
 
 <style>
-	.hero {
+	.home-hero {
 		position: relative;
-		min-height: 640px;
+		min-height: 720px;
 		display: flex;
 		align-items: center;
 		overflow: hidden;
+		isolation: isolate;
 	}
 
-	.hero__bg {
+	.home-hero__image {
 		position: absolute;
 		inset: 0;
-		z-index: 0;
-	}
-
-	.hero__bg img {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
+		object-position: center;
+		z-index: -3;
 	}
 
-	.hero__overlay {
+	.home-hero__overlay {
 		position: absolute;
 		inset: 0;
-		z-index: 1;
+		z-index: -2;
 		background:
-			linear-gradient(90deg, var(--color-bg) 12%, rgba(2, 11, 36, 0.78) 45%, rgba(2, 11, 36, 0.35) 100%),
+			linear-gradient(90deg, rgba(2, 7, 19, 0.98) 4%, rgba(2, 8, 24, 0.9) 39%, rgba(2, 8, 24, 0.38) 76%, rgba(2, 8, 24, 0.18)),
 			linear-gradient(0deg, var(--color-bg) 0%, transparent 30%);
 	}
 
-	.hero__inner {
-		position: relative;
-		z-index: 2;
-		padding-block: var(--space-9);
+	.home-hero__grid {
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		opacity: 0.16;
+		background-image:
+			linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+			linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+		background-size: 72px 72px;
+		mask-image: linear-gradient(90deg, black, transparent 75%);
 	}
 
-	.hero__text {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-5);
-		max-width: 640px;
+	.home-hero__inner {
+		padding-block: 8.5rem 7.5rem;
 	}
 
-	.hero__subheadline {
-		font-size: 1.125rem;
-		max-width: 560px;
-		color: rgba(255, 255, 255, 0.82);
+	.home-hero__copy {
+		max-width: 760px;
 	}
 
-	.hero__actions {
+	.home-hero h1,
+	.home-section-heading h2,
+	.drive-engine h2,
+	.home-case h2,
+	.home-closing h2 {
+		letter-spacing: -0.045em;
+	}
+
+	.home-hero h1 {
+		max-width: 760px;
+		margin-top: 1rem;
+		font-size: clamp(3.25rem, 6.5vw, 6.2rem);
+		line-height: 0.96;
+	}
+
+	.home-hero__lead {
+		max-width: 650px;
+		margin-top: 1.7rem;
+		font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+		color: rgba(255, 255, 255, 0.78);
+	}
+
+	.home-hero__actions {
 		display: flex;
 		flex-wrap: wrap;
-		gap: var(--space-3);
-		margin-top: var(--space-2);
+		gap: 0.75rem;
+		margin-top: 2rem;
 	}
 
-	@media (max-width: 767px) {
-		.hero {
-			min-height: 560px;
-		}
-
-		.hero__overlay {
-			background:
-				linear-gradient(180deg, rgba(2, 11, 36, 0.55) 0%, var(--color-bg) 92%);
-		}
+	.home-hero__audiences {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 0.65rem;
+		margin-top: 2.35rem;
+		color: rgba(255, 255, 255, 0.6);
+		font-size: 0.82rem;
+		font-weight: 600;
+		letter-spacing: 0.035em;
+		text-transform: uppercase;
 	}
 
-	.journeys__grid {
+	.home-hero__audiences i {
+		width: 3px;
+		height: 3px;
+		border-radius: 50%;
+		background: var(--color-accent);
+	}
+
+	.acquisition-strip {
+		position: relative;
+		z-index: 3;
+		margin-top: -1px;
+		border-block: 1px solid var(--color-border);
+		background: rgba(3, 11, 31, 0.96);
+	}
+
+	.acquisition-strip__inner {
+		min-height: 82px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 2rem;
+	}
+
+	.acquisition-strip__label {
+		white-space: nowrap;
+		color: var(--color-accent);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.11em;
+		text-transform: uppercase;
+	}
+
+	.acquisition-strip__flow {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		gap: 0.7rem;
+		font-size: 0.83rem;
+		font-weight: 650;
+	}
+
+	.acquisition-strip__flow b {
+		color: var(--color-accent);
+		font-weight: 400;
+	}
+
+	.home-journeys {
+		background:
+			radial-gradient(circle at 88% 10%, rgba(37, 214, 255, 0.08), transparent 31%),
+			var(--color-bg);
+	}
+
+	.home-section-heading {
+		max-width: 860px;
+		margin-bottom: 3.5rem;
+	}
+
+	.home-section-heading h2 {
+		margin-top: 0.8rem;
+		font-size: clamp(2.4rem, 5vw, 4.7rem);
+		line-height: 1;
+	}
+
+	.home-section-heading > p:last-child,
+	.home-section-heading--split > p {
+		max-width: 760px;
+		margin-top: 1.35rem;
+		color: var(--color-text-muted);
+		font-size: 1.06rem;
+	}
+
+	.home-journeys__grid {
 		display: grid;
-		grid-template-columns: 1fr;
-		gap: var(--space-4);
+		grid-template-columns: repeat(4, 1fr);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-lg);
+		overflow: hidden;
 	}
 
-	.journeys__item {
-		padding: var(--space-5);
+	.home-journey-card {
+		min-height: 260px;
+		padding: 1.8rem;
+		border-right: 1px solid var(--color-border);
+		background: linear-gradient(180deg, rgba(9, 47, 115, 0.22), rgba(2, 11, 36, 0.08));
+	}
+
+	.home-journey-card:last-child {
+		border-right: 0;
+	}
+
+	.home-journey-card > span {
+		color: var(--color-accent);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.1em;
+	}
+
+	.home-journey-card h3 {
+		margin-top: 3.4rem;
+		font-size: 1.45rem;
+	}
+
+	.home-journey-card p {
+		margin-top: 0.75rem;
+		color: var(--color-text-muted);
+		font-size: 0.94rem;
+	}
+
+	.drive-engine {
+		position: relative;
+		min-height: 760px;
+		display: flex;
+		align-items: center;
+		overflow: hidden;
+		isolation: isolate;
+	}
+
+	.drive-engine__image {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		z-index: -2;
+	}
+
+	.drive-engine__overlay {
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		background:
+			linear-gradient(90deg, rgba(2, 8, 24, 0.98), rgba(2, 8, 24, 0.84) 48%, rgba(2, 8, 24, 0.42)),
+			linear-gradient(0deg, rgba(2, 8, 24, 0.72), transparent 42%);
+	}
+
+	.drive-engine__inner {
+		display: grid;
+		grid-template-columns: 1.08fr 0.82fr;
+		gap: clamp(3rem, 7vw, 6rem);
+		align-items: center;
+		padding-block: 7rem;
+	}
+
+	.drive-engine__copy h2 {
+		margin-top: 0.8rem;
+		font-size: clamp(2.7rem, 5.1vw, 5rem);
+		line-height: 1;
+	}
+
+	.drive-engine__copy h2 span,
+	.home-closing h2 span {
+		color: var(--color-accent-secondary);
+	}
+
+	.drive-engine__copy > p:not(.eyebrow) {
+		max-width: 650px;
+		margin-top: 1.5rem;
+		color: rgba(255, 255, 255, 0.74);
+		font-size: 1.06rem;
+	}
+
+	.home-text-link {
+		display: inline-flex;
+		gap: 0.65rem;
+		margin-top: 1.5rem;
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	.home-text-link span {
+		color: var(--color-accent);
+	}
+
+	.drive-engine__panel {
+		border: 1px solid rgba(255, 255, 255, 0.16);
+		border-radius: var(--radius-lg);
+		background: rgba(2, 8, 24, 0.7);
+		box-shadow: var(--shadow-md);
+		backdrop-filter: blur(15px);
+		overflow: hidden;
+	}
+
+	.drive-engine__panel-label {
+		padding: 1.1rem 1.35rem;
+		border-bottom: 1px solid var(--color-border);
+		color: var(--color-accent);
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+	}
+
+	.drive-engine__steps > div {
+		display: grid;
+		grid-template-columns: 2.7rem 1fr;
+		padding: 1.25rem 1.35rem;
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.drive-engine__steps > div:last-child {
+		border-bottom: 0;
+	}
+
+	.drive-engine__steps span {
+		grid-row: 1 / 3;
+		color: var(--color-accent-secondary);
+		font-size: 0.76rem;
+		font-weight: 700;
+	}
+
+	.drive-engine__steps strong {
+		font-size: 1.16rem;
+	}
+
+	.drive-engine__steps small {
+		color: var(--color-text-muted);
+	}
+
+	.home-products {
+		background: #041027;
+	}
+
+	.home-section-heading--split {
+		max-width: none;
+		display: grid;
+		grid-template-columns: 1.1fr 0.62fr;
+		gap: 4rem;
+		align-items: end;
+	}
+
+	.home-section-heading--split > p {
+		margin: 0 0 0.6rem;
+	}
+
+	.home-products__grid {
+		display: grid;
+		grid-template-columns: repeat(6, 1fr);
+		gap: 1rem;
+	}
+
+	.home-product-card {
+		grid-column: span 2;
+		min-height: 330px;
+		padding: 1.75rem;
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-2);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-lg);
+		background: linear-gradient(150deg, rgba(9, 47, 115, 0.38), rgba(2, 11, 36, 0.8));
+		text-decoration: none;
+		transition: transform 0.2s ease, border-color 0.2s ease;
 	}
 
-	@media (min-width: 640px) {
-		.journeys__grid {
-			grid-template-columns: repeat(2, 1fr);
+	.home-product-card:nth-child(4),
+	.home-product-card:nth-child(5) {
+		grid-column: span 3;
+	}
+
+	.home-product-card:hover {
+		transform: translateY(-5px);
+		border-color: rgba(37, 214, 255, 0.48);
+	}
+
+	.home-product-card--featured {
+		border-color: rgba(255, 61, 184, 0.44);
+		background:
+			radial-gradient(circle at 85% 10%, rgba(37, 214, 255, 0.11), transparent 35%),
+			linear-gradient(150deg, rgba(255, 61, 184, 0.14), rgba(6, 30, 79, 0.72));
+	}
+
+	.home-product-card__label {
+		color: var(--color-accent);
+		font-size: 0.74rem;
+		font-weight: 700;
+		letter-spacing: 0.13em;
+		text-transform: uppercase;
+	}
+
+	.home-product-card h3 {
+		max-width: 330px;
+		margin-top: 3.4rem;
+		font-size: 1.45rem;
+	}
+
+	.home-product-card p {
+		margin-top: 0.85rem;
+		color: var(--color-text-muted);
+	}
+
+	.home-product-card__link {
+		margin-top: auto;
+		padding-top: 1.7rem;
+		font-size: 0.9rem;
+		font-weight: 700;
+	}
+
+	.home-case {
+		background: var(--color-bg);
+	}
+
+	.home-case__card {
+		display: grid;
+		grid-template-columns: 1.1fr 0.9fr;
+		min-height: 510px;
+		padding-inline: 0;
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-lg);
+		background:
+			radial-gradient(circle at 91% 20%, rgba(37, 214, 255, 0.12), transparent 31%),
+			linear-gradient(125deg, #071a3c, #030b1e);
+		overflow: hidden;
+	}
+
+	.home-case__copy {
+		padding: clamp(2.2rem, 5vw, 4rem);
+	}
+
+	.home-case__copy h2 {
+		max-width: 690px;
+		margin-top: 0.85rem;
+		font-size: clamp(2.5rem, 4.5vw, 4.3rem);
+		line-height: 1;
+	}
+
+	.home-case__copy > p:not(.eyebrow) {
+		max-width: 650px;
+		margin: 1.4rem 0 1.9rem;
+		color: var(--color-text-muted);
+	}
+
+	.home-case__metrics {
+		margin: 0;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		border-left: 1px solid var(--color-border);
+	}
+
+	.home-case__metrics div {
+		padding: 1.8rem;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		border-right: 1px solid var(--color-border);
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.home-case__metrics div:nth-child(even) {
+		border-right: 0;
+	}
+
+	.home-case__metrics div:nth-child(n + 3) {
+		border-bottom: 0;
+	}
+
+	.home-case__metrics dt {
+		color: var(--color-text-muted);
+		font-size: 0.76rem;
+		font-weight: 600;
+		letter-spacing: 0.07em;
+		text-transform: uppercase;
+	}
+
+	.home-case__metrics dd {
+		margin: 0.4rem 0 0;
+		font-size: clamp(2rem, 4vw, 3.7rem);
+		font-weight: 700;
+		letter-spacing: -0.05em;
+		line-height: 1;
+	}
+
+	.home-case__metrics .home-case__period {
+		font-size: clamp(1.3rem, 2.2vw, 2rem);
+		line-height: 1.08;
+	}
+
+	.home-closing {
+		position: relative;
+		overflow: hidden;
+		background: #010611;
+		text-align: center;
+	}
+
+	.home-closing__inner {
+		position: relative;
+		z-index: 2;
+		max-width: 980px;
+	}
+
+	.home-closing h2 {
+		margin-top: 0.9rem;
+		font-size: clamp(3rem, 6vw, 6rem);
+		line-height: 0.98;
+	}
+
+	.home-closing__inner > p:not(.eyebrow) {
+		max-width: 730px;
+		margin: 1.5rem auto 2rem;
+		color: var(--color-text-muted);
+		font-size: 1.06rem;
+	}
+
+	.home-closing__actions {
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+	}
+
+	.home-closing__glow {
+		position: absolute;
+		border-radius: 50%;
+		filter: blur(95px);
+		opacity: 0.16;
+		pointer-events: none;
+	}
+
+	.home-closing__glow--one {
+		width: 390px;
+		height: 390px;
+		top: -170px;
+		left: -90px;
+		background: var(--color-accent);
+	}
+
+	.home-closing__glow--two {
+		width: 430px;
+		height: 430px;
+		right: -130px;
+		bottom: -200px;
+		background: var(--color-accent-secondary);
+	}
+
+	@media (max-width: 980px) {
+		.home-hero {
+			min-height: 680px;
+		}
+
+		.home-hero__overlay {
+			background:
+				linear-gradient(90deg, rgba(2, 7, 19, 0.98), rgba(2, 8, 24, 0.72) 68%, rgba(2, 8, 24, 0.32)),
+				linear-gradient(0deg, var(--color-bg), transparent 33%);
+		}
+
+		.acquisition-strip__inner {
+			align-items: flex-start;
+			flex-direction: column;
+			gap: 0.65rem;
+			padding-block: 1.15rem;
+		}
+
+		.acquisition-strip__flow {
+			justify-content: flex-start;
+			flex-wrap: wrap;
+		}
+
+		.home-journeys__grid {
+			grid-template-columns: 1fr 1fr;
+		}
+
+		.home-journey-card:nth-child(2) {
+			border-right: 0;
+		}
+
+		.home-journey-card:nth-child(-n + 2) {
+			border-bottom: 1px solid var(--color-border);
+		}
+
+		.drive-engine__inner {
+			grid-template-columns: 1fr;
+		}
+
+		.drive-engine__panel {
+			max-width: 650px;
+		}
+
+		.home-section-heading--split {
+			grid-template-columns: 1fr;
+			gap: 0.5rem;
+		}
+
+		.home-section-heading--split > p {
+			margin-top: 1rem;
+		}
+
+		.home-products__grid {
+			grid-template-columns: 1fr 1fr;
+		}
+
+		.home-product-card,
+		.home-product-card:nth-child(4),
+		.home-product-card:nth-child(5) {
+			grid-column: auto;
+		}
+
+		.home-product-card:last-child {
+			grid-column: 1 / -1;
+		}
+
+		.home-case__card {
+			grid-template-columns: 1fr;
+		}
+
+		.home-case__metrics {
+			min-height: 350px;
+			border-top: 1px solid var(--color-border);
+			border-left: 0;
 		}
 	}
 
-	@media (min-width: 1100px) {
-		.journeys__grid {
-			grid-template-columns: repeat(4, 1fr);
+	@media (max-width: 640px) {
+		.home-hero {
+			min-height: 650px;
+		}
+
+		.home-hero__inner {
+			padding-block: 7rem 5rem;
+		}
+
+		.home-hero__image {
+			object-position: 62% center;
+		}
+
+		.home-hero__overlay {
+			background:
+				linear-gradient(90deg, rgba(2, 7, 19, 0.97), rgba(2, 8, 24, 0.67)),
+				linear-gradient(0deg, var(--color-bg), transparent 45%);
+		}
+
+		.home-hero h1 {
+			font-size: clamp(3rem, 15vw, 4.8rem);
+		}
+
+		.home-hero__audiences {
+			gap: 0.5rem;
+		}
+
+		.acquisition-strip__flow b {
+			display: none;
+		}
+
+		.acquisition-strip__flow span {
+			padding: 0.3rem 0.5rem;
+			border: 1px solid var(--color-border);
+			border-radius: var(--radius-sm);
+		}
+
+		.home-journeys__grid {
+			grid-template-columns: 1fr;
+		}
+
+		.home-journey-card {
+			min-height: 220px;
+			border-right: 0;
+			border-bottom: 1px solid var(--color-border) !important;
+		}
+
+		.home-journey-card:last-child {
+			border-bottom: 0 !important;
+		}
+
+		.drive-engine {
+			min-height: auto;
+		}
+
+		.drive-engine__inner {
+			padding-block: 5.5rem;
+		}
+
+		.drive-engine__image {
+			object-position: 60% center;
+		}
+
+		.drive-engine__overlay {
+			background: rgba(2, 8, 24, 0.88);
+		}
+
+		.home-products__grid {
+			grid-template-columns: 1fr;
+		}
+
+		.home-product-card,
+		.home-product-card:last-child {
+			grid-column: auto;
+			min-height: 285px;
+		}
+
+		.home-case__copy {
+			padding: 2rem 1.5rem;
+		}
+
+		.home-case__metrics {
+			grid-template-columns: 1fr;
+			min-height: 0;
+		}
+
+		.home-case__metrics div {
+			min-height: 145px;
+			border-right: 0;
+			border-bottom: 1px solid var(--color-border) !important;
+		}
+
+		.home-case__metrics div:last-child {
+			border-bottom: 0 !important;
 		}
 	}
 </style>
