@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { productList, savolCase, site, whatsappLink } from '../config/site';
+import { productList, savolCase, whatsappLink } from '../config/site';
 
 const pageTitle = 'LuHao Automotive | Aquisição automotiva da mídia ao resultado';
 const pageDescription =
@@ -21,12 +21,12 @@ const whatsappHref = whatsappLink('Olá! Quero entender como a LuHao Automotive 
 	title={pageTitle}
 	description={pageDescription}
 	path="/"
-	image="https://grupo-ramasa-auto.luhao-automotive.com.br/assets/drive-hero.webp"
+	image="/images/drive-hero.webp"
 >
 	<section class="home-hero">
 		<img
 			class="home-hero__image"
-			src="https://grupo-ramasa-auto.luhao-automotive.com.br/assets/drive-hero.webp"
+			src="/images/drive-hero.webp"
 			alt="Veículo em ambiente automotivo tecnológico"
 			width="1672"
 			height="941"
@@ -96,7 +96,7 @@ const whatsappHref = whatsappLink('Olá! Quero entender como a LuHao Automotive 
 	<section class="drive-engine">
 		<img
 			class="drive-engine__image"
-			src="https://grupo-ramasa-auto.luhao-automotive.com.br/assets/drive-fleet.webp"
+			src="/images/drive-fleet.webp"
 			alt="Frota de veículos em operação corporativa"
 			width="1672"
 			height="941"
