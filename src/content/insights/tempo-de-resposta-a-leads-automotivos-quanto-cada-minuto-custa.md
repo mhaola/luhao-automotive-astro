@@ -17,6 +17,8 @@ tags:
 author: "LuHao Automotive"
 draft: false
 featured: false
+featuredImage: "/images/insights/tempo-de-resposta-a-leads-automotivos-quanto-cada-minuto-custa.png"
+featuredImageAlt: "Gestor comercial em concessionária automotiva contemporânea analisando dados de leads em dispositivo digital com interface abstrata, veículo moderno ao fundo em showroom clean, transmitindo eficiência e gestão estratégica do tempo de resposta."
 ---
 
 ## Impacto do tempo de resposta na conversão de leads automotivos
