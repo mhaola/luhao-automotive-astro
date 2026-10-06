@@ -2,7 +2,7 @@
 title: "0 km, seminovos e assinatura: por que cada oferta precisa de um funil diferente"
 description: "Por que tratar 0 km, seminovos e assinatura de veículos com a mesma campanha reduz a qualidade dos leads gerados — e como estruturar cada jornada separadamente."
 pubDate: 2026-02-10
-category: "Estratégia"
+category: "Geração de Leads"
 tags: ["assinatura", "0 km", "seminovos", "funil de vendas"]
 author: "LuHao Automotive"
 draft: false
