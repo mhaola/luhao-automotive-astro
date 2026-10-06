@@ -2,7 +2,7 @@
 title: "Origem do lead x venda: como atribuir receita no varejo automotivo"
 description: "Saiba como atribuição de receita no varejo automotivo transforma dados de marketing e vendas automotivas em decisões mais rápidas sobre operação e performance."
 pubDate: 2026-09-20
-category: "LuHao Automotive"
+category: "Inteligência"
 tags:
   - "origem do lead"
   - "vendas automotivas"

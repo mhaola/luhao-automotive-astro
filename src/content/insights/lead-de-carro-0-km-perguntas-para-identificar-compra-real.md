@@ -2,7 +2,7 @@
 title: "Lead de carro 0 km: perguntas para identificar compra real"
 description: "Aprenda como qualificação de lead de carro 0 km melhora a triagem de leads automotivos, reduz perda de tempo e entrega mais contexto ao time comercial."
 pubDate: 2026-09-19
-category: "LuHao Automotive"
+category: "Qualificação"
 tags:
   - "carro 0 km"
   - "qualificação de leads"

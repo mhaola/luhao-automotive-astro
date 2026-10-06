@@ -2,7 +2,7 @@
 title: "Campanhas de revisão preventiva: como transformar base em agenda de oficina"
 description: "Veja como campanhas de revisão preventiva ajuda concessionárias a gerar demanda de pós-venda, aumentar ocupação da oficina e fortalecer retenção de clientes."
 pubDate: 2026-09-16
-category: "LuHao Automotive"
+category: "Pós-venda"
 tags:
   - "revisão preventiva"
   - "oficina"

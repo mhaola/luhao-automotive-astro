@@ -2,7 +2,7 @@
 title: "Taxa de contato, proposta e fechamento: o funil real de leads automotivos"
 description: "Saiba como funil de leads automotivos transforma dados de marketing e vendas automotivas em decisões mais rápidas sobre operação e performance."
 pubDate: 2026-09-25
-category: "LuHao Automotive"
+category: "Inteligência"
 tags:
   - "taxa de contato"
   - "taxa de proposta"

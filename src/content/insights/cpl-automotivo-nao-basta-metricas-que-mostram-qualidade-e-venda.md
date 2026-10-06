@@ -2,7 +2,7 @@
 title: "CPL automotivo não basta: métricas que mostram qualidade e venda"
 description: "Saiba como métricas de leads automotivos transforma dados de marketing e vendas automotivas em decisões mais rápidas sobre operação e performance."
 pubDate: 2026-09-11
-category: "LuHao Automotive"
+category: "Inteligência"
 tags:
   - "CPL automotivo"
   - "qualidade de leads"

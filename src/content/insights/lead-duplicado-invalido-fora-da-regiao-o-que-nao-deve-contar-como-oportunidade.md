@@ -2,7 +2,7 @@
 title: "Lead duplicado, inválido ou fora da região: o que não deve contar como oportunidade"
 description: "Aprenda como critérios de lead automotivo válido melhora a triagem de leads automotivos, reduz perda de tempo e entrega mais contexto ao time comercial."
 pubDate: 2026-09-24
-category: "LuHao Automotive"
+category: "Qualificação"
 tags:
   - "lead duplicado"
   - "lead inválido"

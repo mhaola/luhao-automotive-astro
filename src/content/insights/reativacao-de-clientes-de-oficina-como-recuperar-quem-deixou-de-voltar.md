@@ -2,7 +2,7 @@
 title: "Reativação de clientes de oficina: como recuperar quem deixou de voltar"
 description: "Veja como reativação de clientes de oficina ajuda concessionárias a gerar demanda de pós-venda, aumentar ocupação da oficina e fortalecer retenção de clientes."
 pubDate: 2026-09-21
-category: "LuHao Automotive"
+category: "Pós-venda"
 tags:
   - "retenção de clientes"
   - "pós-venda automotivo"

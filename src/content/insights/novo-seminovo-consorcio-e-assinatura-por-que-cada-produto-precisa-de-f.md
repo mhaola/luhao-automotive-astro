@@ -2,7 +2,7 @@
 title: "Novo, seminovo, consórcio e assinatura: por que cada produto precisa de funil próprio"
 description: "Veja como funis para produtos automotivos ajuda operações automotivas a conectar jornada digital, conversão e vendas com mais controle sobre os leads."
 pubDate: 2026-09-22
-category: "LuHao Automotive"
+category: "Geração de Leads"
 tags:
   - "funil de vendas automotivo"
   - "funil segmentado automotivo"

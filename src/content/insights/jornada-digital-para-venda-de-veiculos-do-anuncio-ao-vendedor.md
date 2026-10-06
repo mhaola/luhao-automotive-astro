@@ -2,7 +2,7 @@
 title: "Jornada digital para venda de veículos: do anúncio ao vendedor"
 description: "Veja como jornada digital para venda de veículos ajuda operações automotivas a conectar jornada digital, conversão e vendas com mais controle sobre os leads."
 pubDate: 2026-09-13
-category: "LuHao Automotive"
+category: "Geração de Leads"
 tags:
   - "venda de veículos"
   - "jornada digital"

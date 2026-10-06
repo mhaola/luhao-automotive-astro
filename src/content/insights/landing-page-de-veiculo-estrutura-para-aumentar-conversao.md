@@ -2,7 +2,7 @@
 title: "Landing page de veículo: estrutura para aumentar conversão"
 description: "Veja como landing page de veículo ajuda operações automotivas a conectar jornada digital, conversão e vendas com mais controle sobre os leads."
 pubDate: 2026-09-17
-category: "LuHao Automotive"
+category: "Geração de Leads"
 tags:
   - "conversão"
   - "leads qualificados"

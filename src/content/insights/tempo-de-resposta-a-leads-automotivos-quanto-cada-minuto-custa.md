@@ -2,7 +2,7 @@
 title: "Tempo de resposta a leads automotivos: quanto cada minuto custa"
 description: "Aprenda como tempo de resposta a leads automotivos melhora a triagem de leads automotivos, reduz perda de tempo e entrega mais contexto ao time comercial."
 pubDate: 2026-09-14
-category: "LuHao Automotive"
+category: "Qualificação"
 tags:
   - "conversão de leads automotivos"
   - "qualificação de leads"

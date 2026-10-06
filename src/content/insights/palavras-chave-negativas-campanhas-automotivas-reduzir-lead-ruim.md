@@ -2,7 +2,7 @@
 title: "Palavras-chave negativas em campanhas automotivas: como reduzir lead ruim"
 description: "Entenda como palavras-chave negativas em campanhas automotivas pode gerar demanda automotiva com mídia mais eficiente, melhor segmentação e leads com maior potencial de compra."
 pubDate: 2026-09-18
-category: "LuHao Automotive"
+category: "Geração de Demanda"
 tags:
   - "leads automotivos"
   - "Google Ads"

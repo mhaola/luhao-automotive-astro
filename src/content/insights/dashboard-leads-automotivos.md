@@ -2,7 +2,7 @@
 title: "Dashboard de leads automotivos: marketing, atendimento, propostas e vendas"
 description: "Saiba como dashboard de leads automotivos transforma dados de marketing e vendas automotivas em decisões mais rápidas sobre operação e performance."
 pubDate: 2026-09-15
-category: "LuHao Automotive"
+category: "Inteligência"
 tags:
   - "gestão de leads automotivos"
   - "integração de dados de leads"

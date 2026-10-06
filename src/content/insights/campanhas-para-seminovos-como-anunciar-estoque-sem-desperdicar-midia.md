@@ -2,7 +2,7 @@
 title: "Campanhas para seminovos: como anunciar estoque sem desperdiçar mídia"
 description: "Entenda como campanhas para seminovos pode gerar demanda automotiva com mídia mais eficiente, melhor segmentação e leads com maior potencial de compra."
 pubDate: 2026-09-23
-category: "LuHao Automotive"
+category: "Geração de Demanda"
 tags:
   - "segmentação de público"
   - "qualificação de leads"
